@@ -42,9 +42,9 @@
         /* Style the main logo image */
         .main-logo {
             display: block;      /* Ensure the image behaves like a block element */
-            /* Set maximum dimensions - adjust as needed */
-            max-width: 70%;      /* Max width relative to body */
-            max-height: 60vh;    /* Max height relative to viewport (adjust if needed with bottom icon) */
+            /* Set maximum dimensions - reduced to approx 30% of previous values */
+            max-width: 21%;      /* Max width relative to body (30% of 70%) */
+            max-height: 18vh;    /* Max height relative to viewport (30% of 60vh) */
             height: auto;        /* Maintain the image's aspect ratio */
             /* margin-bottom removed, space-between handles vertical spacing */
         }
@@ -53,23 +53,22 @@
            - Use inline-flex to align icon and text side-by-side.
            - Align items vertically in the middle.
            - Add space between icon and text.
-           - Set text color and remove underline.
+           - Set default text color and remove overall link underline.
         */
         .instagram-link {
             display: inline-flex; /* Align children (icon, text) inline */
             align-items: center;  /* Vertically align icon and text */
             gap: 8px;             /* Space between icon and text */
             color: #ffffff;       /* White text color */
-            text-decoration: none; /* Remove underline from link */
+            text-decoration: none; /* Remove overall underline from link */
             transition: opacity 0.3s ease; /* Smooth transition for hover effect */
         }
 
-        /* Style the Instagram icon (<img> tag loading the SVG) */
+        /* Style the Instagram icon (<img> tag loading the image) */
         .instagram-icon {
-            width: 32px;  /* Slightly smaller icon */
-            height: 32px; /* Slightly smaller icon */
-            /* Removed SVG-specific styles like fill, stroke, etc. */
-            /* These properties should be defined within the instagram.svg file itself if needed */
+            width: 32px;  /* Icon size */
+            height: 32px; /* Icon size */
+            /* Appearance is defined by the instagram.png file itself */
             vertical-align: middle; /* Helps alignment with text */
         }
 
@@ -77,6 +76,7 @@
         .instagram-text {
             font-size: 1rem; /* Adjust font size as needed */
             line-height: 1; /* Ensure consistent line height */
+            text-decoration: underline; /* Add underline specifically to the text */
         }
 
         /* Change link appearance on hover */
@@ -91,7 +91,7 @@
 
     <a href="https://www.instagram.com/saborconflow.dance/" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Sabor con Flow Dance Instagram Profile">
         <img src="Logos/instagram.png" alt="Instagram Logo" class="instagram-icon">
-        <span class="instagram-text">saborconflow.dance</span>
+        <span class="instagram-text">@saborconflow.dance</span>
     </a>
 
 </body>
