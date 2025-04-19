@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sabor con Flow Dance</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
     <style>
         /* Basic reset: Ensure html and body take full height and remove default margins/padding */
         html, body {
@@ -12,6 +16,7 @@
             padding: 0;
             /* Optional: Prevent scrollbars if content overflows slightly */
             overflow-x: hidden;
+            font-family: 'Inter', sans-serif; /* Apply base font */
         }
 
         /* Style the body:
@@ -26,7 +31,7 @@
             background-color: #000000; /* Black background */
             display: flex;
             flex-direction: column;      /* Stack children vertically */
-            justify-content: space-between; /* Push logo to top, icon to bottom */
+            justify-content: space-between; /* Push logo to top, link group to bottom */
             align-items: center;         /* Center content horizontally */
             padding-top: 5vh;            /* Add 5% of viewport height as top padding */
             padding-bottom: 5vh;         /* Add 5% of viewport height as bottom padding */
@@ -44,23 +49,39 @@
             /* margin-bottom removed, space-between handles vertical spacing */
         }
 
-        /* Style the Instagram link */
+        /* Style the Instagram link container (<a> tag)
+           - Use inline-flex to align icon and text side-by-side.
+           - Align items vertically in the middle.
+           - Add space between icon and text.
+           - Set text color and remove underline.
+        */
         .instagram-link {
-            display: inline-block; /* Allows setting dimensions but flows like text */
-            line-height: 0; /* Prevent extra space below the SVG */
-        }
-
-        /* Style the SVG Instagram icon */
-        .instagram-icon {
-            width: 48px;  /* Set desired width */
-            height: 48px; /* Set desired height */
+            display: inline-flex; /* Align children (icon, text) inline */
+            align-items: center;  /* Vertically align icon and text */
+            gap: 8px;             /* Space between icon and text */
+            color: #ffffff;       /* White text color */
+            text-decoration: none; /* Remove underline from link */
             transition: opacity 0.3s ease; /* Smooth transition for hover effect */
-            /* Colors are defined within the SVG */
         }
 
-        /* Change icon opacity on hover */
-        .instagram-link:hover .instagram-icon {
-            opacity: 0.85; /* Slightly fade on hover */
+        /* Style the Instagram icon (<img> tag loading the SVG) */
+        .instagram-icon {
+            width: 32px;  /* Slightly smaller icon */
+            height: 32px; /* Slightly smaller icon */
+            /* Removed SVG-specific styles like fill, stroke, etc. */
+            /* These properties should be defined within the instagram.svg file itself if needed */
+            vertical-align: middle; /* Helps alignment with text */
+        }
+
+        /* Style the text next to the icon */
+        .instagram-text {
+            font-size: 1rem; /* Adjust font size as needed */
+            line-height: 1; /* Ensure consistent line height */
+        }
+
+        /* Change link appearance on hover */
+        .instagram-link:hover {
+             opacity: 0.85; /* Slightly fade the whole link (icon + text) on hover */
         }
 
     </style>
@@ -69,17 +90,8 @@
     <img src="Sabor Con Flow Logo.png" alt="Sabor con Flow Dance Logo" class="main-logo">
 
     <a href="https://www.instagram.com/saborconflow.dance/" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Sabor con Flow Dance Instagram Profile">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="instagram-icon">
-          <defs>
-            <radialGradient id="instaGradient" gradientUnits="objectBoundingBox" cx="0.35" cy="0.95" r="1.5">
-              <stop offset="0" stop-color="#FFDC80"/>   <stop offset="0.25" stop-color="#FCAF45"/> <stop offset="0.5" stop-color="#F77737"/>  <stop offset="0.75" stop-color="#D62976"/> <stop offset="1" stop-color="#962FBF"/>   </radialGradient>
-          </defs>
-          <rect width="24" height="24" rx="6" ry="6" fill="url(#instaGradient)"/>
-          <path fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                d="M12 16.14a4.14 4.14 0 100-8.28 4.14 4.14 0 000 8.28z"/>
-          <circle fill="#ffffff" cx="17.3" cy="6.7" r="1.1"/>
-          <rect x="3.5" y="3.5" width="17" height="17" rx="4" ry="4" fill="none" stroke="#ffffff" stroke-width="1.8"/>
-        </svg>
+        <img src="instagram.svg" alt="Instagram Logo" class="instagram-icon">
+        <span class="instagram-text">saborconflow.dance</span>
     </a>
 
 </body>
