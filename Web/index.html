@@ -53,26 +53,22 @@
            - Use inline-flex to align icon and text side-by-side.
            - Align items vertically in the middle.
            - Add space between icon and text.
-           - Set default text color (for icon stroke if needed) and remove overall link underline.
+           - Set default text color and remove overall link underline.
         */
         .instagram-link {
             display: inline-flex; /* Align children (icon, text) inline */
             align-items: center;  /* Vertically align icon and text */
             gap: 8px;             /* Space between icon and text */
-            color: #ffffff;       /* Default color (primarily for icon stroke now) */
+            color: #ffffff;       /* Default color (used by nothing directly now) */
             text-decoration: none; /* Remove overall underline from link */
             transition: opacity 0.3s ease; /* Smooth transition for hover effect */
         }
 
-        /* Style the Instagram icon (Inline SVG) */
+        /* Style the Instagram icon (Inline SVG - Gradient Version) */
         .instagram-icon {
             width: 32px;  /* Icon size */
             height: 32px; /* Icon size */
-            fill: none; /* Do not fill the shapes */
-            stroke: white; /* Set the line color to white */
-            stroke-width: 2; /* Set the line thickness */
-            stroke-linecap: round; /* Rounded line endings */
-            stroke-linejoin: round; /* Rounded line joins */
+            /* Removed stroke/fill properties - colors are defined within the SVG */
             vertical-align: middle; /* Helps alignment with text */
             /* Transition applied to parent link hover */
         }
@@ -97,9 +93,15 @@
 
     <a href="https://www.instagram.com/saborconflow.dance/" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Sabor con Flow Dance Instagram Profile">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="instagram-icon">
-          <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-          <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-          <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+          <defs>
+            <linearGradient id="instaGradient" x1="0%" y1="100%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#FEDA75"/>   <stop offset="25%" stop-color="#F58529"/>  <stop offset="50%" stop-color="#DD2A7B"/>  <stop offset="75%" stop-color="#833AB4"/>  <stop offset="100%" stop-color="#405DE6"/> </linearGradient>
+          </defs>
+          <rect width="24" height="24" rx="6" ry="6" fill="url(#instaGradient)"/>
+          <path fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                d="M12 16.14a4.14 4.14 0 100-8.28 4.14 4.14 0 000 8.28z"/>
+          <circle fill="#ffffff" cx="17.3" cy="6.7" r="1.1"/>
+          <rect x="3.5" y="3.5" width="17" height="17" rx="4" ry="4" fill="none" stroke="#ffffff" stroke-width="1.8"/>
         </svg>
         <span class="instagram-text">@saborconflow.dance</span>
     </a>
