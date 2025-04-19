@@ -14,7 +14,7 @@
             height: 100%;
             margin: 0;
             padding: 0;
-            /* Optional: Prevent scrollbars if content overflows slightly */
+            /* Prevent horizontal scrollbars */
             overflow-x: hidden;
             font-family: 'Inter', sans-serif; /* Apply base font */
         }
@@ -42,9 +42,9 @@
         /* Style the main logo image */
         .main-logo {
             display: block;      /* Ensure the image behaves like a block element */
-            /* Set maximum dimensions - doubled from previous size */
-            max-width: 42%;      /* Max width relative to body (2 * 21%) */
-            max-height: 36vh;    /* Max height relative to viewport (2 * 18vh) */
+            /* Default maximum dimensions */
+            max-width: 42%;      /* Max width relative to body */
+            max-height: 36vh;    /* Max height relative to viewport */
             height: auto;        /* Maintain the image's aspect ratio */
             /* margin-bottom removed, space-between handles vertical spacing */
         }
@@ -70,7 +70,7 @@
             height: 32px; /* Icon size */
             /* Removed stroke/fill properties - colors are defined within the SVG */
             vertical-align: middle; /* Helps alignment with text */
-            /* Transition applied to parent link hover */
+            flex-shrink: 0; /* Prevent icon from shrinking if link gets too narrow */
         }
 
         /* Style the text next to the icon */
@@ -79,11 +79,35 @@
             line-height: 1; /* Ensure consistent line height */
             text-decoration: underline; /* Add underline specifically to the text */
             color: #CCA43D; /* Gold color matching the logo */
+            /* Allow text to wrap if needed on very small screens */
+            word-break: break-all;
         }
 
         /* Change link appearance on hover */
         .instagram-link:hover {
              opacity: 0.85; /* Slightly fade the whole link (icon + text) on hover */
+        }
+
+        /* --- Media Query for Mobile Devices --- */
+        /* Apply these styles for screens 600px wide or narrower */
+        @media (max-width: 600px) {
+            .main-logo {
+                /* Allow logo to take up more width on smaller screens */
+                max-width: 65%;
+                /* Optionally adjust max-height if needed */
+                /* max-height: 40vh; */
+            }
+
+            .instagram-text {
+                /* Slightly smaller text on mobile if desired */
+                 font-size: 0.9rem;
+            }
+
+             /* Adjust padding slightly for smaller screens */
+             body {
+                 padding-top: 4vh;
+                 padding-bottom: 4vh;
+             }
         }
 
     </style>
