@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabor con Flow Dance</title>
+    <style>
+        /* Ensure html and body take full height and have no default margins/padding */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden; /* Optional: Prevent scrollbars if logo is slightly too big */
+        }
+
+        /* Style the body: black background, use flexbox for centering */
+        body {
+            background-color: #000000; /* Black background */
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: center;    /* Center content vertically */
+            min-height: 100vh;       /* Ensure body takes at least full viewport height */
+        }
+
+        /* Style the link container */
+        .logo-link {
+            display: block; /* Make the link a block element */
+            text-align: center; /* Center image within the link block if needed */
+        }
+
+        /* Style the image */
+        .logo-link img {
+            display: block;      /* Treat image as a block */
+            max-width: 80%;      /* Prevent image exceeding 80% of container width */
+            max-height: 80vh;    /* Prevent image exceeding 80% of viewport height */
+            height: auto;        /* Maintain aspect ratio */
+            margin: 0 auto;      /* Center image horizontally if needed (redundant with flex) */
+        }
+    </style>
+</head>
+<body>
+    <a href="https://www.instagram.com/saborconflow.dance/" target="_blank" rel="noopener noreferrer" class="logo-link">
+        <img src="Sabor Con Flow Logo.png" alt="Sabor con Flow Dance Logo - Link to Instagram">
+    </a>
+</body>
+</html>
