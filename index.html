@@ -5,42 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sabor con Flow Dance</title>
     <style>
-        /* Ensure html and body take full height and have no default margins/padding */
+        /* Basic reset: Ensure html and body take full height and remove default margins/padding */
         html, body {
             height: 100%;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Optional: Prevent scrollbars if logo is slightly too big */
+            /* Optional: Prevent scrollbars if content overflows slightly */
+            overflow-x: hidden;
         }
 
-        /* Style the body: black background, use flexbox for centering */
+        /* Style the body:
+           - Set the background color to black.
+           - Use Flexbox to arrange items vertically (column).
+           - Distribute space between the first (top) and last (bottom) elements (space-between).
+           - Center items horizontally (align-items).
+           - Add padding top and bottom for spacing.
+           - Ensure the body takes at least the full height of the viewport.
+        */
         body {
             background-color: #000000; /* Black background */
             display: flex;
-            justify-content: center; /* Center content horizontally */
-            align-items: center;    /* Center content vertically */
-            min-height: 100vh;       /* Ensure body takes at least full viewport height */
+            flex-direction: column;      /* Stack children vertically */
+            justify-content: space-between; /* Push logo to top, icon to bottom */
+            align-items: center;         /* Center content horizontally */
+            padding-top: 5vh;            /* Add 5% of viewport height as top padding */
+            padding-bottom: 5vh;         /* Add 5% of viewport height as bottom padding */
+            min-height: 100vh;            /* Minimum height is 100% of the viewport height */
+            box-sizing: border-box;      /* Include padding in height calculation */
         }
 
-        /* Style the link container */
-        .logo-link {
-            display: block; /* Make the link a block element */
-            text-align: center; /* Center image within the link block if needed */
+        /* Style the main logo image */
+        .main-logo {
+            display: block;      /* Ensure the image behaves like a block element */
+            /* Set maximum dimensions - adjust as needed */
+            max-width: 70%;      /* Max width relative to body */
+            max-height: 60vh;    /* Max height relative to viewport (adjust if needed with bottom icon) */
+            height: auto;        /* Maintain the image's aspect ratio */
+            /* margin-bottom removed, space-between handles vertical spacing */
         }
 
-        /* Style the image */
-        .logo-link img {
-            display: block;      /* Treat image as a block */
-            max-width: 80%;      /* Prevent image exceeding 80% of container width */
-            max-height: 80vh;    /* Prevent image exceeding 80% of viewport height */
-            height: auto;        /* Maintain aspect ratio */
-            margin: 0 auto;      /* Center image horizontally if needed (redundant with flex) */
+        /* Style the Instagram link */
+        .instagram-link {
+            display: inline-block; /* Allows setting dimensions but flows like text */
+            line-height: 0; /* Prevent extra space below the SVG */
         }
+
+        /* Style the SVG Instagram icon */
+        .instagram-icon {
+            width: 48px;  /* Set desired width */
+            height: 48px; /* Set desired height */
+            transition: opacity 0.3s ease; /* Smooth transition for hover effect */
+            /* Colors are defined within the SVG */
+        }
+
+        /* Change icon opacity on hover */
+        .instagram-link:hover .instagram-icon {
+            opacity: 0.85; /* Slightly fade on hover */
+        }
+
     </style>
 </head>
 <body>
-    <a href="https://www.instagram.com/saborconflow.dance/" target="_blank" rel="noopener noreferrer" class="logo-link">
-        <img src="Sabor Con Flow Logo.png" alt="Sabor con Flow Dance Logo - Link to Instagram">
+    <img src="Sabor Con Flow Logo.png" alt="Sabor con Flow Dance Logo" class="main-logo">
+
+    <a href="https://www.instagram.com/saborconflow.dance/" target="_blank" rel="noopener noreferrer" class="instagram-link" aria-label="Sabor con Flow Dance Instagram Profile">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" class="instagram-icon">
+          <defs>
+            <radialGradient id="instaGradient" gradientUnits="objectBoundingBox" cx="0.35" cy="0.95" r="1.5">
+              <stop offset="0" stop-color="#FFDC80"/>   <stop offset="0.25" stop-color="#FCAF45"/> <stop offset="0.5" stop-color="#F77737"/>  <stop offset="0.75" stop-color="#D62976"/> <stop offset="1" stop-color="#962FBF"/>   </radialGradient>
+          </defs>
+          <rect width="24" height="24" rx="6" ry="6" fill="url(#instaGradient)"/>
+          <path fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
+                d="M12 16.14a4.14 4.14 0 100-8.28 4.14 4.14 0 000 8.28z"/>
+          <circle fill="#ffffff" cx="17.3" cy="6.7" r="1.1"/>
+          <rect x="3.5" y="3.5" width="17" height="17" rx="4" ry="4" fill="none" stroke="#ffffff" stroke-width="1.8"/>
+        </svg>
     </a>
+
 </body>
 </html>
