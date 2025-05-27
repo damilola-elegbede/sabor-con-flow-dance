@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pricing - Sabor Con Flow{% endblock %}
+
+{% block content %}
+<div class="container main-content-pricing">
+    <h1 class="page-title">Our Pricing</h1>
+    
+    <h2 class="pricing-heading">Standard Class Pricing</h2>
+    <p class="pricing-description">Join any of our classes with these options:</p>
+    
+    <table class="pricing-table">
+        <thead>
+            <tr>
+                <th>Class</th>
+                <th>Drop-In per Class</th>
+                <th>Monthly</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Pasos Básicos (PB)</td>
+                <td>$20</td>
+                <td>$60</td>
+            </tr>
+            <tr>
+                <td>Casino Royale (CR)</td>
+                <td>$20</td>
+                <td>$60</td>
+            </tr>
+            <tr>
+                <td>PB + CR</td>
+                <td>$35</td>
+                <td>$120</td>
+            </tr>
+            <tr>
+                <td>Choreo Team</td>
+                <td>$20</td>
+                <td>$70</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="pricing-note">
+        <p><strong>Note:</strong> Special workshops and events may have separate pricing. See our <a href="{% url 'core:events' %}" style="color: #C7B375; text-decoration: none;">Events page</a> for details.</p>
+    </div>
+
+    <h2 class="pricing-heading">Private Lessons</h2>
+    <p class="pricing-description">Take your dancing to the next level with personalized instruction:</p>
+    
+    <table class="pricing-table">
+        <thead>
+            <tr>
+                <th>Number of Lessons</th>
+                <th>Cost Per Lesson</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>$120</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>$100</td>
+            </tr>
+            <tr>
+                <td>5+</td>
+                <td>$75</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %} 

@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Events - Sabor Con Flow{% endblock %}
+
+{% block extra_css %}
+{# Add any page-specific CSS links here if needed, or ensure styles are in main.css #}
+{% endblock %}
+
+{% block content %}
+<div class="container main-content-events"> {# Added a wrapper class for potential specific styling #}
+    <h1 class="page-title">Our Classes</h1>
+    
+    <p style="text-align: center; margin-bottom: 2rem; color: #ffffff;">All classes can also be found on <a href="https://pasito.fun/u/daelegbe" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;">pasito.fun</a>.</p>
+    
+    <div class="event-container">
+        {# Assuming your Django view provides 'events' context variable similar to the old structure #}
+        {# This part will need to be adapted based on your actual Django models and view context #}
+        {# For now, I'm recreating the static structure from Web/events.html #}
+        {# If you have a dynamic 'events' list from Django, we'll need to loop through it #}
+
+        <div class="event-card">
+            <h2 class="event-title">SCF Choreo Team</h2>
+            <div class="event-date">
+                <span class="event-icon">📅</span>
+                <span>Every Sunday</span>
+            </div>
+            <div class="event-time">
+                <span class="event-icon">⏰</span>
+                <span>12:00 PM - 1:00 PM</span>
+            </div>
+            <div class="event-location">
+                <span class="event-icon">📍</span>
+                <span><a href="https://boulderdance.org/" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;">Avalon Ballroom</a> (North Lobby)</span>
+            </div>
+            <div class="event-description">
+                <p>Join our choreography team for an intensive dance training session focusing on advanced Cuban salsa techniques and performance routines. We are learning a world class Choreo as part of YoyoFlow World Teams. Choreo team is invite only so please <a href="{% url 'core:contact' %}" style="color: #C7B375; text-decoration: none;">contact us</a> if interested.</p>
+            </div>
+            <div class="event-pricing">
+                <h3>Pricing</h3>
+                <ul>
+                    <li>Drop-in: $20</li>
+                    <li>Monthly: $70</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="event-card">
+            <h2 class="event-title">Pasos Básicos</h2>
+            <div class="event-date">
+                <span class="event-icon">📅</span>
+                <span>Every Sunday</span>
+            </div>
+            <div class="event-time">
+                <span class="event-icon">⏰</span>
+                <span>1:00 PM - 2:00 PM</span>
+            </div>
+            <div class="event-location">
+                <span class="event-icon">📍</span>
+                <span><a href="https://boulderdance.org/" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;">Avalon Ballroom</a> (Tango Room)</span>
+            </div>
+            <div class="event-description">
+                <p>Pasos Básicos will focus on basic cuban salsa footwork, turn patterns, and a little bit of afro-cuban in salsa to equip, build, encourage dancers for their individual styling.</p>
+            </div>
+            <div class="event-pricing">
+                <h3>Pricing</h3>
+                <ul>
+                    <li>Drop-in: $20</li>
+                    <li>Monthly: $60</li>
+                    <li>PB + CR combination: $35 drop-in / $120 monthly</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="event-card">
+            <h2 class="event-title">Casino Royale</h2>
+            <div class="event-date">
+                <span class="event-icon">📅</span>
+                <span>Every Sunday</span>
+            </div>
+            <div class="event-time">
+                <span class="event-icon">⏰</span>
+                <span>2:00 PM - 3:00 PM</span>
+            </div>
+            <div class="event-location">
+                <span class="event-icon">📍</span>
+                <span><a href="https://boulderdance.org/" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;">Avalon Ballroom</a> (Tango Room)</span>
+            </div>
+            <div class="event-description">
+                <p>Take your casino dancing to the next level with this class. We focus on the building blocks of Casino dancing and quickly ramp up to more intermediate/advanced patterns focusing on styling, and musicality. All levels are welcome!</p>
+            </div>
+            <div class="event-pricing">
+                <h3>Pricing</h3>
+                <ul>
+                    <li>Drop-in: $20</li>
+                    <li>Monthly: $60</li>
+                    <li>PB + CR combination: $35 drop-in / $120 monthly</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

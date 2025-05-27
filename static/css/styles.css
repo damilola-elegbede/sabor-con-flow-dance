@@ -1,0 +1,424 @@
+/* Hamburger Menu Styles */
+.menu-toggle {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: rgb(191, 170, 101);
+    margin: 5px 0;
+    transition: 0.4s;
+}
+
+.nav {
+    display: none; /* Reverted from animation */
+    position: absolute;
+    top: 60px; /* Reverted to 60px */
+    left: 20px;
+    width: auto;
+    min-width: 200px;
+    background-color: #000;
+    padding-top: 5px; /* Reduced from 20px */
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 0px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    /* Removed animation properties: max-height, opacity, overflow, transition */
+}
+
+.nav.active {
+    display: block; /* Reverted from animation */
+    /* Removed animation properties: max-height, opacity */
+}
+
+.nav a {
+    display: block; /* Ensures each link is on its own line */
+    margin: 5px 0; 
+    color: rgb(191, 170, 101);
+    text-decoration: none;
+}
+
+.nav a span {
+    display: inline-block; /* Makes the span only as wide as its content */
+    position: relative; /* For the ::after pseudo-element positioning */
+    padding: 2px 0; /* Optional: small padding if underline feels too close */
+}
+
+.nav a span::after { /* Target the span for the underline */
+    content: '';
+    position: absolute;
+    width: 0; 
+    height: 2px;
+    bottom: -5px; 
+    left: 0;
+    background-color: rgb(191, 170, 101);
+    transition: width 0.3s ease;
+}
+
+.nav a:hover span::after { /* Target the span on hover */
+    width: 100%;
+}
+
+/* Dark Theme Styles */
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #000;
+    color: rgb(191, 170, 101);
+    min-height: 100%; /* Ensure body takes at least full viewport height */
+    display: flex;
+    flex-direction: column;
+}
+
+.main-content {
+    flex-grow: 1; /* Make main content grow to fill available space */
+}
+
+.header {
+    background-color: #000;
+    border-bottom: 1px solid #333;
+}
+
+.footer {
+    background-color: #000;
+    border-top: 1px solid #333;
+    /* margin-top: 50px; */ /* This might not be needed with flexbox */
+    padding-bottom: 20px; /* Increased padding at the bottom of the footer */
+}
+
+.footer h3, .footer p, .footer a {
+    color: rgb(191, 170, 101);
+}
+
+.social-icon {
+    width: 30px;
+    height: 30px;
+    margin: 0 10px;
+}
+
+.social-links {
+    margin-top: 20px;
+}
+
+.logo-container {
+    margin-top: 15vh; 
+    text-align: center; 
+    margin-bottom: 5rem; 
+}
+
+/* Added for logo responsiveness */
+.main-logo {
+    max-width: 80%; /* Ensures logo scales down nicely */
+    height: auto;   /* Maintains aspect ratio */
+}
+
+/* Styles from old events.html */
+.main-content-events {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4rem; /* Increased to move content down further */
+}
+
+.page-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #C7B375; /* From old events.html - rgb(199, 179, 117) */
+    font-family: 'Playfair Display', serif;
+}
+
+.event-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.event-card {
+    background-color: rgba(50, 50, 50, 0.6);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-top: 4px solid #C7B375;
+    display: flex;
+    flex-direction: column;
+    color: #ffffff;
+}
+
+.event-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    color: #C7B375;
+    font-family: 'Playfair Display', serif;
+}
+
+.event-date, .event-time, .event-location {
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    color: #ffffff;
+}
+
+.event-location a {
+    color: #C7B375;
+    text-decoration: none;
+}
+
+.event-location a:hover {
+    text-decoration: underline;
+}
+
+.event-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.5rem;
+    display: inline-block;
+}
+
+.event-description {
+    margin: 1rem 0;
+    flex-grow: 1;
+    color: #ffffff;
+}
+
+.event-description p a {
+    color: #C7B375;
+    text-decoration: none;
+}
+.event-description p a:hover {
+    text-decoration: underline;
+}
+
+
+.event-pricing {
+    background-color: rgba(199, 179, 117, 0.1);
+    padding: 1rem;
+    border-radius: 5px;
+    margin-top: 1rem;
+}
+
+.event-pricing h3 {
+    color: #C7B375;
+    margin-top: 0;
+    font-size: 1.1rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.event-pricing ul {
+    margin: 0.5rem 0 0;
+    padding-left: 1.5rem;
+    color: #ffffff;
+}
+
+/* Responsive adjustments from old file */
+@media (max-width: 1000px) {
+    .event-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) { /* Adjusted breakpoint for typical mobile/tablet */
+    .logo-container {
+        margin-top: 10vh; /* Reduced top margin on smaller screens */
+    }
+
+    /* Styles from old events.html - potentially move responsive event styles here too if not already */
+    .event-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .logo-container {
+        margin-top: 8vh; /* Further reduce for very small screens */
+    }
+
+    /* Styles from old events.html */
+    .event-container {
+        grid-template-columns: 1fr;
+    }
+
+    /* Styles from old pricing.html */
+    .pricing-table {
+        font-size: 0.9rem;
+    }
+    
+    .pricing-table th, 
+    .pricing-table td {
+        padding: 0.8rem;
+    }
+
+    /* Styles from old contact.html */
+    .contact-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .contact-icon {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Styles from old pricing.html */
+.main-content-pricing {
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4rem; /* Increased to move content down further */
+}
+
+.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+    background-color: rgba(50, 50, 50, 0.6);
+    border-radius: 8px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.pricing-table th {
+    background-color: rgba(199, 179, 117, 0.2);
+    color: #C7B375;
+    font-weight: 700;
+    text-align: left;
+    padding: 1rem;
+    border-bottom: 1px solid rgba(199, 179, 117, 0.3);
+    font-family: 'Playfair Display', serif;
+}
+
+.pricing-table td {
+    padding: 1rem;
+    border-bottom: 1px solid rgba(199, 179, 117, 0.1);
+}
+
+.pricing-table tr:last-child td {
+    border-bottom: none;
+}
+
+.pricing-table tr:hover {
+    background-color: rgba(199, 179, 117, 0.05);
+}
+
+.pricing-heading {
+    font-size: 1.5rem;
+    color: #C7B375;
+    margin: 2rem 0 1rem;
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+}
+
+.pricing-description {
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #ffffff;
+}
+
+.pricing-note {
+    background-color: rgba(199, 179, 117, 0.1);
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin: 2rem 0;
+    font-size: 0.9rem;
+    color: #ffffff;
+}
+.pricing-note a {
+    color: #C7B375;
+    text-decoration: none;
+}
+.pricing-note a:hover {
+    text-decoration: underline;
+}
+
+/* Styles from old contact.html */
+.main-content-contact {
+    width: 100%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4rem; /* Increased to move content down further */
+}
+
+.contact-section {
+    background-color: rgba(50, 50, 50, 0.6);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: #ffffff;
+}
+
+.contact-title {
+    font-size: 1.4rem;
+    color: #C7B375;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(199, 179, 117, 0.3);
+    padding-bottom: 0.5rem;
+    font-family: 'Playfair Display', serif;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.contact-item p {
+    color: #ffffff;
+    margin-bottom: 0.5rem;
+}
+.contact-item div > p:last-child {
+    margin-bottom: 0;
+}
+
+
+.contact-icon {
+    width: 48px;
+    height: 48px;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.contact-link {
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.contact-link:hover {
+    color: #C7B375;
+}
+
+.whatsapp-button {
+    display: inline-block;
+    background-color: #25D366;
+    color: white !important;
+    font-weight: 600;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-top: 0.5rem;
+    transition: background-color 0.3s ease;
+}
+
+.whatsapp-button:hover {
+    background-color: #1da851;
+    color: white !important;
+} 

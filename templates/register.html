@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register for {{ event.title }} - Sabor con Flow Dance{% endblock %}
+
+{% block extra_css %}
+<style>
+    #payment-element {
+        margin-bottom: 24px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="page-title">Register for {{ event.title }}</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Event Details</h3>
+                    <div class="event-details">
+                        <p><i class="fas fa-calendar"></i> {{ event.date|date:"F j, Y" }}</p>
+                        <p><i class="fas fa-clock"></i> {{ event.time|time:"g:i A" }}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> {{ event.location }}</p>
+                        <p><i class="fas fa-dollar-sign"></i> Price: ${{ event.price }}</p>
+                    </div>
+                    <p class="card-text">{{ event.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Registration Form</h3>
+                    <form id="payment-form" method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        
+                        <div id="payment-element"></div>
+                        
+                        <button id="submit-button" class="btn btn-primary w-100">
+                            <span id="button-text">Pay Now</span>
+                            <span id="spinner" class="spinner hidden"></span>
+                        </button>
+                        
+                        <div id="payment-message" class="hidden"></div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const stripe = Stripe('{{ stripe_public_key }}');
+    const elements = stripe.elements();
+    const paymentElement = elements.create('payment');
+    paymentElement.mount('#payment-element');
+
+    const form = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit-button');
+    const messageDiv = document.getElementById('payment-message');
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitButton.disabled = true;
+        submitButton.querySelector('#spinner').classList.remove('hidden');
+        submitButton.querySelector('#button-text').classList.add('hidden');
+
+        try {
+            const response = await fetch('{% url "core:register" event.id %}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                },
+                body: JSON.stringify({
+                    name: document.getElementById('id_name').value,
+                    email: document.getElementById('id_email').value,
+                    phone: document.getElementById('id_phone').value
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.error) {
+                throw new Error(data.error);
+            }
+
+            const { error: stripeError } = await stripe.confirmPayment({
+                elements,
+                clientSecret: data.client_secret,
+                confirmParams: {
+                    return_url: `${window.location.origin}/payment-success/`,
+                }
+            });
+
+            if (stripeError) {
+                throw new Error(stripeError.message);
+            }
+        } catch (error) {
+            messageDiv.textContent = error.message;
+            messageDiv.classList.remove('hidden');
+            submitButton.disabled = false;
+            submitButton.querySelector('#spinner').classList.add('hidden');
+            submitButton.querySelector('#button-text').classList.remove('hidden');
+        }
+    });
+</script>
+{% endblock %} 
