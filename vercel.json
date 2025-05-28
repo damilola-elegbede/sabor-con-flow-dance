@@ -17,6 +17,13 @@
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable"
       },
+      "dest": "/static/$1"
+    },
+    {
+      "src": "/staticfiles/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable"
+      },
       "dest": "/staticfiles/$1"
     },
     {
