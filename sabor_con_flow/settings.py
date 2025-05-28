@@ -108,9 +108,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CSRF Settings for Vercel
 CSRF_TRUSTED_ORIGINS = [
-    'https://saborconflowdance-828m2cpov-damilolaelegbede-gmailcoms-projects.vercel.app',
-    'https://saborconflowdance-liu9lsv16-damilolaelegbede-gmailcoms-projects.vercel.app',
-    'https://saborconflowdance-av0i0e8b6-damilolaelegbede-gmailcoms-projects.vercel.app',
+    'https://*.vercel.app',
     'https://www.saborconflowdance.com',
     'https://www.saborconflowdance.org',
     'https://www.saborconflowdance.info'
@@ -125,7 +123,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Security Settings
 if not DEBUG:
-    SECURE_SSL_REDIRECT = True
+    SECURE_SSL_REDIRECT = False  # Disable SSL redirect for Vercel
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
