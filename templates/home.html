@@ -8,29 +8,5 @@
     <div class="logo-container">
         <img src="{% static 'images/Sabor Con Flow Logo.png' %}" alt="Sabor Con Flow Logo" class="main-logo">
     </div>
-
-    {% if upcoming_events %}
-    <div class="row mt-5">
-        <div class="col-12">
-            <h2 class="text-center mb-4">Upcoming Events</h2>
-        </div>
-        {% for event in upcoming_events %}
-        <div class="col-md-4">
-            <div class="card event-card">
-                <div class="card-body">
-                    <h3 class="card-title">{{ event.title }}</h3>
-                    <p class="card-text">
-                        <i class="fas fa-calendar"></i> {{ event.date|date:"F j, Y" }}<br>
-                        <i class="fas fa-clock"></i> {{ event.time|time:"g:i A" }}<br>
-                        <i class="fas fa-map-marker-alt"></i> {{ event.location }}
-                    </p>
-                    <p class="card-text">{{ event.description|truncatewords:30 }}</p>
-                    <a href="{% url 'core:register' event.id %}" class="btn btn-primary">Register Now</a>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
 </div>
 {% endblock %} 

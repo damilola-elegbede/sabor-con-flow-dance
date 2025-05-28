@@ -1,0 +1,3 @@
+from django.db import models
+
+# Models have been removed as they are no longer needed 
