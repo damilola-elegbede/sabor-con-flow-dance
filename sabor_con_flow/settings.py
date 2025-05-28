@@ -38,7 +38,7 @@ elif not SECRET_KEY:
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 't')
 
 # Configure ALLOWED_HOSTS from an environment variable
-ALLOWED_HOSTS_STRING = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app')
+ALLOWED_HOSTS_STRING = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,saborconflowdance-828m2cpov-damilolaelegbede-gmailcoms-projects.vercel.app,saborconflowdance-liu9lsv16-damilolaelegbede-gmailcoms-projects.vercel.app')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STRING.split(',')] if ALLOWED_HOSTS_STRING else []
 if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS.extend(['localhost', '127.0.0.1'])
@@ -96,11 +96,22 @@ STATICFILES_DIRS = [
 ]
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+# Static file optimization
+if not DEBUG:
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    WHITENOISE_USE_FINDERS = True
+    WHITENOISE_MANIFEST_STRICT = False
+    WHITENOISE_ALLOW_ALL_ORIGINS = True
+
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CSRF Settings for Vercel
-CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.vercel.app',
+    'https://saborconflowdance-828m2cpov-damilolaelegbede-gmailcoms-projects.vercel.app',
+    'https://saborconflowdance-liu9lsv16-damilolaelegbede-gmailcoms-projects.vercel.app'
+]
 
 # Crispy Forms Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -108,6 +119,18 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# Security Settings
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
+    X_FRAME_OPTIONS = 'DENY'
 
 # Logging
 LOGGING = {
