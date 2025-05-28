@@ -5,9 +5,11 @@
     border: none;
     cursor: pointer;
     padding: 10px;
-    position: absolute;
-    top: 10px;
-    left: 10px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    transition: transform 0.3s ease;
 }
 
 .menu-toggle span {
@@ -19,52 +21,75 @@
     transition: 0.4s;
 }
 
+.menu-toggle.active span:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.menu-toggle.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active span:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
 .nav {
-    display: none; /* Reverted from animation */
-    position: absolute;
-    top: 60px; /* Reverted to 60px */
-    left: 20px;
-    width: auto;
-    min-width: 200px;
-    background-color: #000;
-    padding-top: 5px; /* Reduced from 20px */
-    padding-right: 20px;
-    padding-bottom: 20px;
-    padding-left: 0px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-    /* Removed animation properties: max-height, opacity, overflow, transition */
+    display: block;
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.95);
+    padding: 80px 20px 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    transition: left 0.3s ease;
+    z-index: 999;
 }
 
 .nav.active {
-    display: block; /* Reverted from animation */
-    /* Removed animation properties: max-height, opacity */
+    left: 0;
 }
 
 .nav a {
-    display: block; /* Ensures each link is on its own line */
-    margin: 5px 0; 
+    display: block;
+    margin: 15px 0;
     color: rgb(191, 170, 101);
     text-decoration: none;
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.3s ease;
 }
+
+.nav.active a {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.nav a:nth-child(1) { transition-delay: 0.1s; }
+.nav a:nth-child(2) { transition-delay: 0.2s; }
+.nav a:nth-child(3) { transition-delay: 0.3s; }
+.nav a:nth-child(4) { transition-delay: 0.4s; }
 
 .nav a span {
-    display: inline-block; /* Makes the span only as wide as its content */
-    position: relative; /* For the ::after pseudo-element positioning */
-    padding: 2px 0; /* Optional: small padding if underline feels too close */
+    display: inline-block;
+    position: relative;
+    padding: 2px 0;
 }
 
-.nav a span::after { /* Target the span for the underline */
+.nav a span::after {
     content: '';
     position: absolute;
-    width: 0; 
+    width: 0;
     height: 2px;
-    bottom: -5px; 
+    bottom: -2px;
     left: 0;
     background-color: rgb(191, 170, 101);
     transition: width 0.3s ease;
 }
 
-.nav a:hover span::after { /* Target the span on hover */
+.nav a:hover span::after {
     width: 100%;
 }
 
@@ -76,39 +101,69 @@ html {
 body {
     background-color: #000;
     color: rgb(191, 170, 101);
-    min-height: 100%; /* Ensure body takes at least full viewport height */
+    min-height: 100%;
     display: flex;
     flex-direction: column;
+    margin: 0;
+    padding: 0;
 }
 
 .main-content {
-    flex-grow: 1; /* Make main content grow to fill available space */
+    flex-grow: 1;
+    padding-top: 60px;
 }
 
 .header {
     background-color: #000;
-    border-bottom: 1px solid #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 998;
 }
 
 .footer {
     background-color: #000;
-    border-top: 1px solid #333;
-    /* margin-top: 50px; */ /* This might not be needed with flexbox */
-    padding-bottom: 20px; /* Increased padding at the bottom of the footer */
+    border-top: 1px solid rgb(191, 170, 101);
+    padding: 20px 0;
+    margin-top: auto;
 }
 
 .footer h3, .footer p, .footer a {
     color: rgb(191, 170, 101);
 }
 
-.social-icon {
-    width: 30px;
-    height: 30px;
-    margin: 0 10px;
-}
-
 .social-links {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+}
+
+.social-link {
+    color: rgb(191, 170, 101);
+    transition: all 0.3s ease;
+    display: inline-block;
+    text-decoration: none !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.social-link:hover {
+    text-decoration: none !important;
+    border: none !important;
+    outline: none !important;
+}
+
+.social-link svg {
+    width: 36px;
+    height: 36px;
+    transition: transform 0.3s ease;
+}
+
+.social-link:hover svg {
+    transform: scale(1.2);
 }
 
 .logo-container {
@@ -117,26 +172,24 @@ body {
     margin-bottom: 5rem; 
 }
 
-/* Added for logo responsiveness */
 .main-logo {
-    max-width: 80%; /* Ensures logo scales down nicely */
-    height: auto;   /* Maintains aspect ratio */
+    max-width: 80%;
+    height: auto;
 }
 
-/* Styles from old events.html */
 .main-content-events {
     width: 100%;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
-    padding-top: 4rem; /* Increased to move content down further */
+    padding-top: 4rem;
 }
 
 .page-title {
     font-size: 2rem;
     margin-bottom: 2rem;
     text-align: center;
-    color: #C7B375; /* From old events.html - rgb(199, 179, 117) */
+    color: rgb(191, 170, 101);
     font-family: 'Playfair Display', serif;
 }
 
@@ -148,20 +201,20 @@ body {
 }
 
 .event-card {
-    background-color: rgba(50, 50, 50, 0.6);
+    background-color: #000;
     border-radius: 8px;
     padding: 1.5rem;
-    border-top: 4px solid #C7B375;
+    border-top: 4px solid rgb(191, 170, 101);
     display: flex;
     flex-direction: column;
-    color: #ffffff;
+    color: rgb(191, 170, 101);
 }
 
 .event-title {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    color: #C7B375;
+    color: rgb(191, 170, 101);
     font-family: 'Playfair Display', serif;
 }
 
@@ -169,11 +222,11 @@ body {
     margin-bottom: 0.5rem;
     display: flex;
     align-items: center;
-    color: #ffffff;
+    color: rgb(191, 170, 101);
 }
 
 .event-location a {
-    color: #C7B375;
+    color: rgb(191, 170, 101);
     text-decoration: none;
 }
 
@@ -191,27 +244,27 @@ body {
 .event-description {
     margin: 1rem 0;
     flex-grow: 1;
-    color: #ffffff;
+    color: rgb(191, 170, 101);
 }
 
 .event-description p a {
-    color: #C7B375;
+    color: rgb(191, 170, 101);
     text-decoration: none;
 }
+
 .event-description p a:hover {
     text-decoration: underline;
 }
 
-
 .event-pricing {
-    background-color: rgba(199, 179, 117, 0.1);
+    background-color: rgba(191, 170, 101, 0.1);
     padding: 1rem;
     border-radius: 5px;
     margin-top: 1rem;
 }
 
 .event-pricing h3 {
-    color: #C7B375;
+    color: rgb(191, 170, 101);
     margin-top: 0;
     font-size: 1.1rem;
     font-family: 'Playfair Display', serif;
@@ -220,22 +273,20 @@ body {
 .event-pricing ul {
     margin: 0.5rem 0 0;
     padding-left: 1.5rem;
-    color: #ffffff;
+    color: rgb(191, 170, 101);
 }
 
-/* Responsive adjustments from old file */
+/* Responsive adjustments */
 @media (max-width: 1000px) {
     .event-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 768px) { /* Adjusted breakpoint for typical mobile/tablet */
+@media (max-width: 768px) {
     .logo-container {
-        margin-top: 10vh; /* Reduced top margin on smaller screens */
+        margin-top: 10vh;
     }
-
-    /* Styles from old events.html - potentially move responsive event styles here too if not already */
     .event-container {
         grid-template-columns: repeat(2, 1fr);
     }
@@ -243,182 +294,82 @@ body {
 
 @media (max-width: 600px) {
     .logo-container {
-        margin-top: 8vh; /* Further reduce for very small screens */
+        margin-top: 8vh;
     }
-
-    /* Styles from old events.html */
     .event-container {
         grid-template-columns: 1fr;
     }
-
-    /* Styles from old pricing.html */
-    .pricing-table {
-        font-size: 0.9rem;
-    }
-    
-    .pricing-table th, 
-    .pricing-table td {
-        padding: 0.8rem;
-    }
-
-    /* Styles from old contact.html */
-    .contact-item {
-        flex-direction: column;
-        text-align: center;
-    }
-    
-    .contact-icon {
-        margin-right: 0;
-        margin-bottom: 1rem;
-    }
 }
 
-/* Styles from old pricing.html */
-.main-content-pricing {
-    width: 100%;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 4rem; /* Increased to move content down further */
-}
-
+/* Pricing styles */
 .pricing-table {
     width: 100%;
     border-collapse: collapse;
-    margin-bottom: 2rem;
-    background-color: rgba(50, 50, 50, 0.6);
-    border-radius: 8px;
-    overflow: hidden;
-    color: #ffffff;
+    margin: 2rem 0;
+    background-color: #000;
+}
+
+.pricing-table th, 
+.pricing-table td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid rgb(191, 170, 101);
+    color: rgb(191, 170, 101);
 }
 
 .pricing-table th {
-    background-color: rgba(199, 179, 117, 0.2);
-    color: #C7B375;
-    font-weight: 700;
-    text-align: left;
-    padding: 1rem;
-    border-bottom: 1px solid rgba(199, 179, 117, 0.3);
-    font-family: 'Playfair Display', serif;
-}
-
-.pricing-table td {
-    padding: 1rem;
-    border-bottom: 1px solid rgba(199, 179, 117, 0.1);
-}
-
-.pricing-table tr:last-child td {
-    border-bottom: none;
+    background-color: rgba(191, 170, 101, 0.1);
+    font-weight: bold;
+    color: rgb(191, 170, 101);
 }
 
 .pricing-table tr:hover {
-    background-color: rgba(199, 179, 117, 0.05);
+    background-color: rgba(191, 170, 101, 0.05);
 }
 
-.pricing-heading {
-    font-size: 1.5rem;
-    color: #C7B375;
-    margin: 2rem 0 1rem;
-    text-align: center;
-    font-family: 'Playfair Display', serif;
-}
-
-.pricing-description {
-    margin-bottom: 2rem;
-    text-align: center;
-    color: #ffffff;
-}
-
-.pricing-note {
-    background-color: rgba(199, 179, 117, 0.1);
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin: 2rem 0;
-    font-size: 0.9rem;
-    color: #ffffff;
-}
-.pricing-note a {
-    color: #C7B375;
-    text-decoration: none;
-}
-.pricing-note a:hover {
-    text-decoration: underline;
-}
-
-/* Styles from old contact.html */
-.main-content-contact {
-    width: 100%;
-    max-width: 800px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-top: 4rem; /* Increased to move content down further */
-}
-
+/* Contact styles */
 .contact-section {
-    background-color: rgba(50, 50, 50, 0.6);
-    border-radius: 8px;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 2rem;
-    margin-bottom: 2rem;
-    color: #ffffff;
+    background-color: #000;
 }
 
 .contact-title {
-    font-size: 1.4rem;
-    color: #C7B375;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid rgba(199, 179, 117, 0.3);
-    padding-bottom: 0.5rem;
-    font-family: 'Playfair Display', serif;
+    text-align: center;
+    margin-bottom: 2rem;
+    color: rgb(191, 170, 101);
 }
 
 .contact-item {
-    display: flex;
-    align-items: center;
     margin-bottom: 1.5rem;
+    color: rgb(191, 170, 101);
 }
-
-.contact-item p {
-    color: #ffffff;
-    margin-bottom: 0.5rem;
-}
-.contact-item div > p:last-child {
-    margin-bottom: 0;
-}
-
 
 .contact-icon {
-    width: 48px;
-    height: 48px;
     margin-right: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
+    color: rgb(191, 170, 101);
 }
 
 .contact-link {
-    color: #ffffff;
+    color: rgb(191, 170, 101);
     text-decoration: none;
-    transition: color 0.3s ease;
 }
 
 .contact-link:hover {
-    color: #C7B375;
+    text-decoration: underline;
 }
 
 .whatsapp-button {
     display: inline-block;
-    background-color: #25D366;
-    color: white !important;
-    font-weight: 600;
-    padding: 0.8rem 1.5rem;
-    border-radius: 8px;
+    background-color: rgb(191, 170, 101);
+    color: #000;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
     text-decoration: none;
-    margin-top: 0.5rem;
-    transition: background-color 0.3s ease;
+    margin-top: 1rem;
 }
 
 .whatsapp-button:hover {
-    background-color: #1da851;
-    color: white !important;
+    background-color: rgba(191, 170, 101, 0.8);
 } 
