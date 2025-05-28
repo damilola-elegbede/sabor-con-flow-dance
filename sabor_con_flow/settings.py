@@ -38,7 +38,7 @@ elif not SECRET_KEY:
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 't')
 
 # Configure ALLOWED_HOSTS from an environment variable
-ALLOWED_HOSTS_STRING = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,saborconflowdance-828m2cpov-damilolaelegbede-gmailcoms-projects.vercel.app,saborconflowdance-liu9lsv16-damilolaelegbede-gmailcoms-projects.vercel.app')
+ALLOWED_HOSTS_STRING = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app,saborconflowdance-828m2cpov-damilolaelegbede-gmailcoms-projects.vercel.app,saborconflowdance-liu9lsv16-damilolaelegbede-gmailcoms-projects.vercel.app,saborconflowdance-av0i0e8b6-damilolaelegbede-gmailcoms-projects.vercel.app')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STRING.split(',')] if ALLOWED_HOSTS_STRING else []
 if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS.extend(['localhost', '127.0.0.1'])
@@ -108,9 +108,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CSRF Settings for Vercel
 CSRF_TRUSTED_ORIGINS = [
-    'https://*.vercel.app',
     'https://saborconflowdance-828m2cpov-damilolaelegbede-gmailcoms-projects.vercel.app',
-    'https://saborconflowdance-liu9lsv16-damilolaelegbede-gmailcoms-projects.vercel.app'
+    'https://saborconflowdance-liu9lsv16-damilolaelegbede-gmailcoms-projects.vercel.app',
+    'https://saborconflowdance-av0i0e8b6-damilolaelegbede-gmailcoms-projects.vercel.app',
+    'https://www.saborconflowdance.com',
+    'https://www.saborconflowdance.org',
+    'https://www.saborconflowdance.info'
 ]
 
 # Crispy Forms Settings
