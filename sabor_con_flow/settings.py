@@ -89,7 +89,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sabor_con_flow.wsgi.application'
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/staticfiles/'
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",
@@ -97,7 +97,7 @@ STATICFILES_DIRS = [
 
 # Static file optimization
 if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
     WHITENOISE_USE_FINDERS = True
     WHITENOISE_MANIFEST_STRICT = False
     WHITENOISE_ALLOW_ALL_ORIGINS = True
