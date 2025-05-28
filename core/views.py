@@ -1,31 +1,81 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.conf import settings
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_POST
-from .models import Event, Subscriber, ClassRegistration
-from .forms import NewsletterSignupForm, ClassRegistrationForm
-
+from .forms import NewsletterSignupForm
 
 def home(request):
     if request.method == 'POST':
         form = NewsletterSignupForm(request.POST)
         if form.is_valid():
-            form.save()
+            # Instead of saving to database, just show success message
             messages.success(request, 'Thank you for subscribing to our newsletter!')
             return redirect('home')
     else:
         form = NewsletterSignupForm()
     
-    upcoming_events = Event.objects.filter(is_active=True).order_by('date', 'time')[:3]
+    # Static upcoming events data
+    upcoming_events = [
+        {
+            'title': 'SCF Choreo Team',
+            'date': 'Every Sunday',
+            'time': '12:00 PM - 1:00 PM',
+            'location': 'Avalon Ballroom (North Lobby)',
+            'description': 'Join our choreography team for an intensive dance training session focusing on advanced Cuban salsa techniques and performance routines.',
+            'price': 20
+        },
+        {
+            'title': 'Pasos Básicos',
+            'date': 'Every Sunday',
+            'time': '1:00 PM - 2:00 PM',
+            'location': 'Avalon Ballroom (Tango Room)',
+            'description': 'Pasos Básicos will focus on basic cuban salsa footwork, turn patterns, and a little bit of afro-cuban in salsa.',
+            'price': 20
+        },
+        {
+            'title': 'Casino Royale',
+            'date': 'Every Sunday',
+            'time': '2:00 PM - 3:00 PM',
+            'location': 'Avalon Ballroom (Tango Room)',
+            'description': 'Take your casino dancing to the next level with this class. We focus on the building blocks of Casino dancing.',
+            'price': 20
+        }
+    ]
+    
     return render(request, 'home.html', {
         'form': form,
         'upcoming_events': upcoming_events
     })
 
 def events(request):
-    events = Event.objects.filter(is_active=True).order_by('date', 'time')
+    # Static events data
+    events = [
+        {
+            'title': 'SCF Choreo Team',
+            'date': 'Every Sunday',
+            'time': '12:00 PM - 1:00 PM',
+            'location': 'Avalon Ballroom (North Lobby)',
+            'description': 'Join our choreography team for an intensive dance training session focusing on advanced Cuban salsa techniques and performance routines.',
+            'price': 20,
+            'monthly_price': 70
+        },
+        {
+            'title': 'Pasos Básicos',
+            'date': 'Every Sunday',
+            'time': '1:00 PM - 2:00 PM',
+            'location': 'Avalon Ballroom (Tango Room)',
+            'description': 'Pasos Básicos will focus on basic cuban salsa footwork, turn patterns, and a little bit of afro-cuban in salsa.',
+            'price': 20,
+            'monthly_price': 60
+        },
+        {
+            'title': 'Casino Royale',
+            'date': 'Every Sunday',
+            'time': '2:00 PM - 3:00 PM',
+            'location': 'Avalon Ballroom (Tango Room)',
+            'description': 'Take your casino dancing to the next level with this class. We focus on the building blocks of Casino dancing.',
+            'price': 20,
+            'monthly_price': 60
+        }
+    ]
     return render(request, 'events.html', {'events': events})
 
 def pricing(request):
@@ -35,46 +85,48 @@ def contact(request):
     return render(request, 'contact.html')
 
 def register_for_class(request, event_id):
-    event = get_object_or_404(Event, id=event_id, is_active=True)
+    # Static event data
+    events = {
+        1: {
+            'title': 'SCF Choreo Team',
+            'date': 'Every Sunday',
+            'time': '12:00 PM - 1:00 PM',
+            'location': 'Avalon Ballroom (North Lobby)',
+            'description': 'Join our choreography team for an intensive dance training session focusing on advanced Cuban salsa techniques and performance routines.',
+            'price': 20
+        },
+        2: {
+            'title': 'Pasos Básicos',
+            'date': 'Every Sunday',
+            'time': '1:00 PM - 2:00 PM',
+            'location': 'Avalon Ballroom (Tango Room)',
+            'description': 'Pasos Básicos will focus on basic cuban salsa footwork, turn patterns, and a little bit of afro-cuban in salsa.',
+            'price': 20
+        },
+        3: {
+            'title': 'Casino Royale',
+            'date': 'Every Sunday',
+            'time': '2:00 PM - 3:00 PM',
+            'location': 'Avalon Ballroom (Tango Room)',
+            'description': 'Take your casino dancing to the next level with this class. We focus on the building blocks of Casino dancing.',
+            'price': 20
+        }
+    }
+    
+    event = events.get(event_id)
+    if not event:
+        messages.error(request, 'Event not found.')
+        return redirect('core:events')
     
     if request.method == 'POST':
-        form = ClassRegistrationForm(request.POST)
+        form = NewsletterSignupForm(request.POST)
         if form.is_valid():
-            registration = form.save(commit=False)
-            registration.event = event
-            registration.payment_status = 'pending'  # Keep the status field but don't use Stripe
-            registration.save()
             messages.success(request, 'Registration successful! We will contact you with payment details.')
             return redirect('core:events')
     else:
-        form = ClassRegistrationForm()
+        form = NewsletterSignupForm()
     
     return render(request, 'register.html', {
         'form': form,
         'event': event
     })
-
-@csrf_exempt
-@require_POST
-def stripe_webhook(request):
-    payload = request.body
-    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
-    
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-        )
-    except ValueError as e:
-        return JsonResponse({'error': 'Invalid payload'}, status=400)
-    except stripe.error.SignatureVerificationError as e:
-        return JsonResponse({'error': 'Invalid signature'}, status=400)
-    
-    if event['type'] == 'payment_intent.succeeded':
-        payment_intent = event['data']['object']
-        registration = ClassRegistration.objects.get(payment_id=payment_intent['id'])
-        registration.payment_status = 'completed'
-        registration.save()
-        
-        # Send confirmation email here
-        
-    return JsonResponse({'status': 'success'})

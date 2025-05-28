@@ -11,10 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 import os
-import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
-from urllib.parse import urlparse
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -36,37 +34,32 @@ elif not SECRET_KEY:
     print("Warning: SECRET_KEY environment variable not set. Using a default for local DEBUG mode.")
     SECRET_KEY = 'django-insecure-local-debug-key-replace-me-for-real-local-dev'
 
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 't')
 
 # Configure ALLOWED_HOSTS from an environment variable
-# Example for Vercel: your-project-name.vercel.app,yourcustomdomain.com
-ALLOWED_HOSTS_STRING = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app') # Added .vercel.app as a sensible default
+ALLOWED_HOSTS_STRING = os.environ.get('DJANGO_ALLOWED_HOSTS', 'localhost,127.0.0.1,.vercel.app')
 ALLOWED_HOSTS = [host.strip() for host in ALLOWED_HOSTS_STRING.split(',')] if ALLOWED_HOSTS_STRING else []
-if DEBUG and not ALLOWED_HOSTS: # Ensure localhost is allowed in debug if not specified
+if DEBUG and not ALLOWED_HOSTS:
     ALLOWED_HOSTS.extend(['localhost', '127.0.0.1'])
 
-
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic', # For serving static files with runserver when DEBUG=False
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'core', # Your app
-    'crispy_forms', # For form rendering
-    'crispy_bootstrap4', # Bootstrap 4 template pack
-    # Add other apps here
+    'core',
+    'crispy_forms',
+    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # Whitenoise middleware - place high
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,90 +88,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sabor_con_flow.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-# Password validation
-# https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
-
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
-
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
-USE_I18N = True
-USE_TZ = True
-
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles' # Django collectstatic will copy files here
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
-    BASE_DIR / "static", # Your project's static folder
+    BASE_DIR / "static",
 ]
-# For Whitenoise - efficient static file serving and compression
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CSRF Settings for Vercel
-# Example for Vercel: https://your-project-name.vercel.app,https://yourcustomdomain.com
 CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
 
-# Crispy Forms Settings (assuming Bootstrap 4)
+# Crispy Forms Settings
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-# Media files (User-uploaded files)
-# For Vercel, you can't use the local filesystem for media files in production.
-# You need to use a third-party storage service like AWS S3, Google Cloud Storage, etc.
-# and configure django-storages or a similar package.
-# Example (if you were using S3 with django-storages):
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-# AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-# AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME', 'us-east-1')
-# AWS_S3_FILE_OVERWRITE = False
-# AWS_DEFAULT_ACL = None # Or 'public-read' depending on your needs
-# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com' # Or your CloudFront domain
-# MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
-
-# For now, if MEDIA_ROOT and MEDIA_URL are defined, they will point to local paths
-# which is fine for local development but won't work for uploads on Vercel.
+# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Logging - Optional: Configure basic logging for Vercel
+# Logging
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -189,7 +120,7 @@ LOGGING = {
     },
     'root': {
         'handlers': ['console'],
-        'level': 'INFO', # Change to DEBUG for more verbose Vercel logs if needed
+        'level': 'INFO',
     },
     'loggers': {
         'django': {

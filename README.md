@@ -1,14 +1,13 @@
 # Sabor con Flow Dance
 
-A Django-based website for Sabor con Flow Dance, featuring event management and class registration.
+A Django-based website for Sabor con Flow Dance, featuring class information and registration.
 
 ## Features
 
-- Event management and display
-- Class registration with manual payment processing
+- Class information display
+- Simple registration form
 - Newsletter subscription
 - Responsive design
-- Admin interface for managing events and registrations
 
 ## Prerequisites
 
@@ -40,17 +39,7 @@ DEBUG=True
 SECRET_KEY=your-secret-key-here
 ```
 
-5. Run migrations:
-```bash
-python manage.py migrate
-```
-
-6. Create a superuser:
-```bash
-python manage.py createsuperuser
-```
-
-7. Collect static files:
+5. Collect static files:
 ```bash
 python manage.py collectstatic
 ```
@@ -63,20 +52,12 @@ python manage.py runserver
 
 Visit http://localhost:8000 to see the website.
 
-## Admin Interface
-
-Access the admin interface at http://localhost:8000/admin to:
-- Manage events
-- View registrations
-- Manage newsletter subscribers
-
 ## Class Registration
 
 The registration system allows users to:
 1. View upcoming classes and events
 2. Register for classes
 3. Receive confirmation with payment instructions
-4. Admin can track registrations and payment status
 
 ## Deployment
 
