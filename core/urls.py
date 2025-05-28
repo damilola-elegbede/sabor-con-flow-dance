@@ -9,5 +9,4 @@ urlpatterns = [
     path('pricing/', views.pricing, name='pricing'),
     path('contact/', views.contact, name='contact'),
     path('register/<int:event_id>/', views.register_for_class, name='register'),
-    path('webhook/stripe/', views.stripe_webhook, name='stripe_webhook'),
 ] 

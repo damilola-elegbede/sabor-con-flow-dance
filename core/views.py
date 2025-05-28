@@ -6,9 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 from .models import Event, Subscriber, ClassRegistration
 from .forms import NewsletterSignupForm, ClassRegistrationForm
-import stripe
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
 
 def home(request):
     if request.method == 'POST':
@@ -23,8 +21,7 @@ def home(request):
     upcoming_events = Event.objects.filter(is_active=True).order_by('date', 'time')[:3]
     return render(request, 'home.html', {
         'form': form,
-        'upcoming_events': upcoming_events,
-        'stripe_public_key': settings.STRIPE_PUBLIC_KEY
+        'upcoming_events': upcoming_events
     })
 
 def events(request):
@@ -45,43 +42,16 @@ def register_for_class(request, event_id):
         if form.is_valid():
             registration = form.save(commit=False)
             registration.event = event
-            
-            try:
-                # Create Stripe customer
-                customer = stripe.Customer.create(
-                    email=registration.email,
-                    name=registration.name,
-                    phone=registration.phone
-                )
-                registration.stripe_customer_id = customer.id
-                
-                # Create Stripe payment intent
-                intent = stripe.PaymentIntent.create(
-                    amount=int(event.price * 100),  # Convert to cents
-                    currency='usd',
-                    customer=customer.id,
-                    metadata={
-                        'registration_id': registration.id,
-                        'event_id': event.id
-                    }
-                )
-                
-                registration.payment_id = intent.id
-                registration.save()
-                
-                return JsonResponse({
-                    'client_secret': intent.client_secret
-                })
-            except stripe.error.StripeError as e:
-                messages.error(request, f'Payment error: {str(e)}')
-                return JsonResponse({'error': str(e)}, status=400)
+            registration.payment_status = 'pending'  # Keep the status field but don't use Stripe
+            registration.save()
+            messages.success(request, 'Registration successful! We will contact you with payment details.')
+            return redirect('core:events')
     else:
         form = ClassRegistrationForm()
     
     return render(request, 'register.html', {
         'form': form,
-        'event': event,
-        'stripe_public_key': settings.STRIPE_PUBLIC_KEY
+        'event': event
     })
 
 @csrf_exempt

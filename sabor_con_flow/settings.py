@@ -58,8 +58,8 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic', # For serving static files with runserver when DEBUG=False
     'django.contrib.staticfiles',
     'core', # Your app
-    'crispy_forms', # Assuming you use this based on requirements.txt
-    'crispy_bootstrap5', # Assuming you use this based on requirements.txt
+    'crispy_forms', # For form rendering
+    'crispy_bootstrap4', # Bootstrap 4 template pack
     # Add other apps here
 ]
 
@@ -165,18 +165,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CSRF Settings for Vercel
 # Example for Vercel: https://your-project-name.vercel.app,https://yourcustomdomain.com
-CSRF_TRUSTED_ORIGINS_STRING = os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000,http://localhost:8000,http://127.0.0.1:8000')
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in CSRF_TRUSTED_ORIGINS_STRING.split(',')] if CSRF_TRUSTED_ORIGINS_STRING else []
-# Ensure these include https:// for production Vercel URLs
+CSRF_TRUSTED_ORIGINS = ['https://*.vercel.app']
 
-# Stripe Settings
-STRIPE_PUBLIC_KEY = os.environ.get('STRIPE_PUBLIC_KEY')
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
-
-# Crispy Forms Settings (assuming Bootstrap 5)
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+# Crispy Forms Settings (assuming Bootstrap 4)
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Media files (User-uploaded files)
 # For Vercel, you can't use the local filesystem for media files in production.
@@ -196,7 +188,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap5"
 # For now, if MEDIA_ROOT and MEDIA_URL are defined, they will point to local paths
 # which is fine for local development but won't work for uploads on Vercel.
 MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Logging - Optional: Configure basic logging for Vercel
 LOGGING = {
