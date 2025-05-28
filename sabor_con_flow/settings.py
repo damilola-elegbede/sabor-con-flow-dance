@@ -89,7 +89,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sabor_con_flow.wsgi.application'
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [
     BASE_DIR / "static",

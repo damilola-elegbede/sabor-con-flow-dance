@@ -13,10 +13,19 @@
   ],
   "routes": [
     {
-      "handle": "filesystem"
+      "src": "/static/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable",
+        "Access-Control-Allow-Origin": "*"
+      },
+      "dest": "/staticfiles/$1"
     },
     {
-      "src": "/static/(.*)",
+      "src": "/staticfiles/(.*)",
+      "headers": {
+        "Cache-Control": "public, max-age=31536000, immutable",
+        "Access-Control-Allow-Origin": "*"
+      },
       "dest": "/staticfiles/$1"
     },
     {
