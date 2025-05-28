@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "sabor_con_flow/wsgi.py",
+      "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
@@ -20,7 +20,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "sabor_con_flow/wsgi.py"
+      "dest": "api/index.py"
     }
   ]
 } 

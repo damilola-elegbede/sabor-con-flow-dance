@@ -61,6 +61,41 @@ The registration system allows users to:
 
 ## Deployment
 
+### Vercel Deployment
+
+This project is configured for deployment on Vercel. The configuration includes:
+
+1. Python 3.11 runtime
+2. Custom WSGI handler for Django
+3. Static file serving
+4. Error handling and logging
+
+To deploy:
+
+1. Install Vercel CLI:
+```bash
+npm i -g vercel
+```
+
+2. Login to Vercel:
+```bash
+vercel login
+```
+
+3. Deploy:
+```bash
+vercel
+```
+
+For production deployment:
+```bash
+vercel --prod
+```
+
+### Traditional Deployment
+
+For traditional hosting:
+
 1. Set `DEBUG=False` in your `.env` file
 2. Update `ALLOWED_HOSTS` in `settings.py`
 3. Configure your web server (e.g., Nginx)
