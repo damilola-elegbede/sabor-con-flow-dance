@@ -13,7 +13,6 @@ A Django-based website for Sabor con Flow Dance, featuring event management and 
 ## Prerequisites
 
 - Python 3.8+
-- PostgreSQL
 - Virtual environment (recommended)
 
 ## Installation
@@ -39,25 +38,19 @@ pip install -r requirements.txt
 ```
 DEBUG=True
 SECRET_KEY=your-secret-key-here
-DATABASE_URL=postgres://username:password@localhost:5432/sabor_con_flow
 ```
 
-5. Create the PostgreSQL database:
-```bash
-createdb sabor_con_flow
-```
-
-6. Run migrations:
+5. Run migrations:
 ```bash
 python manage.py migrate
 ```
 
-7. Create a superuser:
+6. Create a superuser:
 ```bash
 python manage.py createsuperuser
 ```
 
-8. Collect static files:
+7. Collect static files:
 ```bash
 python manage.py collectstatic
 ```
@@ -89,10 +82,9 @@ The registration system allows users to:
 
 1. Set `DEBUG=False` in your `.env` file
 2. Update `ALLOWED_HOSTS` in `settings.py`
-3. Set up a production database with a valid PostgreSQL URL (e.g., `postgres://username:password@host:5432/dbname`)
-4. Configure your web server (e.g., Nginx)
-5. Set up SSL certificates
-6. Use Gunicorn as the WSGI server
+3. Configure your web server (e.g., Nginx)
+4. Set up SSL certificates
+5. Use Gunicorn as the WSGI server
 
 ## Contributing
 
