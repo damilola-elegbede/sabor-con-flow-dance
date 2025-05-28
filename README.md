@@ -1,11 +1,11 @@
 # Sabor con Flow Dance
 
-A Django-based website for Sabor con Flow Dance, featuring event management, class registration, and payment processing.
+A Django-based website for Sabor con Flow Dance, featuring event management and class registration.
 
 ## Features
 
 - Event management and display
-- Class registration with Stripe payment integration
+- Class registration with manual payment processing
 - Newsletter subscription
 - Responsive design
 - Admin interface for managing events and registrations
@@ -14,7 +14,6 @@ A Django-based website for Sabor con Flow Dance, featuring event management, cla
 
 - Python 3.8+
 - PostgreSQL
-- Stripe account
 - Virtual environment (recommended)
 
 ## Installation
@@ -41,9 +40,6 @@ pip install -r requirements.txt
 DEBUG=True
 SECRET_KEY=your-secret-key-here
 DATABASE_URL=postgres://localhost/sabor_con_flow
-STRIPE_PUBLIC_KEY=your-stripe-public-key
-STRIPE_SECRET_KEY=your-stripe-secret-key
-STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
 ```
 
 5. Create the PostgreSQL database:
@@ -81,13 +77,13 @@ Access the admin interface at http://localhost:8000/admin to:
 - View registrations
 - Manage newsletter subscribers
 
-## Stripe Integration
+## Class Registration
 
-1. Create a Stripe account at https://stripe.com
-2. Get your API keys from the Stripe Dashboard
-3. Update the `.env` file with your Stripe keys
-4. Set up a webhook endpoint in your Stripe Dashboard pointing to:
-   `https://your-domain.com/webhook/stripe/`
+The registration system allows users to:
+1. View upcoming classes and events
+2. Register for classes
+3. Receive confirmation with payment instructions
+4. Admin can track registrations and payment status
 
 ## Deployment
 
