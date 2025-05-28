@@ -39,7 +39,7 @@ pip install -r requirements.txt
 ```
 DEBUG=True
 SECRET_KEY=your-secret-key-here
-DATABASE_URL=postgres://localhost/sabor_con_flow
+DATABASE_URL=postgres://username:password@localhost:5432/sabor_con_flow
 ```
 
 5. Create the PostgreSQL database:
@@ -89,7 +89,7 @@ The registration system allows users to:
 
 1. Set `DEBUG=False` in your `.env` file
 2. Update `ALLOWED_HOSTS` in `settings.py`
-3. Set up a production database
+3. Set up a production database with a valid PostgreSQL URL (e.g., `postgres://username:password@host:5432/dbname`)
 4. Configure your web server (e.g., Nginx)
 5. Set up SSL certificates
 6. Use Gunicorn as the WSGI server

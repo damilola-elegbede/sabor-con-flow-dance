@@ -99,24 +99,29 @@ WSGI_APPLICATION = 'sabor_con_flow.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 DB_SSL_REQUIRE = os.environ.get('DB_SSL_REQUIRE', 'True').lower() == 'true'
 
-DATABASES = {
-    'default': dj_database_url.config(
-        conn_max_age=600,
-        ssl_require=DB_SSL_REQUIRE 
-    )
-}
+# Get the database URL from environment variable
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
-# Fallback to local SQLite if DATABASE_URL is not set AND we are in DEBUG mode
-if not DATABASES['default']['ENGINE'] and DEBUG:
-    print("Warning: DATABASE_URL not set, falling back to local SQLite for DEBUG mode.")
-    DATABASES['default'] = {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if DATABASE_URL:
+    # Ensure the URL uses the correct scheme
+    if DATABASE_URL.startswith('postgress://'):
+        DATABASE_URL = DATABASE_URL.replace('postgress://', 'postgres://')
+    
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=DB_SSL_REQUIRE
+        )
     }
-# If DATABASE_URL is not set and we are NOT in DEBUG mode, dj_database_url.config()
-# would have raised an error or returned an empty dict which would cause issues later.
-# Ensure DATABASE_URL is set in your production Vercel environment.
-
+else:
+    # Fallback to SQLite for development
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
