@@ -6,9 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (menuToggle && nav && overlay) {
         menuToggle.addEventListener('click', function() {
-            menuToggle.classList.toggle('active');
             nav.classList.toggle('active');
-            overlay.classList.toggle('active');
         });
 
         overlay.addEventListener('click', function() {
