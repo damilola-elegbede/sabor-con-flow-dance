@@ -100,7 +100,7 @@ html {
 
 body {
     background-color: #000;
-    color: rgb(191, 170, 101);
+    color: white;
     min-height: 100%;
     display: flex;
     flex-direction: column;
@@ -244,7 +244,7 @@ body {
 .event-description {
     margin: 1rem 0;
     flex-grow: 1;
-    color: rgb(191, 170, 101);
+    color: white;
 }
 
 .event-description p a {
@@ -303,28 +303,52 @@ body {
 
 /* Pricing styles */
 .pricing-table {
-    width: 100%;
+    width: 60%;
+    margin: 2rem auto;
     border-collapse: collapse;
-    margin: 2rem 0;
     background-color: #000;
-}
-
-.pricing-table th, 
-.pricing-table td {
-    padding: 1rem;
-    text-align: left;
-    border: 1px solid rgb(191, 170, 101);
-    color: rgb(191, 170, 101);
 }
 
 .pricing-table th {
     background-color: rgba(191, 170, 101, 0.1);
     font-weight: bold;
     color: rgb(191, 170, 101);
+    border: 1px solid rgb(191, 170, 101);
+    padding: 1rem;
+}
+
+.pricing-table td {
+    padding: 1rem;
+    text-align: left;
+    border: 1px solid rgb(191, 170, 101);
+    color: white;
 }
 
 .pricing-table tr:hover {
     background-color: rgba(191, 170, 101, 0.05);
+}
+
+.pricing-heading {
+    color: rgb(191, 170, 101);
+    font-family: 'Playfair Display', serif;
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+.pricing-description {
+    margin-bottom: 0.5rem;
+    color: white;
+    font-size: 0.95rem;
+    text-align: center;
+}
+
+.pricing-note {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: white;
+    opacity: 0.9;
+    text-align: center;
 }
 
 /* Contact styles */
@@ -333,6 +357,7 @@ body {
     margin: 0 auto;
     padding: 2rem;
     background-color: #000;
+    text-align: center;
 }
 
 .contact-title {
@@ -343,12 +368,27 @@ body {
 
 .contact-item {
     margin-bottom: 1.5rem;
-    color: rgb(191, 170, 101);
+    color: white;
+    text-align: center;
+}
+
+.contact-item p {
+    margin: 0;
+    line-height: 1.5;
+}
+
+.contact-item .contact-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+    justify-content: center;
 }
 
 .contact-icon {
-    margin-right: 1rem;
     color: rgb(191, 170, 101);
+    display: inline-flex;
+    align-items: center;
 }
 
 .contact-link {
@@ -372,4 +412,20 @@ body {
 
 .whatsapp-button:hover {
     background-color: rgba(191, 170, 101, 0.8);
+}
+
+.main-content-pricing {
+    width: 90%;
+    max-width: 1000px;
+    min-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 4rem 1rem;
+}
+
+@media (max-width: 768px) {
+    .main-content-pricing {
+        width: 95%;
+        padding: 3rem 0.5rem;
+    }
 } 
