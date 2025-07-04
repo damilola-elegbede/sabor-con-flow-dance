@@ -105,10 +105,23 @@ The registration system allows users to:
 
 This project is configured for deployment on Vercel. The configuration includes:
 
-1. Python 3.11 runtime
+1. Python 3.12 runtime
 2. Custom WSGI handler for Django
 3. Static file serving
 4. Error handling and logging
+5. URL redirects for Facebook click tracking parameters (`fbclid`)
+
+#### URL Redirects
+
+The `vercel.json` configuration includes automatic redirects to handle Facebook click tracking parameters:
+
+- **fbclid Parameter Removal**: URLs containing `?fbclid=` parameters are automatically redirected to the same URL without the tracking parameter
+- **SEO Friendly**: Uses 301 permanent redirects to maintain search engine rankings
+- **Preserves Other Parameters**: Other query parameters in the URL are maintained during the redirect
+
+Example:
+- `https://www.saborconflowdance.com/?fbclid=abc123` → `https://www.saborconflowdance.com/`
+- `https://www.saborconflowdance.com/events?fbclid=xyz789&other=param` → `https://www.saborconflowdance.com/events?other=param`
 
 To deploy:
 
