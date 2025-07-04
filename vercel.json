@@ -13,14 +13,14 @@
   ],
   "redirects": [
     {
-      "source": "/",
+      "source": "/:path*",
       "has": [
         {
           "type": "query",
           "key": "fbclid"
         }
       ],
-      "destination": "https://www.saborconflowdance.com/",
+      "destination": "/:path*",
       "permanent": false
     }
   ],
