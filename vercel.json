@@ -13,6 +13,11 @@
   ],
   "routes": [
     {
+      "src": "/(.*)\\?fbclid=.*",
+      "dest": "/$1",
+      "status": 301
+    },
+    {
       "handle": "filesystem"
     },
     {
