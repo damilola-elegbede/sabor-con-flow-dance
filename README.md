@@ -1,13 +1,40 @@
 # Sabor con Flow Dance
 
-A Django-based website for Sabor con Flow Dance, featuring class information and registration.
+A Django-based website for Sabor con Flow Dance, featuring class information, registration, and private lesson booking.
 
 ## Features
 
 - Class information display
+- Private lessons page with Calendly booking integration
 - Simple registration form
 - Newsletter subscription
 - Responsive design
+- Direct booking system for private lessons
+
+## Pages
+
+- **Home** - Landing page with Sabor Con Flow logo
+- **Events** - Shows all dance classes with pricing and schedules
+- **Pricing** - Standard class pricing information
+- **Private Lessons** - Dedicated page for private lesson information and booking
+- **Contact** - Contact information and social media links
+
+## Private Lessons
+
+The private lessons system includes:
+- Detailed pricing table (per hour rates)
+- Benefits of private instruction
+- Direct Calendly booking integration
+- Customized lesson plans
+- Flexible scheduling options
+
+### Booking System
+
+Private lessons can be booked directly through the Calendly widget on the Private Lessons page:
+- Floating booking button (bottom right)
+- Integrated with Calendly scheduling system
+- Customized with website theme colors
+- Available on the dedicated Private Lessons page
 
 ## Prerequisites
 
@@ -57,7 +84,20 @@ Visit http://localhost:8000 to see the website.
 The registration system allows users to:
 1. View upcoming classes and events
 2. Register for classes
-3. Receive confirmation with payment instructions
+3. Book private lessons directly through Calendly
+4. Receive confirmation with payment instructions
+
+## Dance Classes Offered
+
+- **SCF Choreo Team** - Advanced Cuban salsa techniques (Sundays 12-1 PM)
+- **Pasos Básicos** - Basic Cuban salsa footwork (Sundays 1-2 PM)
+- **Casino Royale** - Casino dancing fundamentals (Sundays 2-3 PM)
+
+## Private Lesson Pricing
+
+- **1 Hour**: $120
+- **3 Hours**: $100 per hour ($300 total)
+- **5+ Hours**: $75 per hour ($375+ total)
 
 ## Deployment
 

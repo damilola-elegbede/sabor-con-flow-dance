@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Private Lessons - Sabor Con Flow{% endblock %}
+
+{% block extra_css %}
+<!-- Calendly badge widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<!-- Calendly badge widget end -->
+{% endblock %}
+
+{% block content %}
+<div class="container main-content-pricing text-center">
+    <h1 class="page-title">Private Lessons</h1>
+    
+    <p class="pricing-description">Take your dancing to the next level with personalized instruction tailored to your specific needs and goals.</p>
+    
+    <div class="private-lessons-info">
+        <h3 class="pricing-heading">Why Choose Private Lessons?</h3>
+        <ul class="benefits-list">
+            <li>Personalized attention and instruction</li>
+            <li>Focus on your specific areas for improvement</li>
+            <li>Learn at your own pace with customized lesson plans</li>
+            <li>Accelerated learning progress</li>
+            <li>Perfect for beginners or advanced dancers</li>
+        </ul>
+    </div>
+    
+    <h3 class="pricing-heading">Private Lesson Pricing</h3>
+    <p class="pricing-description">Choose the package that works best for you:</p>
+    
+    <table class="pricing-table">
+        <thead>
+            <tr>
+                <th>Number of Hours</th>
+                <th>Cost Per Hour</th>
+                <th>Total Package Cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>$120</td>
+                <td>$120</td>
+            </tr>
+            <tr>
+                <td>3</td>
+                <td>$100</td>
+                <td>$300</td>
+            </tr>
+            <tr>
+                <td>5+</td>
+                <td>$75</td>
+                <td>$375+</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <div class="pricing-note">
+        <p><strong>Note:</strong> Private lessons are available by appointment.</p>
+        <p>Click on the button on the bottom right to schedule your personalized session.</p>
+        
+        <!-- Calendly badge widget begin -->
+        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+        <script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/saborconflowdance', text: 'Schedule time with me', color: '#BFAA65', textColor: '#000000', branding: true }); }</script>
+        <!-- Calendly badge widget end -->
+        
+        <p>For more information, visit our <a href="{% url 'core:contact' %}" style="color: #C7B375; text-decoration: none;">Contact page</a> or reach out via WhatsApp.</p>
+    </div>
+</div>
+{% endblock %} 

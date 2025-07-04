@@ -17,6 +17,9 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
     <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css">
+    <!-- Calendly badge widget begin -->
+    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+    <!-- Calendly badge widget end -->
     {% block extra_css %}{% endblock %}
 </head>
 <body>
@@ -30,6 +33,7 @@
             <a href="{% url 'core:home' %}"><span>Home</span></a>
             <a href="{% url 'core:events' %}"><span>Events</span></a>
             <a href="{% url 'core:pricing' %}"><span>Pricing</span></a>
+            <a href="{% url 'core:private_lessons' %}"><span>Private Lessons</span></a>
             <a href="{% url 'core:contact' %}"><span>Contact</span></a>
         </nav>
     </header>

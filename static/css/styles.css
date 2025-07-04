@@ -71,6 +71,7 @@
 .nav a:nth-child(2) { transition-delay: 0.2s; }
 .nav a:nth-child(3) { transition-delay: 0.3s; }
 .nav a:nth-child(4) { transition-delay: 0.4s; }
+.nav a:nth-child(5) { transition-delay: 0.5s; }
 
 .nav a span {
     display: inline-block;
@@ -428,4 +429,35 @@ body {
         width: 95%;
         padding: 3rem 0.5rem;
     }
+}
+
+/* Private Lessons styles */
+.private-lessons-info {
+    margin: 2rem 0;
+    text-align: left;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.benefits-list li {
+    padding: 0.5rem 0;
+    position: relative;
+    padding-left: 2rem;
+    color: #ffffff;
+}
+
+.benefits-list li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: rgb(191, 170, 101);
+    font-weight: bold;
+    font-size: 1.2rem;
 } 

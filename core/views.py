@@ -69,5 +69,8 @@ def events(request):
 def pricing(request):
     return render(request, 'pricing.html')
 
+def private_lessons(request):
+    return render(request, 'private_lessons.html')
+
 def contact(request):
     return render(request, 'contact.html')
