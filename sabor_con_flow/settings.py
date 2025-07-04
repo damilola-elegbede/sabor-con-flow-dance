@@ -71,7 +71,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
+                # 'django.contrib.auth.context_processors.auth',  # Removed - no auth system
                 'django.contrib.messages.context_processors.messages',
             ],
         },
@@ -93,7 +93,7 @@ if not DEBUG:
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+# DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'  # Not needed without database
 
 # CSRF Settings for Vercel
 CSRF_TRUSTED_ORIGINS = [
@@ -105,9 +105,7 @@ CSRF_TRUSTED_ORIGINS = [
 
 # Removed Crispy Forms Settings (no longer needed without forms)
 
-# Media files
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# Media files - removed (not needed for static site)
 
 # Security Settings
 if not DEBUG:
