@@ -25,7 +25,10 @@
     },
     {
       "src": "/favicon\\.(ico|png|jpg|jpeg|gif|svg)$",
-      "dest": "/staticfiles/images/favicon/favicon.png"
+      "status": 301,
+      "headers": { 
+        "Location": "/staticfiles/images/favicon/favicon.png"
+      }
     },
     {
       "src": "/staticfiles/(.*)",
@@ -52,5 +55,5 @@
     "PYTHONPATH": ".",
     "DJANGO_DEBUG": "False"
   },
-  "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+  "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput && mkdir -p staticfiles"
 } 

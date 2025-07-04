@@ -95,10 +95,12 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# Static file optimization
+# Static file optimization for Vercel
 if not DEBUG:
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-    WHITENOISE_USE_FINDERS = True
+    # Use standard static files storage for Vercel
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    # Disable WhiteNoise for Vercel deployment
+    WHITENOISE_USE_FINDERS = False
     WHITENOISE_MANIFEST_STRICT = False
     WHITENOISE_ALLOW_ALL_ORIGINS = True
     WHITENOISE_ROOT = STATIC_ROOT
