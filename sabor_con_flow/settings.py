@@ -46,7 +46,6 @@ if DEBUG and not ALLOWED_HOSTS:
 # Application definition
 INSTALLED_APPS = [
     # Only keep essential Django apps that don't require database
-    'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
 ]
@@ -56,7 +55,6 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
@@ -72,7 +70,7 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 # 'django.contrib.auth.context_processors.auth',  # Removed - no auth system
-                'django.contrib.messages.context_processors.messages',
+                # 'django.contrib.messages.context_processors.messages',  # Removed - no messages
             ],
         },
     },
