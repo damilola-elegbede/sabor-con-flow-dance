@@ -11,7 +11,7 @@ dist/
 build/
 
 # Django
-staticfiles/
+# staticfiles/ - Commented out to allow Vercel to access static files
 __pycache__/
 *.pyc
 .env
