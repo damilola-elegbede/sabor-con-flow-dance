@@ -54,6 +54,5 @@
   "env": {
     "PYTHONPATH": ".",
     "DJANGO_DEBUG": "False"
-  },
-  "buildCommand": "./build.sh"
+  }
 } 
