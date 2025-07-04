@@ -1,15 +1,13 @@
 {
   "version": 2,
   "buildCommand": "./vercel-build",
-  "outputDirectory": ".",
   "builds": [
     {
       "src": "api/index.py",
       "use": "@vercel/python",
       "config": {
         "maxLambdaSize": "15mb",
-        "runtime": "python3.12",
-        "includeFiles": "core/**/*,templates/**/*,static/**/*,staticfiles/**/*"
+        "runtime": "python3.12"
       }
     }
   ],
