@@ -16,53 +16,34 @@
       "handle": "filesystem"
     },
     {
+      "src": ".*\\?.*fbclid=.*",
+      "status": 301,
+      "headers": { "Location": "/" }
+    },
+    {
       "src": "/staticfiles/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/octet-stream"
+        "Access-Control-Allow-Origin": "*"
       },
-      "dest": "/staticfiles/$1",
-      "continue": true
+      "dest": "/staticfiles/$1"
     },
     {
       "src": "/static/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*",
-        "Content-Type": "application/octet-stream"
+        "Access-Control-Allow-Origin": "*"
       },
-      "dest": "/staticfiles/$1",
-      "continue": true
+      "dest": "/staticfiles/$1"
     },
     {
       "src": "/(.*)",
       "dest": "api/index.py"
     }
   ],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "query",
-          "key": "fbclid"
-        }
-      ],
-      "destination": "/$1?cleaned=true",
-      "permanent": false
-    }
-  ],
   "env": {
     "PYTHONPATH": ".",
     "DJANGO_DEBUG": "False"
   },
-  "build": {
-    "env": {
-      "PYTHONPATH": "."
-    }
-  },
-  "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput",
-  "installCommand": "pip install -r requirements.txt",
-  "devCommand": "python manage.py runserver 0.0.0.0:3000"
-} 
+  "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
+}
