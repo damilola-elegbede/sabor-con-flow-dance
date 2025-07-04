@@ -11,7 +11,7 @@
       }
     }
   ],
-  "redirects": [
+  "rewrites": [
     {
       "source": "/:path*",
       "has": [
@@ -20,8 +20,7 @@
           "key": "fbclid"
         }
       ],
-      "destination": "/:path*",
-      "permanent": false
+      "destination": "/:path*"
     }
   ],
   "env": {
