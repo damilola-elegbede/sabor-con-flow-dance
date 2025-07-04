@@ -50,7 +50,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'core',
     'crispy_forms',
@@ -59,7 +58,6 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -95,27 +93,10 @@ STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
 
-# Static file optimization for Vercel
+# Static file configuration for Vercel
 if not DEBUG:
-    # Use standard static files storage for Vercel
+    # Use standard static files storage for production
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-    # Disable WhiteNoise for Vercel deployment
-    WHITENOISE_USE_FINDERS = False
-    WHITENOISE_MANIFEST_STRICT = False
-    WHITENOISE_ALLOW_ALL_ORIGINS = True
-    WHITENOISE_ROOT = STATIC_ROOT
-    WHITENOISE_INDEX_FILE = True
-    WHITENOISE_MIMETYPES = {
-        '.css': 'text/css',
-        '.js': 'application/javascript',
-        '.png': 'image/png',
-        '.jpg': 'image/jpeg',
-        '.jpeg': 'image/jpeg',
-        '.gif': 'image/gif',
-        '.ico': 'image/x-icon',
-        '.svg': 'image/svg+xml',
-        '.webmanifest': 'application/manifest+json',
-    }
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
