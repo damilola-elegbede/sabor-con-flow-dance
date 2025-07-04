@@ -36,9 +36,28 @@ Private lessons can be booked directly through the Calendly widget on the Privat
 - Customized with website theme colors
 - Available on the dedicated Private Lessons page
 
+## Project Structure
+
+```
+sabor-con-flow-dance/
+├── api/                    # Vercel serverless functions
+│   └── index.py           # Main API entry point
+├── core/                   # Django app
+│   ├── models.py          # Database models
+│   ├── views.py           # View logic
+│   ├── forms.py           # Django forms
+│   ├── urls.py            # URL routing
+│   └── templates/         # HTML templates
+├── static/                 # Static assets (CSS, JS, images)
+├── staticfiles/            # Collected static files
+├── templates/              # Base templates
+├── vercel.json            # Vercel deployment configuration
+└── requirements.txt       # Python dependencies
+```
+
 ## Prerequisites
 
-- Python 3.8+
+- Python 3.12+
 - Virtual environment (recommended)
 
 ## Installation
@@ -115,13 +134,15 @@ This project is configured for deployment on Vercel. The configuration includes:
 
 The `vercel.json` configuration includes automatic redirects to handle Facebook click tracking parameters:
 
-- **fbclid Parameter Removal**: URLs containing `?fbclid=` parameters are automatically redirected to the same URL without the tracking parameter
-- **SEO Friendly**: Uses 301 permanent redirects to maintain search engine rankings
-- **Preserves Other Parameters**: Other query parameters in the URL are maintained during the redirect
+- **fbclid Parameter Removal**: URLs containing `?fbclid=` parameters are automatically redirected to clean URLs
+- **Clean URL Tracking**: Redirects add a `?cleaned=true` parameter to track when fbclid cleanup occurs
+- **Temporary Redirects**: Uses 302 temporary redirects for better user experience
+- **Complete Parameter Removal**: All query parameters are removed when fbclid is present
 
 Example:
-- `https://www.saborconflowdance.com/?fbclid=abc123` → `https://www.saborconflowdance.com/`
-- `https://www.saborconflowdance.com/events?fbclid=xyz789&other=param` → `https://www.saborconflowdance.com/events?other=param`
+- `https://www.saborconflowdance.com/?fbclid=abc123` → `https://www.saborconflowdance.com/?cleaned=true`
+- `https://www.saborconflowdance.com/events?fbclid=xyz789` → `https://www.saborconflowdance.com/events?cleaned=true`
+- `https://www.saborconflowdance.com/contact?fbclid=def456&other=param` → `https://www.saborconflowdance.com/contact?cleaned=true`
 
 To deploy:
 
@@ -144,6 +165,23 @@ For production deployment:
 ```bash
 vercel --prod
 ```
+
+### Current Deployment Status
+
+- **Live URL**: https://www.saborconflowdance.com/
+- **Platform**: Vercel
+- **Python Runtime**: 3.12
+- **Static Files**: Automatically collected and served
+- **fbclid Redirects**: Active and functional
+
+### Troubleshooting
+
+If you encounter issues with the deployment:
+
+1. **Check Vercel logs** in the Vercel dashboard
+2. **Verify environment variables** are set correctly
+3. **Ensure static files** are collected: `python manage.py collectstatic`
+4. **Check fbclid redirects** by testing URLs with `?fbclid=test`
 
 ### Traditional Deployment
 
