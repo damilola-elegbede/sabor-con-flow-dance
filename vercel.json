@@ -13,6 +13,11 @@
   ],
   "routes": [
     {
+      "src": "/(.*)\\?fbclid=.*",
+      "dest": "/$1",
+      "status": 301
+    },
+    {
       "handle": "filesystem"
     },
     {
@@ -38,20 +43,6 @@
     {
       "src": "/(.*)",
       "dest": "api/index.py"
-    }
-  ],
-  "redirects": [
-    {
-      "source": "/(.*)",
-      "has": [
-        {
-          "type": "query",
-          "key": "fbclid"
-        }
-      ],
-      "destination": "/$1",
-      "permanent": true,
-      "removeQuery": true
     }
   ],
   "env": {
