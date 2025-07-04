@@ -16,25 +16,24 @@
       "handle": "filesystem"
     },
     {
-      "src": ".*\\?.*fbclid=.*",
-      "status": 301,
-      "headers": { "Location": "/" }
-    },
-    {
       "src": "/staticfiles/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/octet-stream"
       },
-      "dest": "/staticfiles/$1"
+      "dest": "/staticfiles/$1",
+      "continue": true
     },
     {
       "src": "/static/(.*)",
       "headers": {
         "Cache-Control": "public, max-age=31536000, immutable",
-        "Access-Control-Allow-Origin": "*"
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/octet-stream"
       },
-      "dest": "/staticfiles/$1"
+      "dest": "/staticfiles/$1",
+      "continue": true
     },
     {
       "src": "/(.*)",
@@ -45,5 +44,12 @@
     "PYTHONPATH": ".",
     "DJANGO_DEBUG": "False"
   },
-  "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput"
-}
+  "build": {
+    "env": {
+      "PYTHONPATH": "."
+    }
+  },
+  "buildCommand": "pip install -r requirements.txt && python manage.py collectstatic --noinput",
+  "installCommand": "pip install -r requirements.txt",
+  "devCommand": "python manage.py runserver 0.0.0.0:3000"
+} 
