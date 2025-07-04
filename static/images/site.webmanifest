@@ -3,7 +3,7 @@
     "short_name": "Sabor Con Flow",
     "icons": [
         {
-            "src": "/staticfiles/images/favicon/favicon.png",
+            "src": "/static/images/favicon/favicon.png",
             "sizes": "192x192",
             "type": "image/png"
         }

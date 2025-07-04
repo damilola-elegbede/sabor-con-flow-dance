@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Server Error - Sabor Con Flow{% endblock %}
+
+{% block content %}
+<div class="container text-center" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">
+    <div>
+        <h1 class="display-1">500</h1>
+        <h2 class="mb-4">Server Error</h2>
+        <p class="lead mb-5">Sorry, something went wrong on our end. Please try again later.</p>
+        <a href="{% url 'core:home' %}" class="btn btn-primary">Go Home</a>
+    </div>
+</div>
+{% endblock %}

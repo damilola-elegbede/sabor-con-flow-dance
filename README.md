@@ -6,10 +6,9 @@ A Django-based website for Sabor con Flow Dance, featuring class information, re
 
 - Class information display
 - Private lessons page with Calendly booking integration
-- Simple registration form
-- Newsletter subscription
 - Responsive design
 - Direct booking system for private lessons
+- Static content website (no database required)
 
 ## Pages
 
@@ -43,11 +42,10 @@ sabor-con-flow-dance/
 ├── api/                    # Vercel serverless functions
 │   └── index.py           # Main API entry point
 ├── core/                   # Django app
-│   ├── models.py          # Database models
-│   ├── views.py           # View logic
-│   ├── forms.py           # Django forms
+│   ├── views.py           # View logic (static content)
 │   ├── urls.py            # URL routing
-│   └── templates/         # HTML templates
+│   └── models.py          # Placeholder file (no models used)
+│   └── forms.py           # Placeholder file (no forms used)
 ├── static/                 # Static assets (CSS, JS, images)
 ├── staticfiles/            # Collected static files
 ├── templates/              # Base templates
@@ -59,6 +57,7 @@ sabor-con-flow-dance/
 
 - Python 3.12+
 - Virtual environment (recommended)
+- No database required (static content site)
 
 ## Installation
 
@@ -87,8 +86,10 @@ SECRET_KEY=your-secret-key-here
 
 5. Collect static files:
 ```bash
-python manage.py collectstatic
+python manage.py collectstatic --noinput
 ```
+
+Note: This is a static content website and does not require database setup or migrations.
 
 ## Running the Development Server
 
@@ -98,13 +99,12 @@ python manage.py runserver
 
 Visit http://localhost:8000 to see the website.
 
-## Class Registration
+## Class Information
 
-The registration system allows users to:
-1. View upcoming classes and events
-2. Register for classes
-3. Book private lessons directly through Calendly
-4. Receive confirmation with payment instructions
+The website displays:
+1. Upcoming classes and events with schedules
+2. Class pricing information
+3. Private lesson booking through Calendly integration
 
 ## Dance Classes Offered
 
@@ -171,8 +171,9 @@ vercel --prod
 - **Live URL**: https://www.saborconflowdance.com/
 - **Platform**: Vercel
 - **Python Runtime**: 3.12
-- **Static Files**: Automatically collected and served
+- **Static Files**: Served via WhiteNoise middleware
 - **fbclid Redirects**: Active and functional
+- **Database**: Not required (static content site)
 
 ### Troubleshooting
 

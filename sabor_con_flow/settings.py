@@ -45,23 +45,17 @@ if DEBUG and not ALLOWED_HOSTS:
 
 # Application definition
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
+    # Only keep essential Django apps that don't require database
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'crispy_forms',
-    'crispy_bootstrap4',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
@@ -95,8 +89,8 @@ STATICFILES_DIRS = [
 
 # Static file configuration for Vercel
 if not DEBUG:
-    # Use standard static files storage for production
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    # Use WhiteNoise for static file serving in production
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
@@ -109,8 +103,7 @@ CSRF_TRUSTED_ORIGINS = [
     'https://www.saborconflowdance.info'
 ]
 
-# Crispy Forms Settings
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# Removed Crispy Forms Settings (no longer needed without forms)
 
 # Media files
 MEDIA_URL = '/media/'
