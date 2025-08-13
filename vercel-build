@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e
 
 echo "Starting Vercel build process..."
 
@@ -7,29 +6,4 @@ echo "Starting Vercel build process..."
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
 
-# Set required environment variables for Django
-export DJANGO_SETTINGS_MODULE=sabor_con_flow.settings
-export DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY:-"temporary-build-key-not-for-production"}
-export DATABASE_URL=${DATABASE_URL:-"sqlite:///db.sqlite3"}
-
-# Skip database operations in Vercel build (no persistent filesystem)
-echo "Skipping database migrations (handled at runtime)..."
-
-# Collect static files without database access
-echo "Collecting static files..."
-python manage.py collectstatic --noinput --clear --no-post-process 2>/dev/null || echo "Static collection completed with warnings"
-
-# Install Node.js dependencies if package.json exists
-if [ -f "package.json" ]; then
-    echo "Installing Node.js dependencies..."
-    npm ci --production || npm install --production
-    
-    echo "Building frontend assets..."
-    npm run build || echo "Frontend build completed with warnings"
-fi
-
-# Create necessary directories
-mkdir -p staticfiles
-mkdir -p static
-
-echo "Build completed successfully! 🚀" 
+echo "Build completed successfully! 🚀"
