@@ -1,16 +1,10 @@
 {
   "version": 2,
-  "buildCommand": "./vercel-build",
+  "buildCommand": "bash vercel-build",
+  "outputDirectory": "staticfiles",
   "functions": {
-    "api/**/*.py": {
-      "maxDuration": 30,
-      "runtime": "python3.12",
-      "memory": 128
-    },
-    "api/**/*.js": {
-      "maxDuration": 30,
-      "runtime": "nodejs18.x",
-      "memory": 128
+    "api/index.py": {
+      "maxDuration": 30
     }
   },
   "rewrites": [
@@ -102,10 +96,5 @@
         }
       ]
     }
-  ],
-  "env": {
-    "PYTHONPATH": ".",
-    "DJANGO_DEBUG": "False",
-    "NODE_ENV": "production"
-  }
-} 
+  ]
+}
