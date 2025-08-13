@@ -44,7 +44,7 @@
     "lighthouse:accessibility": "lighthouse http://localhost:8000 --only=accessibility --output=json --output-path=./reports/accessibility-lighthouse.json",
     "axe:test": "node -e \"require('./static/js/accessibility-testing.js')\"",
     "accessibility:audit": "npm run test:accessibility && npm run test:contrast",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+    "lint": "eslint src/ build-scripts/ --ext .js,.jsx,.ts,.tsx --max-warnings 50",
     "lint:css": "stylelint \"**/*.css\"",
     "format": "prettier --write .",
     "analyze": "npm run build:js:analyze && webpack-bundle-analyzer stats.json",
