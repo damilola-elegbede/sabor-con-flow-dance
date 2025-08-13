@@ -1,5 +1,19 @@
 {
   "version": 2,
+  "env": {
+    "DJANGO_DEBUG": "False",
+    "SECRET_KEY": "@secret-key",
+    "TURSO_DATABASE_URL": "@turso-database-url",
+    "TURSO_AUTH_TOKEN": "@turso-auth-token"
+  },
+  "build": {
+    "env": {
+      "DJANGO_DEBUG": "False",
+      "SECRET_KEY": "@secret-key",
+      "TURSO_DATABASE_URL": "@turso-database-url",
+      "TURSO_AUTH_TOKEN": "@turso-auth-token"
+    }
+  },
   "builds": [
     {
       "src": "api/index.py",
@@ -15,6 +29,10 @@
     }
   ],
   "rewrites": [
+    {
+      "source": "/favicon.ico",
+      "destination": "/staticfiles/favicon.ico"
+    },
     {
       "source": "/static/(.*)",
       "destination": "/staticfiles/$1"
