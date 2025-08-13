@@ -13,62 +13,62 @@
       "use": "@vercel/static"
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/static/css/styles.css",
-      "dest": "/staticfiles/css/styles.css"
+      "source": "/static/css/styles.css",
+      "destination": "/staticfiles/css/styles.css"
     },
     {
-      "src": "/static/css/(.*)",
-      "dest": "/staticfiles/css/$1"
+      "source": "/static/css/(.*)",
+      "destination": "/staticfiles/css/$1"
     },
     {
-      "src": "/static/js/(.*)",
-      "dest": "/staticfiles/js/$1"
+      "source": "/static/js/(.*)",
+      "destination": "/staticfiles/js/$1"
     },
     {
-      "src": "/static/images/sabor-con-flow-logo.png",
-      "dest": "/staticfiles/images/sabor-con-flow-logo.png"
+      "source": "/static/images/sabor-con-flow-logo.png",
+      "destination": "/staticfiles/images/sabor-con-flow-logo.png"
     },
     {
-      "src": "/static/images/site.webmanifest",
-      "dest": "/staticfiles/site.webmanifest"
+      "source": "/static/images/site.webmanifest",
+      "destination": "/staticfiles/site.webmanifest"
     },
     {
-      "src": "/static/images/(.*)",
-      "dest": "/staticfiles/images/$1"
+      "source": "/static/images/(.*)",
+      "destination": "/staticfiles/images/$1"
     },
     {
-      "src": "/static/videos/(.*)",
-      "dest": "/staticfiles/videos/$1"
+      "source": "/static/videos/(.*)",
+      "destination": "/staticfiles/videos/$1"
     },
     {
-      "src": "/static/(.*)",
-      "dest": "/staticfiles/$1"
+      "source": "/static/(.*)",
+      "destination": "/staticfiles/$1"
     },
     {
-      "src": "/robots.txt",
-      "dest": "/staticfiles/robots.txt"
+      "source": "/robots.txt",
+      "destination": "/staticfiles/robots.txt"
     },
     {
-      "src": "/sitemap.xml",
-      "dest": "/api/index.py"
+      "source": "/sitemap.xml",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/favicon\\.(ico|png|jpg|jpeg|gif|svg)",
-      "dest": "/staticfiles/images/favicon/favicon.png"
+      "source": "/favicon\\.(ico|png|jpg|jpeg|gif|svg)",
+      "destination": "/staticfiles/images/favicon/favicon.png"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/index.py"
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/(contact|booking|admin)/(.*)",
-      "dest": "/api/index.py"
+      "source": "/(contact|booking|admin)/(.*)",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/(.*)",
-      "dest": "/api/index.py"
+      "source": "/(.*)",
+      "destination": "/api/index.py"
     }
   ],
   "headers": [
