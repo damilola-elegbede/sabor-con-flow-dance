@@ -9,42 +9,121 @@
         "maxLambdaSize": "15mb",
         "runtime": "python3.12"
       }
+    },
+    {
+      "src": "api/**/*.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "static/**/*",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "staticfiles/**/*",
+      "use": "@vercel/static"
     }
   ],
-  "routes": [
+  "functions": {
+    "api/**/*.py": {
+      "maxDuration": 30
+    },
+    "api/**/*.js": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
     {
-      "src": "/static/(.*)",
-      "dest": "/staticfiles/$1"
+      "source": "/static/css/(.*)",
+      "destination": "/staticfiles/css/$1"
     },
     {
-      "src": "/staticfiles/(.*)",
-      "dest": "/staticfiles/$1"
+      "source": "/static/js/(.*)",
+      "destination": "/staticfiles/js/$1"
     },
     {
-      "handle": "filesystem"
+      "source": "/static/images/(.*)",
+      "destination": "/staticfiles/images/$1"
     },
     {
-      "src": "^/([^?]*)(\\?.*fbclid=.*)$",
-      "status": 301,
-      "headers": { 
-        "Location": "https://www.saborconflowdance.com/$1",
-        "Cache-Control": "no-cache, no-store, must-revalidate"
-      }
+      "source": "/static/videos/(.*)",
+      "destination": "/staticfiles/videos/$1"
     },
     {
-      "src": "/favicon\\.(ico|png|jpg|jpeg|gif|svg)$",
-      "status": 301,
-      "headers": { 
-        "Location": "/static/images/favicon/favicon.png"
-      }
+      "source": "/static/(.*)",
+      "destination": "/staticfiles/$1"
     },
     {
-      "src": "/(.*)",
-      "dest": "api/index.py"
+      "source": "/robots.txt",
+      "destination": "/staticfiles/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/favicon.(ico|png|jpg|jpeg|gif|svg)",
+      "destination": "/static/images/favicon/favicon.png"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(contact|booking|admin)/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/([^?]*)(\\?.*fbclid=.*)",
+      "destination": "https://www.saborconflowdance.com/$1",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/staticfiles/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control", 
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
     }
   ],
   "env": {
     "PYTHONPATH": ".",
-    "DJANGO_DEBUG": "False"
+    "DJANGO_DEBUG": "False",
+    "NODE_ENV": "production"
   }
 } 
