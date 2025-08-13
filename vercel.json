@@ -4,8 +4,9 @@
     {
       "src": "api/index.py",
       "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb"
+      "config": { 
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.12"
       }
     },
     {
@@ -15,56 +16,12 @@
   ],
   "rewrites": [
     {
-      "source": "/static/css/styles.css",
-      "destination": "/staticfiles/css/styles.css"
-    },
-    {
-      "source": "/static/css/(.*)",
-      "destination": "/staticfiles/css/$1"
-    },
-    {
-      "source": "/static/js/(.*)",
-      "destination": "/staticfiles/js/$1"
-    },
-    {
-      "source": "/static/images/sabor-con-flow-logo.png",
-      "destination": "/staticfiles/images/sabor-con-flow-logo.png"
-    },
-    {
-      "source": "/static/images/site.webmanifest",
-      "destination": "/staticfiles/site.webmanifest"
-    },
-    {
-      "source": "/static/images/(.*)",
-      "destination": "/staticfiles/images/$1"
-    },
-    {
-      "source": "/static/videos/(.*)",
-      "destination": "/staticfiles/videos/$1"
-    },
-    {
       "source": "/static/(.*)",
       "destination": "/staticfiles/$1"
     },
     {
-      "source": "/robots.txt",
-      "destination": "/staticfiles/robots.txt"
-    },
-    {
-      "source": "/sitemap.xml",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/favicon\\.(ico|png|jpg|jpeg|gif|svg)",
-      "destination": "/staticfiles/images/favicon/favicon.png"
-    },
-    {
-      "source": "/api/(.*)",
-      "destination": "/api/index.py"
-    },
-    {
-      "source": "/(contact|booking|admin)/(.*)",
-      "destination": "/api/index.py"
+      "source": "/media/(.*)",
+      "destination": "/staticfiles/media/$1"
     },
     {
       "source": "/(.*)",
