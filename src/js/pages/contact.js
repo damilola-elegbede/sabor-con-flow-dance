@@ -14,17 +14,14 @@ export default class ContactPage {
     this.setupContactForm();
     this.setupMap();
     this.setupScheduleIntegration();
-    
+
     // Contact page enhanced
   }
 
   async loadContactModules() {
-    const contactModules = [
-      'contact-form',
-      'analytics'
-    ];
+    const contactModules = ['contact-form', 'analytics'];
 
-    const loadPromises = contactModules.map(async (moduleName) => {
+    const loadPromises = contactModules.map(async moduleName => {
       try {
         const module = await this.dynamicImport(moduleName);
         this.modules.set(moduleName, module);
@@ -39,9 +36,9 @@ export default class ContactPage {
   async dynamicImport(moduleName) {
     const moduleMap = {
       'contact-form': () => import('../features/contact-form.js'),
-      'analytics': () => import('../features/analytics.js'),
+      analytics: () => import('../features/analytics.js'),
       'google-maps': () => import('../features/google-maps.js'),
-      'calendly': () => import('../features/calendly.js')
+      calendly: () => import('../features/calendly.js'),
     };
 
     const importFn = moduleMap[moduleName];
@@ -65,7 +62,7 @@ export default class ContactPage {
 
   enhanceContactFormValidation(form) {
     const inputs = form.querySelectorAll('input, textarea, select');
-    
+
     inputs.forEach(input => {
       // Real-time validation
       input.addEventListener('blur', () => {
@@ -82,7 +79,7 @@ export default class ContactPage {
     });
 
     // Enhanced form submission
-    form.addEventListener('submit', (e) => {
+    form.addEventListener('submit', e => {
       if (!this.validateForm(form)) {
         e.preventDefault();
         this.trackEvent('contact_form_validation_error');
@@ -114,8 +111,8 @@ export default class ContactPage {
 
     // Phone validation
     if (field.type === 'tel' && value) {
-      const phoneRegex = /^[\+]?[1-9][\d]{0,15}$/;
-      if (!phoneRegex.test(value.replace(/[\s\-\(\)]/g, ''))) {
+      const phoneRegex = /^[+]?[1-9][\d]{0,15}$/;
+      if (!phoneRegex.test(value.replace(/[\s\-()]/g, ''))) {
         isValid = false;
         errorMessage = 'Please enter a valid phone number';
       }
@@ -156,13 +153,13 @@ export default class ContactPage {
 
   showFieldError(field, message) {
     let errorElement = field.parentNode.querySelector('.field-error');
-    
+
     if (!errorElement) {
       errorElement = document.createElement('div');
       errorElement.className = 'field-error';
       field.parentNode.appendChild(errorElement);
     }
-    
+
     errorElement.textContent = message;
     errorElement.style.display = 'block';
   }
@@ -175,31 +172,31 @@ export default class ContactPage {
   }
 
   setupFormSubmission(form) {
-    form.addEventListener('submit', async (e) => {
+    form.addEventListener('submit', async e => {
       e.preventDefault();
-      
+
       if (!this.validateForm(form)) {
         return;
       }
 
       const submitButton = form.querySelector('button[type="submit"]');
       const originalText = submitButton.textContent;
-      
+
       try {
         // Show loading state
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
-        
+
         // Get form data
         const formData = new FormData(form);
-        
+
         // Submit form
         const response = await fetch(form.action || '/contact/', {
           method: 'POST',
           body: formData,
           headers: {
             'X-Requested-With': 'XMLHttpRequest',
-          }
+          },
         });
 
         if (response.ok) {
@@ -209,7 +206,6 @@ export default class ContactPage {
         } else {
           throw new Error('Form submission failed');
         }
-
       } catch (error) {
         console.error('Form submission error:', error);
         this.showErrorMessage(form, 'There was an error sending your message. Please try again.');
@@ -229,9 +225,9 @@ export default class ContactPage {
       <strong>Thank you!</strong> Your message has been sent successfully. 
       We'll get back to you within 24 hours.
     `;
-    
+
     form.parentNode.insertBefore(message, form);
-    
+
     // Auto-remove after 10 seconds
     setTimeout(() => {
       message.remove();
@@ -242,9 +238,9 @@ export default class ContactPage {
     const message = document.createElement('div');
     message.className = 'alert alert-danger';
     message.innerHTML = `<strong>Error:</strong> ${errorText}`;
-    
+
     form.parentNode.insertBefore(message, form);
-    
+
     // Auto-remove after 8 seconds
     setTimeout(() => {
       message.remove();
@@ -254,14 +250,14 @@ export default class ContactPage {
   setupFormAnalytics(form) {
     // Track form interactions
     const inputs = form.querySelectorAll('input, textarea, select');
-    
+
     inputs.forEach(input => {
       let interactionTracked = false;
-      
+
       const trackInteraction = () => {
         if (!interactionTracked) {
           this.trackEvent('contact_form_interaction', {
-            field: input.name || input.type
+            field: input.name || input.type,
           });
           interactionTracked = true;
         }
@@ -282,11 +278,11 @@ export default class ContactPage {
 
   setupScheduleIntegration() {
     const scheduleButtons = document.querySelectorAll('.schedule-consultation, .book-lesson');
-    
+
     scheduleButtons.forEach(button => {
       this.setupLazyModuleLoad(button, 'calendly', 'calendly_opened');
-      
-      button.addEventListener('click', (e) => {
+
+      button.addEventListener('click', e => {
         e.preventDefault();
         this.trackEvent('schedule_consultation_clicked');
       });
@@ -298,11 +294,11 @@ export default class ContactPage {
       try {
         const module = await this.dynamicImport(moduleName);
         this.modules.set(moduleName, module);
-        
+
         if (eventName) {
           this.trackEvent(eventName);
         }
-        
+
         // Initialize module
         if (module && typeof module.init === 'function') {
           module.init();
@@ -323,7 +319,7 @@ export default class ContactPage {
     if (window.gtag) {
       window.gtag('event', eventName, {
         event_category: 'contact',
-        ...parameters
+        ...parameters,
       });
     }
   }
@@ -337,9 +333,11 @@ export default class ContactPage {
 // Auto-initialize if not using module system
 if (typeof window !== 'undefined' && !window.moduleSystem) {
   // Only initialize on contact page
-  if (document.body.classList.contains('page-contact') || 
-      window.location.pathname.includes('/contact') ||
-      document.querySelector('.contact-form')) {
+  if (
+    document.body.classList.contains('page-contact') ||
+    window.location.pathname.includes('/contact') ||
+    document.querySelector('.contact-form')
+  ) {
     document.addEventListener('DOMContentLoaded', () => {
       ContactPage.init();
     });

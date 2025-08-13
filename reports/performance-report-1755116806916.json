@@ -1,0 +1,475 @@
+{
+  "timestamp": "2025-08-13T20:26:46.916Z",
+  "buildTimes": {
+    "css": {
+      "name": "CSS Build",
+      "duration": 393.918959,
+      "success": true
+    },
+    "js": {
+      "name": "JavaScript Build",
+      "duration": 359.3935,
+      "success": true
+    },
+    "assets": {
+      "name": "Asset Optimization",
+      "duration": 3217.350667,
+      "success": true
+    },
+    "total": {
+      "name": "Total Build",
+      "duration": 3970.6631260000004,
+      "success": true
+    }
+  },
+  "bundleAnalysis": {
+    "js": {
+      "files": [
+        {
+          "name": "accessibility-testing.js",
+          "original": 36124,
+          "gzipped": 7187,
+          "compression": 0.8010463957479792
+        },
+        {
+          "name": "accessibility.js",
+          "original": 28015,
+          "gzipped": 5866,
+          "compression": 0.7906121720506871
+        },
+        {
+          "name": "advanced-lazy-load.js",
+          "original": 16359,
+          "gzipped": 4400,
+          "compression": 0.7310349043340058
+        },
+        {
+          "name": "analytics.js",
+          "original": 34666,
+          "gzipped": 7497,
+          "compression": 0.783736225696648
+        },
+        {
+          "name": "background-sync.js",
+          "original": 15587,
+          "gzipped": 3777,
+          "compression": 0.7576826842881889
+        },
+        {
+          "name": "calendly.js",
+          "original": 26114,
+          "gzipped": 5808,
+          "compression": 0.7775905644481887
+        },
+        {
+          "name": "css-async-loader.js",
+          "original": 14163,
+          "gzipped": 3628,
+          "compression": 0.7438395820094612
+        },
+        {
+          "name": "css-minifier.js",
+          "original": 12694,
+          "gzipped": 3568,
+          "compression": 0.7189223255081141
+        },
+        {
+          "name": "css-performance-monitor.js",
+          "original": 20884,
+          "gzipped": 4684,
+          "compression": 0.7757134648534764
+        },
+        {
+          "name": "enhanced-lazy-load.js",
+          "original": 11183,
+          "gzipped": 2845,
+          "compression": 0.7455959939193418
+        },
+        {
+          "name": "gallery.js",
+          "original": 19580,
+          "gzipped": 4245,
+          "compression": 0.783197139938713
+        },
+        {
+          "name": "google-maps.js",
+          "original": 15706,
+          "gzipped": 3666,
+          "compression": 0.7665860180822616
+        },
+        {
+          "name": "image-performance-monitor.js",
+          "original": 14374,
+          "gzipped": 3201,
+          "compression": 0.7773062473911229
+        },
+        {
+          "name": "lazy-load.js",
+          "original": 13750,
+          "gzipped": 3059,
+          "compression": 0.7775272727272727
+        },
+        {
+          "name": "main.js",
+          "original": 1336,
+          "gzipped": 465,
+          "compression": 0.6519461077844311
+        },
+        {
+          "name": "mobile-nav.js",
+          "original": 8174,
+          "gzipped": 2067,
+          "compression": 0.747125030584781
+        },
+        {
+          "name": "performance-analytics.js",
+          "original": 19830,
+          "gzipped": 4545,
+          "compression": 0.7708018154311649
+        },
+        {
+          "name": "performance-dashboard.js",
+          "original": 34313,
+          "gzipped": 6773,
+          "compression": 0.8026112552093958
+        },
+        {
+          "name": "performance-monitor.js",
+          "original": 12005,
+          "gzipped": 2903,
+          "compression": 0.7581840899625156
+        },
+        {
+          "name": "pricing-calculator.js",
+          "original": 9794,
+          "gzipped": 2589,
+          "compression": 0.7356544823361242
+        },
+        {
+          "name": "pwa-features.js",
+          "original": 20842,
+          "gzipped": 5205,
+          "compression": 0.7502638902216678
+        },
+        {
+          "name": "resource-optimizer.js",
+          "original": 23642,
+          "gzipped": 5915,
+          "compression": 0.7498096607732002
+        },
+        {
+          "name": "service-worker.js",
+          "original": 20802,
+          "gzipped": 4836,
+          "compression": 0.7675223536198442
+        },
+        {
+          "name": "social-links.js",
+          "original": 12522,
+          "gzipped": 2964,
+          "compression": 0.7632965979875419
+        },
+        {
+          "name": "spotify-playlists.js",
+          "original": 16053,
+          "gzipped": 3962,
+          "compression": 0.7531925496791877
+        },
+        {
+          "name": "sw-performance.js",
+          "original": 15961,
+          "gzipped": 3540,
+          "compression": 0.7782093853768561
+        },
+        {
+          "name": "sw-registration.js",
+          "original": 21381,
+          "gzipped": 5119,
+          "compression": 0.7605818249847995
+        },
+        {
+          "name": "testimonial-form.js",
+          "original": 12113,
+          "gzipped": 3090,
+          "compression": 0.7449021712210022
+        },
+        {
+          "name": "whatsapp-chat.js",
+          "original": 12501,
+          "gzipped": 3251,
+          "compression": 0.7399408047356211
+        }
+      ],
+      "totalOriginal": 520468,
+      "totalGzipped": 120655
+    },
+    "css": {
+      "files": [
+        {
+          "name": "accessibility.css",
+          "original": 21149,
+          "gzipped": 4067,
+          "compression": 0.8076977634876353
+        },
+        {
+          "name": "critical.css",
+          "original": 9782,
+          "gzipped": 2643,
+          "compression": 0.7298098548354119
+        },
+        {
+          "name": "forms.css",
+          "original": 8850,
+          "gzipped": 2360,
+          "compression": 0.7333333333333334
+        },
+        {
+          "name": "gallery.css",
+          "original": 11262,
+          "gzipped": 2352,
+          "compression": 0.7911561001598295
+        },
+        {
+          "name": "google-maps.css",
+          "original": 9570,
+          "gzipped": 2051,
+          "compression": 0.7856844305120168
+        },
+        {
+          "name": "hero.css",
+          "original": 7477,
+          "gzipped": 1917,
+          "compression": 0.7436137488297445
+        },
+        {
+          "name": "image-optimization.css",
+          "original": 7072,
+          "gzipped": 1910,
+          "compression": 0.7299208144796381
+        },
+        {
+          "name": "instructors.css",
+          "original": 9019,
+          "gzipped": 1948,
+          "compression": 0.784011531211886
+        },
+        {
+          "name": "navigation.css",
+          "original": 6155,
+          "gzipped": 1566,
+          "compression": 0.7455727051177904
+        },
+        {
+          "name": "pricing.css",
+          "original": 13583,
+          "gzipped": 2562,
+          "compression": 0.8113818744018259
+        },
+        {
+          "name": "schedule.css",
+          "original": 8737,
+          "gzipped": 2025,
+          "compression": 0.7682270802334897
+        },
+        {
+          "name": "social_links.css",
+          "original": 11880,
+          "gzipped": 2516,
+          "compression": 0.7882154882154881
+        },
+        {
+          "name": "spotify-playlists.css",
+          "original": 6769,
+          "gzipped": 1710,
+          "compression": 0.7473777515142561
+        },
+        {
+          "name": "styles.css",
+          "original": 8713,
+          "gzipped": 2424,
+          "compression": 0.7217950189372202
+        },
+        {
+          "name": "styles.min.css",
+          "original": 6430,
+          "gzipped": 1932,
+          "compression": 0.699533437013997
+        },
+        {
+          "name": "testimonials.css",
+          "original": 18645,
+          "gzipped": 3860,
+          "compression": 0.7929739876642532
+        },
+        {
+          "name": "video-player.css",
+          "original": 6811,
+          "gzipped": 1762,
+          "compression": 0.7413008368815153
+        },
+        {
+          "name": "whatsapp.css",
+          "original": 7311,
+          "gzipped": 1963,
+          "compression": 0.7315004787306798
+        }
+      ],
+      "totalOriginal": 179215,
+      "totalGzipped": 41568
+    },
+    "assets": {
+      "files": [
+        {
+          "name": "images/facebook.png",
+          "original": 14,
+          "gzipped": 34,
+          "compression": -1.4285714285714284
+        },
+        {
+          "name": "images/instagram.png",
+          "original": 14,
+          "gzipped": 34,
+          "compression": -1.4285714285714284
+        },
+        {
+          "name": "images/sabor-con-flow-logo.png",
+          "original": 31730,
+          "gzipped": 30510,
+          "compression": 0.03844941695556259
+        },
+        {
+          "name": "images/sabor-con-flow-logo.webp",
+          "original": 8724,
+          "gzipped": 8688,
+          "compression": 0.004126547455295726
+        },
+        {
+          "name": "images/sabor-con-flow-logo_placeholder.png",
+          "original": 53162,
+          "gzipped": 53099,
+          "compression": 0.0011850569955983437
+        },
+        {
+          "name": "images/sabor-con-flow-logo_small.png",
+          "original": 20334,
+          "gzipped": 20149,
+          "compression": 0.009098062358611214
+        },
+        {
+          "name": "images/sabor-con-flow-logo_small.webp",
+          "original": 5396,
+          "gzipped": 5419,
+          "compression": -0.004262416604892572
+        },
+        {
+          "name": "images/whatsapp.png",
+          "original": 14,
+          "gzipped": 34,
+          "compression": -1.4285714285714284
+        },
+        {
+          "name": "admin/img/calendar-icons.svg",
+          "original": 2455,
+          "gzipped": 911,
+          "compression": 0.6289205702647658
+        },
+        {
+          "name": "admin/img/icon-addlink.svg",
+          "original": 331,
+          "gzipped": 207,
+          "compression": 0.37462235649546827
+        },
+        {
+          "name": "admin/img/icon-alert.svg",
+          "original": 504,
+          "gzipped": 329,
+          "compression": 0.3472222222222222
+        },
+        {
+          "name": "admin/img/icon-calendar.svg",
+          "original": 1086,
+          "gzipped": 438,
+          "compression": 0.5966850828729282
+        },
+        {
+          "name": "admin/img/icon-changelink.svg",
+          "original": 380,
+          "gzipped": 269,
+          "compression": 0.29210526315789476
+        },
+        {
+          "name": "admin/img/icon-clock.svg",
+          "original": 677,
+          "gzipped": 357,
+          "compression": 0.4726735598227474
+        },
+        {
+          "name": "admin/img/icon-deletelink.svg",
+          "original": 392,
+          "gzipped": 221,
+          "compression": 0.4362244897959183
+        },
+        {
+          "name": "admin/img/icon-hidelink.svg",
+          "original": 784,
+          "gzipped": 495,
+          "compression": 0.36862244897959184
+        },
+        {
+          "name": "admin/img/icon-no.svg",
+          "original": 560,
+          "gzipped": 297,
+          "compression": 0.46964285714285714
+        },
+        {
+          "name": "admin/img/icon-unknown-alt.svg",
+          "original": 655,
+          "gzipped": 377,
+          "compression": 0.42442748091603055
+        },
+        {
+          "name": "admin/img/icon-unknown.svg",
+          "original": 655,
+          "gzipped": 377,
+          "compression": 0.42442748091603055
+        },
+        {
+          "name": "admin/img/icon-viewlink.svg",
+          "original": 581,
+          "gzipped": 346,
+          "compression": 0.40447504302925985
+        }
+      ],
+      "totalOriginal": 128448,
+      "totalGzipped": 122591
+    }
+  },
+  "performanceChecks": {
+    "bundleSize": {
+      "issues": [],
+      "warnings": []
+    },
+    "buildTime": {
+      "issues": []
+    }
+  },
+  "comparison": {
+    "regressions": [
+      {
+        "type": "build_time_regression",
+        "message": "Build time increased from 3.60s to 3.97s",
+        "previousValue": 3601.807416,
+        "currentValue": 3970.6631260000004
+      }
+    ],
+    "improvements": []
+  },
+  "summary": {
+    "buildTimeWithinTarget": true,
+    "bundleSizeWithinTarget": true,
+    "totalIssues": 0,
+    "totalWarnings": 0,
+    "regressions": 1,
+    "improvements": 0
+  }
+}

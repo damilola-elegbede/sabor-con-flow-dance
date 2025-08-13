@@ -15,14 +15,14 @@ export default class PerformanceMonitor {
       bufferSize: 100,
       sendInterval: 30000, // 30 seconds
       endpoint: '/api/performance', // Custom endpoint for performance data
-      ...options
+      ...options,
     };
 
     this.metrics = new Map();
     this.buffer = [];
     this.observers = new Map();
     this.startTime = performance.now();
-    
+
     this.init();
   }
 
@@ -38,7 +38,7 @@ export default class PerformanceMonitor {
     this.setupResourceTiming();
     this.setupUserTiming();
     this.setupSendInterval();
-    
+
     console.log('🔍 Performance monitoring started');
   }
 
@@ -57,16 +57,17 @@ export default class PerformanceMonitor {
     if (!('PerformanceObserver' in window)) return;
 
     try {
-      const clsObserver = new PerformanceObserver((list) => {
+      const clsObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           if (!entry.hadRecentInput) {
             this.recordMetric('CLS', {
               value: entry.value,
-              sources: entry.sources?.map(source => ({
-                element: source.node?.tagName || 'unknown',
-                previousRect: source.previousRect,
-                currentRect: source.currentRect
-              })) || []
+              sources:
+                entry.sources?.map(source => ({
+                  element: source.node?.tagName || 'unknown',
+                  previousRect: source.previousRect,
+                  currentRect: source.currentRect,
+                })) || [],
             });
           }
         }
@@ -83,13 +84,13 @@ export default class PerformanceMonitor {
     if (!('PerformanceObserver' in window)) return;
 
     try {
-      const fidObserver = new PerformanceObserver((list) => {
+      const fidObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           this.recordMetric('FID', {
             value: entry.processingStart - entry.startTime,
             startTime: entry.startTime,
             processingStart: entry.processingStart,
-            processingEnd: entry.processingEnd
+            processingEnd: entry.processingEnd,
           });
         }
       });
@@ -105,15 +106,15 @@ export default class PerformanceMonitor {
     if (!('PerformanceObserver' in window)) return;
 
     try {
-      const lcpObserver = new PerformanceObserver((list) => {
+      const lcpObserver = new PerformanceObserver(list => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
-        
+
         this.recordMetric('LCP', {
           value: lastEntry.startTime,
           element: lastEntry.element?.tagName || 'unknown',
           url: lastEntry.url || '',
-          size: lastEntry.size || 0
+          size: lastEntry.size || 0,
         });
       });
 
@@ -128,11 +129,11 @@ export default class PerformanceMonitor {
     if (!('PerformanceObserver' in window)) return;
 
     try {
-      const fcpObserver = new PerformanceObserver((list) => {
+      const fcpObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           if (entry.name === 'first-contentful-paint') {
             this.recordMetric('FCP', {
-              value: entry.startTime
+              value: entry.startTime,
             });
           }
         }
@@ -149,14 +150,14 @@ export default class PerformanceMonitor {
     if (!('PerformanceObserver' in window)) return;
 
     try {
-      const navigationObserver = new PerformanceObserver((list) => {
+      const navigationObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           this.recordMetric('TTFB', {
             value: entry.responseStart - entry.requestStart,
             dns: entry.domainLookupEnd - entry.domainLookupStart,
             tcp: entry.connectEnd - entry.connectStart,
             request: entry.responseStart - entry.requestStart,
-            response: entry.responseEnd - entry.responseStart
+            response: entry.responseEnd - entry.responseStart,
           });
         }
       });
@@ -173,28 +174,28 @@ export default class PerformanceMonitor {
 
     // Track JavaScript bundle load times
     this.trackBundleLoadTimes();
-    
+
     // Track critical resource loading
     this.trackCriticalResources();
-    
+
     // Track user interactions
     this.trackUserInteractions();
-    
+
     // Track memory usage
     this.trackMemoryUsage();
   }
 
   trackBundleLoadTimes() {
     // Track when main bundle loads
-    const bundleStart = performance.mark('bundle-start');
-    
+    const _bundleStart = performance.mark('bundle-start');
+
     window.addEventListener('load', () => {
       performance.mark('bundle-end');
       const bundleTime = performance.measure('bundle-load', 'bundle-start', 'bundle-end');
-      
+
       this.recordMetric('Bundle Load Time', {
         value: bundleTime.duration,
-        bundles: this.getLoadedBundles()
+        bundles: this.getLoadedBundles(),
       });
     });
   }
@@ -204,7 +205,7 @@ export default class PerformanceMonitor {
     return scripts.map(script => ({
       src: script.src,
       async: script.async,
-      defer: script.defer
+      defer: script.defer,
     }));
   }
 
@@ -213,13 +214,13 @@ export default class PerformanceMonitor {
     const heroMedia = document.querySelector('.hero img, .hero video');
     if (heroMedia) {
       const startTime = performance.now();
-      
+
       const trackLoad = () => {
         const loadTime = performance.now() - startTime;
         this.recordMetric('Hero Media Load', {
           value: loadTime,
           type: heroMedia.tagName.toLowerCase(),
-          src: heroMedia.src || heroMedia.currentSrc
+          src: heroMedia.src || heroMedia.currentSrc,
         });
       };
 
@@ -236,7 +237,7 @@ export default class PerformanceMonitor {
       document.fonts.ready.then(() => {
         this.recordMetric('Fonts Loaded', {
           value: performance.now() - this.startTime,
-          count: document.fonts.size
+          count: document.fonts.size,
         });
       });
     }
@@ -245,17 +246,17 @@ export default class PerformanceMonitor {
   trackUserInteractions() {
     // Track time to first interaction
     let firstInteraction = null;
-    
+
     const interactions = ['click', 'touchstart', 'keydown', 'scroll'];
-    
-    const trackFirstInteraction = (event) => {
+
+    const trackFirstInteraction = event => {
       if (!firstInteraction) {
         firstInteraction = performance.now();
         this.recordMetric('Time to First Interaction', {
           value: firstInteraction - this.startTime,
-          type: event.type
+          type: event.type,
         });
-        
+
         // Remove listeners after first interaction
         interactions.forEach(type => {
           document.removeEventListener(type, trackFirstInteraction);
@@ -264,9 +265,9 @@ export default class PerformanceMonitor {
     };
 
     interactions.forEach(type => {
-      document.addEventListener(type, trackFirstInteraction, { 
-        passive: true, 
-        once: true 
+      document.addEventListener(type, trackFirstInteraction, {
+        passive: true,
+        once: true,
       });
     });
 
@@ -277,32 +278,32 @@ export default class PerformanceMonitor {
   trackScrollDepth() {
     let maxScrollDepth = 0;
     let scrollTimer = null;
-    
+
     const trackScroll = () => {
       const scrollTop = window.pageYOffset;
       const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = Math.round((scrollTop / documentHeight) * 100);
-      
+
       if (scrollPercent > maxScrollDepth) {
         maxScrollDepth = scrollPercent;
       }
-      
+
       // Debounce scroll tracking
       clearTimeout(scrollTimer);
       scrollTimer = setTimeout(() => {
         this.recordMetric('Scroll Depth', {
           value: maxScrollDepth,
-          timestamp: performance.now()
+          timestamp: performance.now(),
         });
       }, 500);
     };
 
     window.addEventListener('scroll', trackScroll, { passive: true });
-    
+
     // Track final scroll depth on page unload
     window.addEventListener('beforeunload', () => {
       this.recordMetric('Final Scroll Depth', {
-        value: maxScrollDepth
+        value: maxScrollDepth,
       });
     });
   }
@@ -313,13 +314,13 @@ export default class PerformanceMonitor {
         this.recordMetric('Memory Usage', {
           used: performance.memory.usedJSHeapSize,
           total: performance.memory.totalJSHeapSize,
-          limit: performance.memory.jsHeapSizeLimit
+          limit: performance.memory.jsHeapSizeLimit,
         });
       };
 
       // Track initial memory
       trackMemory();
-      
+
       // Track memory periodically
       setInterval(trackMemory, 60000); // Every minute
     }
@@ -337,7 +338,7 @@ export default class PerformanceMonitor {
           ttfb: navigation.responseStart - navigation.requestStart,
           download: navigation.responseEnd - navigation.responseStart,
           domParsing: navigation.domContentLoadedEventStart - navigation.responseEnd,
-          resourceLoading: navigation.loadEventStart - navigation.domContentLoadedEventStart
+          resourceLoading: navigation.loadEventStart - navigation.domContentLoadedEventStart,
         });
       }
     });
@@ -348,12 +349,10 @@ export default class PerformanceMonitor {
 
     // Track slow resources
     const slowResourceThreshold = 1000; // 1 second
-    
+
     const checkResources = () => {
       const resources = performance.getEntriesByType('resource');
-      const slowResources = resources.filter(resource => 
-        resource.duration > slowResourceThreshold
-      );
+      const slowResources = resources.filter(resource => resource.duration > slowResourceThreshold);
 
       if (slowResources.length > 0) {
         this.recordMetric('Slow Resources', {
@@ -362,8 +361,8 @@ export default class PerformanceMonitor {
             name: resource.name,
             duration: resource.duration,
             size: resource.transferSize,
-            type: resource.initiatorType
-          }))
+            type: resource.initiatorType,
+          })),
         });
       }
     };
@@ -380,18 +379,18 @@ export default class PerformanceMonitor {
     const checkUserTiming = () => {
       const marks = performance.getEntriesByType('mark');
       const measures = performance.getEntriesByType('measure');
-      
+
       if (marks.length > 0 || measures.length > 0) {
         this.recordMetric('User Timing', {
           marks: marks.map(mark => ({
             name: mark.name,
-            startTime: mark.startTime
+            startTime: mark.startTime,
           })),
           measures: measures.map(measure => ({
             name: measure.name,
             duration: measure.duration,
-            startTime: measure.startTime
-          }))
+            startTime: measure.startTime,
+          })),
         });
       }
     };
@@ -408,7 +407,7 @@ export default class PerformanceMonitor {
       timestamp: Date.now(),
       url: window.location.href,
       userAgent: navigator.userAgent,
-      connection: this.getConnectionInfo()
+      connection: this.getConnectionInfo(),
     };
 
     this.metrics.set(name, metric);
@@ -432,7 +431,7 @@ export default class PerformanceMonitor {
         effectiveType: conn.effectiveType,
         downlink: conn.downlink,
         rtt: conn.rtt,
-        saveData: conn.saveData
+        saveData: conn.saveData,
       };
     }
     return null;
@@ -482,22 +481,19 @@ export default class PerformanceMonitor {
       page: {
         url: window.location.href,
         title: document.title,
-        referrer: document.referrer
+        referrer: document.referrer,
       },
-      timestamp: Date.now()
+      timestamp: Date.now(),
     };
 
     try {
       if (useBeacon && 'sendBeacon' in navigator) {
         // Use sendBeacon for reliable delivery on page unload
-        navigator.sendBeacon(
-          this.options.endpoint,
-          JSON.stringify(payload)
-        );
+        navigator.sendBeacon(this.options.endpoint, JSON.stringify(payload));
       } else {
         // Send to analytics
         this.sendToAnalytics(metrics);
-        
+
         // Send to custom endpoint if configured
         if (this.options.endpoint) {
           await fetch(this.options.endpoint, {
@@ -506,7 +502,7 @@ export default class PerformanceMonitor {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify(payload),
-            keepalive: true
+            keepalive: true,
           });
         }
       }
@@ -524,7 +520,7 @@ export default class PerformanceMonitor {
           name: metric.name,
           value: Math.round(metric.data.value),
           metric_id: this.generateMetricId(metric),
-          custom_parameters: metric.data
+          custom_parameters: metric.data,
         });
       }
     });
@@ -554,7 +550,7 @@ export default class PerformanceMonitor {
     const measure = performance.measure(name, startMark, endMark);
     this.recordMetric(`Measure: ${name}`, {
       value: measure.duration,
-      startTime: measure.startTime
+      startTime: measure.startTime,
     });
     return measure;
   }
@@ -571,7 +567,7 @@ export default class PerformanceMonitor {
     // Disconnect all observers
     this.observers.forEach(observer => observer.disconnect());
     this.observers.clear();
-    
+
     // Send remaining buffered metrics
     this.sendBufferedMetrics();
   }

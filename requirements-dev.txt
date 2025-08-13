@@ -1,0 +1,54 @@
+# Development Requirements - Platform Engineering Tools
+# Include all production requirements plus development-specific tools
+
+-r requirements.txt
+
+# Development and Debugging Tools
+django-debug-toolbar>=4.2.0        # SQL query debugging and profiling
+django-extensions>=3.2.0           # Management commands and shell enhancements
+ipython>=8.12.0                     # Enhanced Python REPL
+ipdb>=0.13.13                       # Interactive debugger
+
+# Code Quality Tools
+black>=23.3.0                       # Code formatter
+isort>=5.12.0                       # Import sorter
+flake8>=6.0.0                       # Linting
+mypy>=1.3.0                         # Type checking
+pre-commit>=3.3.0                   # Git hooks for code quality
+
+# Testing Tools (enhanced for development)
+pytest-xdist>=3.3.0                # Parallel test execution
+pytest-mock>=3.10.0                # Mocking for tests
+pytest-sugar>=0.9.7                # Better test output
+pytest-html>=3.2.0                 # HTML test reports
+pytest-benchmark>=4.0.0            # Performance testing
+
+# Development Server Tools
+watchdog>=3.0.0                    # File system monitoring
+livereload>=2.6.3                  # Auto-reload for templates and static files
+
+# Performance Analysis Tools
+django-silk>=5.0.0                 # Request profiling (optional)
+memory-profiler>=0.60.0            # Memory usage profiling
+line-profiler>=4.0.0               # Line-by-line profiling
+
+# Database Tools
+django-migration-linter>=5.0.0     # Migration safety checks
+django-query-inspector>=2.0.0      # Query analysis
+
+# Documentation Tools
+sphinx>=7.0.0                      # Documentation generation
+sphinx-rtd-theme>=1.3.0            # ReadTheDocs theme
+
+# Environment Management
+python-decouple>=3.8               # Alternative to python-dotenv
+environs>=9.5.0                    # Enhanced environment variable parsing
+
+# Local Development Utilities
+rich>=13.4.0                       # Rich terminal output
+click>=8.1.0                       # CLI framework for custom commands
+colorama>=0.4.6                    # Cross-platform colored output
+
+# Optional Redis for local caching (if needed)
+# redis>=4.5.0
+# hiredis>=2.2.0

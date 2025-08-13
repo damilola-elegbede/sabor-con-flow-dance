@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Booking Confirmed - {{ site_name }}{% endblock %}
+
+{% block meta_description %}Your booking has been confirmed! Check your email for details and get ready to dance with Sabor Con Flow.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .success-icon {
+        font-size: 4rem;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+    
+    .success-title {
+        color: #C7B375;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .booking-details {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 8px;
+        margin: 2rem 0;
+        text-align: left;
+    }
+    
+    .booking-details h3 {
+        color: #C7B375;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    
+    .detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.75rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .detail-row:last-child {
+        border-bottom: none;
+    }
+    
+    .detail-label {
+        font-weight: 600;
+        color: #495057;
+    }
+    
+    .detail-value {
+        color: #212529;
+        font-weight: 500;
+    }
+    
+    .booking-id {
+        background: #C7B375;
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .next-steps {
+        background: #e8f4fd;
+        border: 1px solid #bee5eb;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .next-steps h4 {
+        color: #0c5460;
+        margin-bottom: 1rem;
+    }
+    
+    .next-steps ul {
+        text-align: left;
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+    
+    .next-steps li {
+        margin-bottom: 0.5rem;
+        color: #0c5460;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .btn-primary {
+        background: #C7B375;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #b8a566;
+        color: white;
+    }
+    
+    .btn-secondary {
+        background: #6c757d;
+        color: white;
+    }
+    
+    .btn-secondary:hover {
+        background: #5a6268;
+        color: white;
+    }
+    
+    .btn-outline {
+        background: transparent;
+        color: #C7B375;
+        border: 2px solid #C7B375;
+    }
+    
+    .btn-outline:hover {
+        background: #C7B375;
+        color: white;
+    }
+    
+    .contact-info {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .contact-info h4 {
+        color: #856404;
+        margin-bottom: 1rem;
+    }
+    
+    .contact-info p {
+        color: #856404;
+        margin: 0.5rem 0;
+    }
+    
+    .calendar-add {
+        margin-top: 1rem;
+        text-align: center;
+    }
+    
+    .calendar-add a {
+        color: #C7B375;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    
+    .calendar-add a:hover {
+        text-decoration: underline;
+    }
+    
+    @media (max-width: 768px) {
+        .success-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .detail-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn {
+            width: 100%;
+            max-width: 300px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-icon">✅</div>
+    <h1 class="success-title">Booking Confirmed!</h1>
+    <p>Your dance booking has been successfully confirmed. Get ready to move to the rhythm!</p>
+    
+    <div class="booking-details">
+        <h3>📋 Booking Details</h3>
+        
+        <div class="detail-row">
+            <span class="detail-label">Booking ID:</span>
+            <span class="booking-id">{{ booking.booking_id }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">Class/Service:</span>
+            <span class="detail-value">{{ booking.class_name }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">Type:</span>
+            <span class="detail-value">{{ booking.get_booking_type_display }}</span>
+        </div>
+        
+        {% if booking.instructor_name %}
+        <div class="detail-row">
+            <span class="detail-label">Instructor:</span>
+            <span class="detail-value">{{ booking.instructor_name }}</span>
+        </div>
+        {% endif %}
+        
+        <div class="detail-row">
+            <span class="detail-label">Date & Time:</span>
+            <span class="detail-value">{{ booking.get_booking_datetime_formatted }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">Duration:</span>
+            <span class="detail-value">{{ booking.duration_minutes }} minutes</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">Location:</span>
+            <span class="detail-value">{{ booking.location }}</span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">Price:</span>
+            <span class="detail-value">${{ booking.price }}</span>
+        </div>
+        
+        {% if booking.payment_method %}
+        <div class="detail-row">
+            <span class="detail-label">Payment Method:</span>
+            <span class="detail-value">{{ booking.payment_method }}</span>
+        </div>
+        {% endif %}
+        
+        <div class="detail-row">
+            <span class="detail-label">Status:</span>
+            <span class="detail-value">
+                <span style="color: #28a745; font-weight: bold;">{{ booking.get_status_display }}</span>
+            </span>
+        </div>
+    </div>
+    
+    <div class="next-steps">
+        <h4>📧 What's Next?</h4>
+        <ul>
+            <li>Check your email for detailed confirmation and directions</li>
+            <li>Add this event to your calendar (link in confirmation email)</li>
+            <li>Arrive 10-15 minutes early for check-in</li>
+            {% if booking.booking_type == 'class' %}
+            <li>Bring comfortable dance shoes and water</li>
+            {% endif %}
+            {% if booking.booking_type == 'private_lesson' %}
+            <li>Prepare any specific goals or questions for your instructor</li>
+            {% endif %}
+            <li>Contact us if you need to reschedule (24h notice required)</li>
+        </ul>
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{% url 'core:home' %}" class="btn btn-primary">🏠 Back to Home</a>
+        <a href="{% url 'core:contact' %}" class="btn btn-outline">💬 Contact Us</a>
+        <a href="{% url 'core:create_booking' %}" class="btn btn-secondary">📅 Book Another</a>
+    </div>
+    
+    <div class="calendar-add">
+        <p>📅 <a href="data:text/calendar;charset=utf8,BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sabor Con Flow Dance//NONSGML Event//EN
+BEGIN:VEVENT
+UID:{{ booking.booking_id }}@saborconflowdance.com
+DTSTAMP:{{ booking.created_at|date:'Ymd' }}T{{ booking.created_at|date:'His' }}Z
+DTSTART:{{ booking.booking_date|date:'Ymd' }}T{{ booking.booking_date|date:'His' }}
+DTEND:{{ booking.booking_date|date:'Ymd' }}T{{ booking.booking_date|date:'His' }}
+SUMMARY:{{ booking.class_name }} - Sabor Con Flow Dance
+DESCRIPTION:Booking ID: {{ booking.booking_id }}\nType: {{ booking.get_booking_type_display }}{% if booking.instructor_name %}\nInstructor: {{ booking.instructor_name }}{% endif %}{% if booking.special_instructions %}\nNotes: {{ booking.special_instructions }}{% endif %}
+LOCATION:{{ booking.location }}
+END:VEVENT
+END:VCALENDAR" download="{{ booking.booking_id }}.ics">Add to Calendar</a></p>
+    </div>
+    
+    <div class="contact-info">
+        <h4>Need Help?</h4>
+        <p><strong>Email:</strong> <a href="mailto:info@saborconflowdance.com">info@saborconflowdance.com</a></p>
+        <p><strong>Phone:</strong> <a href="tel:+15551234567">(555) 123-4567</a></p>
+        <p><strong>Address:</strong> {{ booking.location }}</p>
+        <p><strong>Cancellation Policy:</strong> Free cancellation up to 24 hours before your booking</p>
+    </div>
+</div>
+
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Event",
+    "name": "{{ booking.class_name }}",
+    "startDate": "{{ booking.booking_date|date:'c' }}",
+    "location": {
+        "@type": "Place",
+        "name": "{{ booking.location }}",
+        "address": "{{ booking.location }}"
+    },
+    "description": "{{ booking.get_booking_type_display }} booking with Sabor Con Flow Dance",
+    "organizer": {
+        "@type": "Organization",
+        "name": "Sabor Con Flow Dance",
+        "url": "https://www.saborconflowdance.com"
+    },
+    "offers": {
+        "@type": "Offer",
+        "price": "{{ booking.price }}",
+        "priceCurrency": "USD"
+    }
+}
+</script>
+{% endblock %}
+{% endblock %}

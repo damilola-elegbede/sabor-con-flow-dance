@@ -1,0 +1,331 @@
+{% load static %}
+
+<!-- Reusable Instructor Card Component -->
+<div class="instructor-card" data-instructor-id="{{ instructor.id }}" data-specialties="{{ instructor.specialties }}">
+    <div class="instructor-photo">
+        <img src="{{ instructor.photo_url }}" 
+             alt="{{ instructor.name }} - Dance Instructor"
+             loading="lazy"
+             onerror="this.src='{% static 'images/placeholder-instructor.jpg' %}'">
+    </div>
+    
+    <div class="instructor-info">
+        <h3 class="instructor-name">{{ instructor.name }}</h3>
+        
+        {% if instructor.specialties %}
+            <div class="instructor-specialties">
+                {% comment %}Specialties will be parsed by JavaScript for comma-separated or handled by view for JSON{% endcomment %}
+                {% if specialties_list %}
+                    {% comment %}Specialties parsed by view (JSON format){% endcomment %}
+                    {% for specialty in specialties_list %}
+                        <span class="specialty-badge">{{ specialty }}</span>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        {% endif %}
+        
+        {% if show_bio_excerpt %}
+        <p class="instructor-bio-excerpt">
+            {{ instructor.bio|truncatewords:20 }}
+        </p>
+        {% endif %}
+        
+        <div class="instructor-actions">
+            <a href="{% url 'core:instructor_detail' instructor.id %}" class="btn-view-profile">
+                View Profile
+            </a>
+        </div>
+    </div>
+    
+    {% if show_bio_hover %}
+    <div class="bio-hover">
+        <h3>{{ instructor.name }}</h3>
+        <p>{{ instructor.bio|truncatewords:25 }}</p>
+        <a href="{% url 'core:instructor_detail' instructor.id %}" class="btn">
+            View Full Profile
+        </a>
+    </div>
+    {% endif %}
+</div>
+
+<style>
+    .instructor-card {
+        background: var(--color-white);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        transition: all var(--transition-base);
+        position: relative;
+        border: 1px solid var(--color-gray-lighter);
+        height: 100%; /* Ensure consistent card heights in grid */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .instructor-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .instructor-photo {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1; /* Perfect square aspect ratio */
+        overflow: hidden;
+        background: var(--color-gray-lighter);
+        flex-shrink: 0;
+    }
+    
+    .instructor-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-slow);
+        display: block;
+    }
+    
+    .instructor-card:hover .instructor-photo img {
+        transform: scale(1.05);
+    }
+    
+    .instructor-info {
+        padding: var(--spacing-lg);
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .instructor-name {
+        font-family: var(--font-heading); /* Playfair Display */
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--color-black);
+        margin-bottom: var(--spacing-sm);
+        line-height: 1.2;
+    }
+    
+    .instructor-specialties {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-xs);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .specialty-badge {
+        background: var(--color-gold); /* Gold background */
+        color: var(--color-black);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: 15px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: capitalize;
+        white-space: nowrap;
+    }
+    
+    .instructor-bio-excerpt {
+        color: var(--color-gray-medium);
+        font-size: 0.875rem;
+        line-height: 1.4;
+        margin-bottom: var(--spacing-lg);
+        flex-grow: 1;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .instructor-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: auto;
+    }
+    
+    .btn-view-profile {
+        background: var(--color-gold);
+        color: var(--color-black);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all var(--transition-base);
+        border: 2px solid var(--color-gold);
+        text-align: center;
+    }
+    
+    .btn-view-profile:hover {
+        background: var(--color-gold-dark);
+        border-color: var(--color-gold-dark);
+        color: var(--color-white);
+        transform: translateY(-2px);
+    }
+    
+    /* Bio hover effect overlay */
+    .bio-hover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        color: var(--color-white);
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-base);
+        z-index: 10;
+    }
+    
+    .instructor-card:hover .bio-hover {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .bio-hover h3 {
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-md);
+        font-size: 1.125rem;
+        font-family: var(--font-heading);
+    }
+    
+    .bio-hover p {
+        font-size: 0.875rem;
+        line-height: 1.4;
+        margin-bottom: var(--spacing-lg);
+        color: var(--color-gray-light);
+    }
+    
+    .bio-hover .btn {
+        background: var(--color-gold);
+        color: var(--color-black);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.875rem;
+        transition: all var(--transition-base);
+    }
+    
+    .bio-hover .btn:hover {
+        background: var(--color-gold-light);
+        transform: translateY(-2px);
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+        .instructor-info {
+            padding: var(--spacing-md);
+        }
+        
+        .instructor-name {
+            font-size: 1.125rem;
+        }
+        
+        .specialty-badge {
+            font-size: 0.7rem;
+            padding: 2px var(--spacing-xs);
+        }
+        
+        .instructor-bio-excerpt {
+            font-size: 0.8rem;
+            -webkit-line-clamp: 2;
+        }
+        
+        .bio-hover {
+            padding: var(--spacing-md);
+        }
+        
+        .bio-hover h3 {
+            font-size: 1rem;
+        }
+        
+        .bio-hover p {
+            font-size: 0.8rem;
+        }
+    }
+    
+    /* Error state for missing images */
+    .instructor-photo img[src*="placeholder"] {
+        opacity: 0.6;
+        filter: grayscale(100%);
+    }
+    
+    /* Loading state */
+    .instructor-card.loading {
+        opacity: 0.7;
+        pointer-events: none;
+    }
+    
+    .instructor-card.loading .instructor-photo {
+        background: linear-gradient(90deg, var(--color-gray-lighter) 0%, var(--color-gray-light) 50%, var(--color-gray-lighter) 100%);
+        background-size: 200% 100%;
+        animation: loading-shimmer 1.5s infinite;
+    }
+    
+    @keyframes loading-shimmer {
+        0% { background-position: -200% 0; }
+        100% { background-position: 200% 0; }
+    }
+    
+    /* Accessibility improvements */
+    .instructor-card:focus-within {
+        outline: 2px solid var(--color-gold);
+        outline-offset: 2px;
+    }
+    
+    .btn-view-profile:focus {
+        outline: 2px solid var(--color-gold-dark);
+        outline-offset: 2px;
+    }
+    
+    /* Print styles */
+    @media print {
+        .instructor-card {
+            break-inside: avoid;
+            box-shadow: none;
+            border: 1px solid var(--color-gray-medium);
+        }
+        
+        .bio-hover {
+            display: none;
+        }
+    }
+</style>
+
+<script>
+// Template filter to split strings (since Django doesn't have a built-in split filter)
+// This will be handled by JavaScript for the comma-separated specialties
+document.addEventListener('DOMContentLoaded', function() {
+    const instructorCards = document.querySelectorAll('.instructor-card');
+    
+    instructorCards.forEach(card => {
+        const specialtiesContainer = card.querySelector('.instructor-specialties');
+        if (!specialtiesContainer) return;
+        
+        // Check if we need to process comma-separated specialties
+        const existingBadges = specialtiesContainer.querySelectorAll('.specialty-badge');
+        if (existingBadges.length === 0) {
+            // Find the specialties text from data attribute
+            const specialtiesData = card.dataset.specialties;
+            if (specialtiesData && !specialtiesData.startsWith('[') && !specialtiesData.startsWith('{')) {
+                // Split comma-separated specialties and create badges
+                const specialties = specialtiesData.split(',');
+                specialties.forEach(specialty => {
+                    const trimmed = specialty.trim();
+                    if (trimmed) {
+                        const badge = document.createElement('span');
+                        badge.className = 'specialty-badge';
+                        badge.textContent = trimmed;
+                        specialtiesContainer.appendChild(badge);
+                    }
+                });
+            }
+        }
+    });
+});
+</script>

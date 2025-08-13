@@ -14,7 +14,7 @@ export default class MobileNav {
       animationDuration: 300,
       enableSwipeGestures: true,
       enableKeyboardNavigation: true,
-      ...options
+      ...options,
     };
 
     this.isOpen = false;
@@ -22,14 +22,14 @@ export default class MobileNav {
     this.touchStartX = 0;
     this.touchStartY = 0;
     this.swipeThreshold = 50;
-    
+
     this.elements = {};
     this.init();
   }
 
   init() {
     this.cacheElements();
-    
+
     if (!this.elements.toggle || !this.elements.menu) {
       console.warn('Mobile nav: Required elements not found');
       return;
@@ -38,10 +38,10 @@ export default class MobileNav {
     this.setupEventListeners();
     this.setupAccessibility();
     this.setupProgressiveEnhancement();
-    
+
     // Handle initial state
     this.updateState();
-    
+
     // Mobile navigation enhanced
   }
 
@@ -52,7 +52,7 @@ export default class MobileNav {
       overlay: document.querySelector(this.options.overlaySelector),
       close: document.querySelector(this.options.closeSelector),
       menuItems: document.querySelectorAll(`${this.options.menuSelector} a`),
-      body: document.body
+      body: document.body,
     };
   }
 
@@ -102,12 +102,18 @@ export default class MobileNav {
 
   setupSwipeGestures() {
     if (this.elements.menu) {
-      this.elements.menu.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
-      this.elements.menu.addEventListener('touchend', this.handleTouchEnd.bind(this), { passive: true });
+      this.elements.menu.addEventListener('touchstart', this.handleTouchStart.bind(this), {
+        passive: true,
+      });
+      this.elements.menu.addEventListener('touchend', this.handleTouchEnd.bind(this), {
+        passive: true,
+      });
     }
 
     // Also allow swiping from edge to open menu
-    document.addEventListener('touchstart', this.handleEdgeSwipeStart.bind(this), { passive: true });
+    document.addEventListener('touchstart', this.handleEdgeSwipeStart.bind(this), {
+      passive: true,
+    });
     document.addEventListener('touchend', this.handleEdgeSwipeEnd.bind(this), { passive: true });
   }
 
@@ -136,7 +142,7 @@ export default class MobileNav {
     );
 
     // Prevent focus entering menu when closed
-    this.elements.menu.addEventListener('focusin', (e) => {
+    this.elements.menu.addEventListener('focusin', e => {
       if (!this.isOpen) {
         e.preventDefault();
         this.elements.toggle.focus();
@@ -147,7 +153,7 @@ export default class MobileNav {
   setupProgressiveEnhancement() {
     // Add enhanced classes for CSS targeting
     document.documentElement.classList.add('js-mobile-nav');
-    
+
     // Remove CSS-only fallback styles
     const style = document.createElement('style');
     style.textContent = `
@@ -164,7 +170,7 @@ export default class MobileNav {
   handleToggle(event) {
     event.preventDefault();
     event.stopPropagation();
-    
+
     if (this.isOpen) {
       this.close();
     } else {
@@ -186,7 +192,7 @@ export default class MobileNav {
   handleMenuItemClick(event) {
     const link = event.currentTarget;
     const href = link.getAttribute('href');
-    
+
     // If it's an anchor link, allow default behavior and close menu
     if (href && href.startsWith('#')) {
       setTimeout(() => this.close(), 100);
@@ -246,10 +252,10 @@ export default class MobileNav {
   handleTouchEnd(event) {
     const touchEndX = event.changedTouches[0].clientX;
     const touchEndY = event.changedTouches[0].clientY;
-    
+
     const deltaX = this.touchStartX - touchEndX;
     const deltaY = Math.abs(this.touchStartY - touchEndY);
-    
+
     // Only process horizontal swipes (not vertical scrolling)
     if (deltaY < this.swipeThreshold && Math.abs(deltaX) > this.swipeThreshold) {
       if (deltaX > 0) {
@@ -272,10 +278,10 @@ export default class MobileNav {
 
     const touchEndX = event.changedTouches[0].clientX;
     const touchEndY = event.changedTouches[0].clientY;
-    
+
     const deltaX = touchEndX - this.touchStartX;
     const deltaY = Math.abs(touchEndY - this.touchStartY);
-    
+
     // Open menu with right swipe from edge
     if (deltaY < this.swipeThreshold && deltaX > this.swipeThreshold) {
       this.open();
@@ -291,7 +297,7 @@ export default class MobileNav {
     // Add classes for animation
     this.elements.body.classList.add('mobile-menu-open');
     this.elements.menu.classList.add('active');
-    
+
     if (this.elements.overlay) {
       this.elements.overlay.classList.add('active');
     }
@@ -326,7 +332,7 @@ export default class MobileNav {
     // Remove classes
     this.elements.body.classList.remove('mobile-menu-open');
     this.elements.menu.classList.remove('active');
-    
+
     if (this.elements.overlay) {
       this.elements.overlay.classList.remove('active');
     }
@@ -390,9 +396,9 @@ export default class MobileNav {
     announcement.setAttribute('aria-atomic', 'true');
     announcement.classList.add('sr-only');
     announcement.textContent = message;
-    
+
     document.body.appendChild(announcement);
-    
+
     setTimeout(() => {
       document.body.removeChild(announcement);
     }, 1000);
@@ -402,7 +408,7 @@ export default class MobileNav {
     if (window.gtag) {
       window.gtag('event', action, {
         event_category: 'navigation',
-        event_label: 'mobile_menu'
+        event_label: 'mobile_menu',
       });
     }
   }
@@ -425,13 +431,13 @@ export default class MobileNav {
     this.elements.toggle?.removeEventListener('click', this.handleToggle);
     this.elements.close?.removeEventListener('click', this.handleClose);
     this.elements.overlay?.removeEventListener('click', this.handleOverlayClick);
-    
+
     this.elements.menuItems.forEach(item => {
       item.removeEventListener('click', this.handleMenuItemClick);
     });
 
     document.removeEventListener('keydown', this.handleKeyDown);
-    
+
     // Remove enhanced classes
     document.documentElement.classList.remove('js-mobile-nav');
     this.elements.menu.classList.remove('mobile-nav-enhanced');

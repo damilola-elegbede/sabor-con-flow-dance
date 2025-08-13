@@ -1,0 +1,314 @@
+{% load static %}
+{# Calendly Booking Widget Component - SPEC_05 Group A Task 1 #}
+{# 
+    Usage: {% include 'components/calendly_widget.html' with type='inline'|'popup'|'badge' url='calendly_url' prefill=prefill_data text='button_text' %}
+    
+    Parameters:
+    - type: 'inline', 'popup', or 'badge' (default: 'inline')
+    - url: Calendly URL (uses CALENDLY_URL setting if not provided)
+    - prefill: Dict with prefill data (name, email, etc.)
+    - text: Button text for popup/badge types
+    - height: Height for inline widget (default: 630)
+    - hide_gdpr_banner: Hide GDPR banner (default: true)
+    - hide_landing_page_details: Hide landing page details (default: false)
+    - background_color: Background color override
+    - text_color: Text color override
+    - primary_color: Primary button color override
+#}
+
+{# Set default values #}
+{% with widget_type=type|default:'inline' %}
+{% with calendly_url=url|default:'https://calendly.com/saborconflowdance' %}
+{% with widget_height=height|default:630 %}
+{% with button_text=text|default:'Schedule a Lesson' %}
+{% with hide_gdpr=hide_gdpr_banner|default:true %}
+{% with hide_details=hide_landing_page_details|default:false %}
+
+{# Calendly CSS is preloaded in base.html for performance #}
+
+<div class="calendly-widget-container" 
+     data-widget-type="{{ widget_type }}"
+     data-calendly-url="{{ calendly_url }}"
+     {% if prefill %}data-prefill="{{ prefill|safe }}"{% endif %}>
+     
+    {% if widget_type == 'inline' %}
+        {# Inline Calendly Widget #}
+        <div class="calendly-inline-widget" 
+             id="calendly-widget-{{ forloop.counter0|default:'0' }}"
+             data-url="{{ calendly_url }}"
+             data-height="{{ widget_height }}"
+             data-hide-gdpr-banner="{{ hide_gdpr|yesno:'true,false' }}"
+             data-hide-landing-page-details="{{ hide_details|yesno:'true,false' }}"
+             {% if background_color %}data-background-color="{{ background_color }}"{% endif %}
+             {% if text_color %}data-text-color="{{ text_color }}"{% endif %}
+             {% if primary_color %}data-primary-color="{{ primary_color }}"{% endif %}
+             style="min-width:320px; height:{{ widget_height }}px; background: #000000;">
+            
+            {# Loading state with Sabor con Flow branding #}
+            <div class="calendly-loading-state" id="calendly-loading-{{ forloop.counter0|default:'0' }}">
+                <div class="calendly-spinner">
+                    <div class="spinner-ring"></div>
+                </div>
+                <p class="loading-text">Loading booking calendar...</p>
+                <p class="loading-subtext">Powered by Sabor con Flow Dance</p>
+            </div>
+            
+            {# Fallback content if JavaScript is disabled #}
+            <noscript>
+                <div class="calendly-fallback">
+                    <h3>Schedule Your Dance Lesson</h3>
+                    <p>JavaScript is required to use our booking system. Please enable JavaScript or visit our Calendly page directly:</p>
+                    <a href="{{ calendly_url }}" 
+                       target="_blank" 
+                       rel="noopener noreferrer"
+                       class="btn btn-primary calendly-fallback-link">
+                        Open Calendly in New Tab
+                    </a>
+                </div>
+            </noscript>
+        </div>
+        
+    {% elif widget_type == 'popup' %}
+        {# Popup Calendly Widget #}
+        <button class="calendly-popup-button btn btn-primary"
+                data-url="{{ calendly_url }}"
+                data-hide-gdpr-banner="{{ hide_gdpr|yesno:'true,false' }}"
+                data-hide-landing-page-details="{{ hide_details|yesno:'true,false' }}"
+                {% if background_color %}data-background-color="{{ background_color }}"{% endif %}
+                {% if text_color %}data-text-color="{{ text_color }}"{% endif %}
+                {% if primary_color %}data-primary-color="{{ primary_color }}"{% endif %}
+                type="button"
+                aria-label="Open booking calendar">
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+            {{ button_text }}
+        </button>
+        
+    {% elif widget_type == 'badge' %}
+        {# Badge/Float Calendly Widget - Will be initialized by JavaScript #}
+        <div class="calendly-badge-widget"
+             data-url="{{ calendly_url }}"
+             data-text="{{ button_text }}"
+             data-color="#C7B375"
+             data-text-color="#000000"
+             data-branding="true"
+             data-hide-gdpr-banner="{{ hide_gdpr|yesno:'true,false' }}"
+             style="display: none;">
+        </div>
+    {% endif %}
+</div>
+
+{# Widget Styles - Sabor con Flow Branded #}
+<style>
+    .calendly-widget-container {
+        position: relative;
+        width: 100%;
+        margin: 0 auto;
+    }
+    
+    /* Inline Widget Styles */
+    .calendly-inline-widget {
+        position: relative;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        background: #000000;
+        min-height: 630px;
+    }
+    
+    /* Loading State */
+    .calendly-loading-state {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+        color: #C7B375;
+        z-index: 1;
+        transition: opacity 0.3s ease-out;
+    }
+    
+    .calendly-loading-state.hidden {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    /* Spinner Animation */
+    .calendly-spinner {
+        position: relative;
+        margin-bottom: 24px;
+    }
+    
+    .spinner-ring {
+        width: 48px;
+        height: 48px;
+        border: 3px solid rgba(199, 179, 117, 0.2);
+        border-top: 3px solid #C7B375;
+        border-radius: 50%;
+        animation: calendly-spin 1s linear infinite;
+    }
+    
+    @keyframes calendly-spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    .loading-text {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin: 0 0 8px 0;
+        color: #C7B375;
+    }
+    
+    .loading-subtext {
+        font-size: 0.9rem;
+        margin: 0;
+        opacity: 0.8;
+        color: #BFAA65;
+    }
+    
+    /* Popup Button Styles */
+    .calendly-popup-button {
+        background: linear-gradient(135deg, #C7B375 0%, #BFAA65 100%);
+        color: #000000;
+        border: none;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 2px 8px rgba(199, 179, 117, 0.3);
+    }
+    
+    .calendly-popup-button:hover {
+        background: linear-gradient(135deg, #BFAA65 0%, #9C8E5A 100%);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(199, 179, 117, 0.4);
+    }
+    
+    .calendly-popup-button:active {
+        transform: translateY(0);
+    }
+    
+    .calendly-popup-button:focus {
+        outline: 2px solid #C7B375;
+        outline-offset: 2px;
+    }
+    
+    /* Fallback Styles */
+    .calendly-fallback {
+        text-align: center;
+        padding: 40px 20px;
+        background: #000000;
+        color: #C7B375;
+        border-radius: 8px;
+    }
+    
+    .calendly-fallback h3 {
+        color: #C7B375;
+        margin-bottom: 16px;
+        font-family: var(--font-heading, 'Playfair Display', serif);
+    }
+    
+    .calendly-fallback p {
+        margin-bottom: 24px;
+        color: #FFFFFF;
+        line-height: 1.6;
+    }
+    
+    .calendly-fallback-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: #C7B375;
+        color: #000000;
+        padding: 12px 24px;
+        text-decoration: none;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background-color 0.3s ease;
+    }
+    
+    .calendly-fallback-link:hover {
+        background: #BFAA65;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .calendly-inline-widget {
+            min-height: 600px;
+            border-radius: 0;
+        }
+        
+        .calendly-popup-button {
+            width: 100%;
+            justify-content: center;
+        }
+        
+        .loading-text {
+            font-size: 1rem;
+        }
+        
+        .loading-subtext {
+            font-size: 0.8rem;
+        }
+    }
+    
+    @media (max-width: 480px) {
+        .calendly-inline-widget {
+            min-height: 550px;
+        }
+        
+        .calendly-loading-state {
+            padding: 20px;
+        }
+        
+        .spinner-ring {
+            width: 40px;
+            height: 40px;
+            border-width: 2px;
+        }
+    }
+    
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+        .calendly-popup-button {
+            border: 2px solid #000000;
+        }
+        
+        .calendly-loading-state {
+            background: #000000;
+            border: 1px solid #C7B375;
+        }
+    }
+    
+    /* Reduced motion support */
+    @media (prefers-reduced-motion: reduce) {
+        .spinner-ring {
+            animation: none;
+        }
+        
+        .calendly-popup-button {
+            transition: none;
+        }
+        
+        .calendly-loading-state {
+            transition: none;
+        }
+    }
+</style>
+
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}
+{% endwith %}

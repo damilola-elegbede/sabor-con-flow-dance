@@ -1,0 +1,407 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Offline - Sabor Con Flow Dance{% endblock title %}
+
+{% block meta_description %}You're currently offline. Some features may be limited, but you can still browse cached content.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .offline-container {
+        min-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: var(--spacing-2xl);
+    }
+    
+    .offline-icon {
+        font-size: 4rem;
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-xl);
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+    
+    .offline-title {
+        font-size: 2.5rem;
+        margin-bottom: var(--spacing-lg);
+        color: var(--color-black);
+    }
+    
+    .offline-message {
+        font-size: 1.2rem;
+        color: var(--color-gray-medium);
+        margin-bottom: var(--spacing-2xl);
+        max-width: 600px;
+        line-height: 1.6;
+    }
+    
+    .offline-features {
+        background: var(--color-gray-lighter);
+        border-radius: 8px;
+        padding: var(--spacing-xl);
+        margin: var(--spacing-2xl) 0;
+        max-width: 500px;
+    }
+    
+    .offline-features h3 {
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .offline-feature-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .offline-feature-list li {
+        padding: var(--spacing-sm) 0;
+        display: flex;
+        align-items: center;
+        color: var(--color-gray-dark);
+    }
+    
+    .offline-feature-list li::before {
+        content: '✓';
+        color: var(--color-gold);
+        font-weight: bold;
+        margin-right: var(--spacing-md);
+    }
+    
+    .retry-button {
+        background: var(--color-gold);
+        color: var(--color-black);
+        border: none;
+        padding: var(--spacing-md) var(--spacing-xl);
+        border-radius: 4px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        font-size: 1.1rem;
+    }
+    
+    .retry-button:hover {
+        background: var(--color-gold-dark);
+        color: var(--color-white);
+        transform: translateY(-2px);
+    }
+    
+    .retry-button:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+    }
+    
+    .connection-status {
+        display: inline-flex;
+        align-items: center;
+        padding: var(--spacing-sm) var(--spacing-md);
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin-top: var(--spacing-lg);
+    }
+    
+    .connection-status.offline {
+        background: rgba(239, 68, 68, 0.1);
+        color: #DC2626;
+    }
+    
+    .connection-status.online {
+        background: rgba(16, 185, 129, 0.1);
+        color: #059669;
+    }
+    
+    .connection-indicator {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        margin-right: var(--spacing-sm);
+    }
+    
+    .connection-indicator.offline {
+        background: #DC2626;
+    }
+    
+    .connection-indicator.online {
+        background: #059669;
+    }
+    
+    .cached-content {
+        margin-top: var(--spacing-2xl);
+        text-align: left;
+        max-width: 600px;
+    }
+    
+    .cached-content h3 {
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-lg);
+        text-align: center;
+    }
+    
+    .cached-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: var(--spacing-md);
+        margin-top: var(--spacing-lg);
+    }
+    
+    .cached-link {
+        display: block;
+        padding: var(--spacing-md);
+        background: white;
+        border: 1px solid var(--color-gray-lighter);
+        border-radius: 4px;
+        text-decoration: none;
+        color: var(--color-black);
+        transition: all var(--transition-base);
+    }
+    
+    .cached-link:hover {
+        border-color: var(--color-gold);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .cached-link-title {
+        font-weight: 600;
+        margin-bottom: var(--spacing-xs);
+        color: var(--color-gold);
+    }
+    
+    .cached-link-desc {
+        font-size: 0.9rem;
+        color: var(--color-gray-medium);
+    }
+    
+    @media (max-width: 768px) {
+        .offline-container {
+            padding: var(--spacing-xl) var(--spacing-md);
+        }
+        
+        .offline-title {
+            font-size: 2rem;
+        }
+        
+        .offline-message {
+            font-size: 1.1rem;
+        }
+        
+        .cached-links {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="offline-container">
+    <div class="offline-icon">
+        <i class="fas fa-wifi" id="connection-icon"></i>
+    </div>
+    
+    <h1 class="offline-title">You're Offline</h1>
+    
+    <p class="offline-message">
+        Don't worry! While you're offline, you can still browse previously visited pages and access cached content. 
+        Your dance journey doesn't have to stop.
+    </p>
+    
+    <div class="connection-status offline" id="connection-status">
+        <div class="connection-indicator offline" id="connection-indicator"></div>
+        <span id="connection-text">No Internet Connection</span>
+    </div>
+    
+    <div class="offline-features">
+        <h3>Available Offline</h3>
+        <ul class="offline-feature-list">
+            <li>Browse previously visited pages</li>
+            <li>View cached class schedules</li>
+            <li>Access pricing information</li>
+            <li>Read instructor profiles</li>
+            <li>View photo gallery (cached images)</li>
+            <li>Submit forms (synced when online)</li>
+        </ul>
+    </div>
+    
+    <button class="retry-button" id="retry-button" onclick="checkConnection()">
+        <i class="fas fa-sync-alt" id="retry-icon"></i>
+        Check Connection
+    </button>
+    
+    <div class="cached-content">
+        <h3>Available Pages</h3>
+        <div class="cached-links">
+            <a href="{% url 'core:home' %}" class="cached-link">
+                <div class="cached-link-title">
+                    <i class="fas fa-home"></i> Home
+                </div>
+                <div class="cached-link-desc">
+                    Return to the main page
+                </div>
+            </a>
+            
+            <a href="{% url 'core:schedule' %}" class="cached-link">
+                <div class="cached-link-title">
+                    <i class="fas fa-calendar"></i> Class Schedule
+                </div>
+                <div class="cached-link-desc">
+                    View weekly dance classes
+                </div>
+            </a>
+            
+            <a href="{% url 'core:pricing' %}" class="cached-link">
+                <div class="cached-link-title">
+                    <i class="fas fa-dollar-sign"></i> Pricing
+                </div>
+                <div class="cached-link-desc">
+                    Class packages and rates
+                </div>
+            </a>
+            
+            <a href="{% url 'core:instructors' %}" class="cached-link">
+                <div class="cached-link-title">
+                    <i class="fas fa-users"></i> Instructors
+                </div>
+                <div class="cached-link-desc">
+                    Meet our dance teachers
+                </div>
+            </a>
+            
+            <a href="{% url 'core:events' %}" class="cached-link">
+                <div class="cached-link-title">
+                    <i class="fas fa-music"></i> Events
+                </div>
+                <div class="cached-link-desc">
+                    Upcoming dance events
+                </div>
+            </a>
+            
+            <a href="{% url 'core:contact' %}" class="cached-link">
+                <div class="cached-link-title">
+                    <i class="fas fa-envelope"></i> Contact
+                </div>
+                <div class="cached-link-desc">
+                    Get in touch with us
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const connectionStatus = document.getElementById('connection-status');
+    const connectionIndicator = document.getElementById('connection-indicator');
+    const connectionText = document.getElementById('connection-text');
+    const connectionIcon = document.getElementById('connection-icon');
+    const retryButton = document.getElementById('retry-button');
+    const retryIcon = document.getElementById('retry-icon');
+    
+    function updateConnectionStatus() {
+        const isOnline = navigator.onLine;
+        
+        if (isOnline) {
+            connectionStatus.className = 'connection-status online';
+            connectionIndicator.className = 'connection-indicator online';
+            connectionText.textContent = 'Connection Restored';
+            connectionIcon.className = 'fas fa-wifi';
+            
+            // Show success message and redirect
+            setTimeout(() => {
+                window.location.href = '{% url "core:home" %}';
+            }, 2000);
+        } else {
+            connectionStatus.className = 'connection-status offline';
+            connectionIndicator.className = 'connection-indicator offline';
+            connectionText.textContent = 'No Internet Connection';
+            connectionIcon.className = 'fas fa-wifi-slash';
+        }
+    }
+    
+    function checkConnection() {
+        retryButton.disabled = true;
+        retryIcon.style.animation = 'spin 1s linear infinite';
+        
+        // Simple connectivity check
+        fetch('/', { method: 'HEAD', cache: 'no-cache' })
+            .then(() => {
+                updateConnectionStatus();
+            })
+            .catch(() => {
+                // Still offline
+                setTimeout(() => {
+                    retryButton.disabled = false;
+                    retryIcon.style.animation = '';
+                }, 1000);
+            });
+    }
+    
+    // Make checkConnection globally available
+    window.checkConnection = checkConnection;
+    
+    // Listen for online/offline events
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
+    
+    // Initial status check
+    updateConnectionStatus();
+    
+    // Auto-retry every 30 seconds
+    setInterval(() => {
+        if (!navigator.onLine && !retryButton.disabled) {
+            checkConnection();
+        }
+    }, 30000);
+    
+    // Service Worker communication
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.addEventListener('message', event => {
+            if (event.data.type === 'CACHE_UPDATED') {
+                // Show notification that new content is cached
+                const notification = document.createElement('div');
+                notification.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    background: var(--color-gold);
+                    color: var(--color-black);
+                    padding: 12px 20px;
+                    border-radius: 4px;
+                    z-index: 1000;
+                    animation: slideInRight 0.3s ease-out;
+                `;
+                notification.innerHTML = '<i class="fas fa-check"></i> Content cached for offline use';
+                document.body.appendChild(notification);
+                
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+        });
+    }
+});
+
+// Add spin animation for retry icon
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+    
+    @keyframes slideInRight {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+`;
+document.head.appendChild(style);
+</script>
+{% endblock content %}

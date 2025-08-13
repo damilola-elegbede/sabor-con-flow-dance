@@ -1,0 +1,1 @@
+{"version":3,"file":"950.4802ff07.js","mappings":"wJACe,MAAMA,EACnB,WAAOC,GAEP,E","sources":["webpack://sabor-con-flow-dance/./src/js/features/contact-form.js"],"sourcesContent":["// Contact Form module placeholder\nexport default class ContactForm {\n  static init() {\n    console.log('Contact Form module initialized');\n  }\n}\n"],"names":["ContactForm","init"],"sourceRoot":""}

@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-env browser */
+
 /**
  * Critical CSS Extraction Script
  * 
@@ -79,7 +81,7 @@ async function extractCriticalCSS(browser, viewport) {
     let criticalCSS = '';
     
     for (const entry of cssCoverage) {
-      let css = entry.text;
+      const css = entry.text;
       
       // Only process internal stylesheets (not external CDN resources)
       if (entry.url && (entry.url.includes('localhost') || entry.url.includes(config.url))) {
@@ -189,7 +191,7 @@ function mergeCriticalCSS(criticalCSSResults) {
 function optimizeCriticalCSS(css) {
   return css
     // Remove comments
-    .replace(/\\/\\*[\\s\\S]*?\\*\\//g, '')
+    .replace(/\/\*[\s\S]*?\*\//g, '')
     // Remove extra whitespace
     .replace(/\\s+/g, ' ')
     // Remove whitespace around brackets and semicolons
@@ -328,7 +330,7 @@ async function main() {
     }
     
     // Save critical CSS files
-    const saveResult = await saveCriticalCSS(mergedCSS, totalSize);
+    const _saveResult = await saveCriticalCSS(mergedCSS, totalSize);
     
     // Generate inline template
     const minifiedCSS = optimizeCriticalCSS(mergedCSS);

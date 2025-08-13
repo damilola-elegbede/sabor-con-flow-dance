@@ -17,7 +17,7 @@ class WebpackManifestPlugin {
       map: null,
       generate: null,
       sort: null,
-      ...options
+      ...options,
     };
   }
 
@@ -25,21 +25,21 @@ class WebpackManifestPlugin {
     const emit = (compilation, callback) => {
       const manifest = this.generateManifest(compilation);
       const manifestJson = JSON.stringify(manifest, null, 2);
-      
+
       // Write to output directory
       const outputPath = path.join(compilation.outputOptions.path, this.options.fileName);
       fs.writeFileSync(outputPath, manifestJson);
-      
+
       // Also write to Django static directory for development
       const djangoStaticPath = path.join(__dirname, '../static/js/dist', this.options.fileName);
       const djangoStaticDir = path.dirname(djangoStaticPath);
-      
+
       if (!fs.existsSync(djangoStaticDir)) {
         fs.mkdirSync(djangoStaticDir, { recursive: true });
       }
-      
+
       fs.writeFileSync(djangoStaticPath, manifestJson);
-      
+
       console.log('✅ Webpack manifest generated:', this.options.fileName);
       callback();
     };
@@ -63,7 +63,7 @@ class WebpackManifestPlugin {
       modules: false,
       source: false,
       errorDetails: false,
-      timings: false
+      timings: false,
     });
 
     // Process main assets
@@ -78,13 +78,13 @@ class WebpackManifestPlugin {
 
     // Add chunk relationships for better loading
     manifest._chunks = this.getChunkRelationships(compilation);
-    
+
     // Add bundle sizes for performance monitoring
     manifest._sizes = this.getBundleSizes(stats.assets);
-    
+
     // Add webpack hash for cache busting
     manifest._hash = stats.hash;
-    
+
     // Add timestamp
     manifest._timestamp = Date.now();
 
@@ -94,23 +94,24 @@ class WebpackManifestPlugin {
   getChunkName(fileName) {
     // Extract chunk name from filename
     // e.g., "main.abc123.bundle.js" -> "main"
-    const match = fileName.match(/^(.+?)\..*?\.bundle\.(js|css)$/) || 
-                  fileName.match(/^(.+?)\.bundle\.(js|css)$/) ||
-                  fileName.match(/^(.+?)\.(js|css)$/);
-    
+    const match =
+      fileName.match(/^(.+?)\..*?\.bundle\.(js|css)$/) ||
+      fileName.match(/^(.+?)\.bundle\.(js|css)$/) ||
+      fileName.match(/^(.+?)\.(js|css)$/);
+
     return match ? match[1] : null;
   }
 
   getChunkRelationships(compilation) {
     const chunks = {};
-    
+
     compilation.chunks.forEach(chunk => {
       chunks[chunk.name] = {
         id: chunk.id,
         names: chunk.names,
         files: chunk.files,
         parents: Array.from(chunk.getAllAsyncChunks()).map(c => c.name),
-        children: Array.from(chunk.getAllInitialChunks()).map(c => c.name)
+        children: Array.from(chunk.getAllInitialChunks()).map(c => c.name),
       };
     });
 
@@ -119,7 +120,7 @@ class WebpackManifestPlugin {
 
   getBundleSizes(assets) {
     const sizes = {};
-    
+
     assets.forEach(asset => {
       const chunkName = this.getChunkName(asset.name);
       if (chunkName) {

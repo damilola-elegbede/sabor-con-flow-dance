@@ -1,12 +1,131 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Private Lessons - Sabor Con Flow{% endblock %}
+{% block title %}Private Cuban Salsa Lessons - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Personalized Cuban salsa instruction in Boulder. Private lessons from $75-$120/hour. Learn at your own pace with expert instructors.{% endblock %}
+
+{% block meta_keywords %}private salsa lessons Boulder, one-on-one dance instruction, personalized Cuban salsa teaching, private dance tutor Boulder{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'core:private_lessons' %}{% endblock %}
+
+{% block og_title %}Private Cuban Salsa Lessons - Sabor con Flow Dance{% endblock %}
+{% block og_description %}Personalized Cuban salsa instruction in Boulder. Private lessons from $75-$120/hour. Learn at your own pace with expert instructors.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Private Cuban Salsa Lessons - Sabor con Flow Dance",
+  "description": "Personalized Cuban salsa instruction in Boulder. Private lessons from $75-$120/hour. Learn at your own pace with expert instructors.",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'core:private_lessons' %}",
+  "mainEntity": {
+    "@type": "Service",
+    "name": "Private Cuban Salsa Lessons",
+    "provider": {
+      "@type": "Organization",
+      "name": "Sabor Con Flow Dance"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Single Private Lesson",
+        "description": "One-hour private Cuban salsa instruction",
+        "price": "120",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      },
+      {
+        "@type": "Offer", 
+        "name": "3-Hour Private Package",
+        "description": "Package of 3 one-hour private lessons",
+        "price": "300",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "Price per hour",
+          "value": "$100"
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "5+ Hour Private Package", 
+        "description": "Package of 5 or more private lessons",
+        "price": "375",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "Price per hour",
+          "value": "$75"
+        }
+      }
+    ],
+    "serviceType": "Private Dance Instruction",
+    "areaServed": {
+      "@type": "Place",
+      "name": "Boulder, Colorado"
+    }
+  }
+}
+</script>
+{% endblock %}
 
 {% block extra_css %}
-<!-- Calendly badge widget begin -->
-<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-<!-- Calendly badge widget end -->
+<!-- Calendly widget styles are preloaded in base.html for performance -->
+<style>
+    .private-lessons-booking {
+        margin: 3rem 0;
+        padding: 2rem;
+        background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+        border-radius: 12px;
+        border: 1px solid #C7B375;
+    }
+    
+    .booking-section-title {
+        color: #C7B375;
+        font-family: var(--font-heading, 'Playfair Display', serif);
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        text-align: center;
+    }
+    
+    .booking-description {
+        color: #FFFFFF;
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .booking-options {
+        display: grid;
+        gap: 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    @media (min-width: 768px) {
+        .booking-options {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+    
+    .booking-option {
+        text-align: center;
+    }
+    
+    .booking-option h4 {
+        color: #C7B375;
+        margin-bottom: 0.5rem;
+    }
+    
+    .booking-option p {
+        color: #FFFFFF;
+        margin-bottom: 1rem;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -58,14 +177,80 @@
     
     <div class="pricing-note">
         <p><strong>Note:</strong> Private lessons are available by appointment.</p>
-        <p>Click on the button on the bottom right to schedule your personalized session.</p>
-        
-        <!-- Calendly badge widget begin -->
-        <script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
-        <script type="text/javascript">window.onload = function() { Calendly.initBadgeWidget({ url: 'https://calendly.com/saborconflowdance', text: 'Schedule time with me', color: '#BFAA65', textColor: '#000000', branding: true }); }</script>
-        <!-- Calendly badge widget end -->
-        
-        <p>For more information, visit our <a href="{% url 'core:contact' %}" style="color: #C7B375; text-decoration: none;">Contact page</a> or reach out via WhatsApp.</p>
+        <p>Choose your preferred way to book below, or visit our <a href="{% url 'core:contact' %}" style="color: #C7B375; text-decoration: none;">Contact page</a> for more information.</p>
     </div>
+    
+    <!-- Enhanced Calendly Booking Section -->
+    <div class="private-lessons-booking">
+        <h3 class="booking-section-title">Book Your Private Lesson</h3>
+        <p class="booking-description">
+            Ready to accelerate your dance journey? Book your personalized Cuban salsa lesson now. 
+            Choose your preferred time and let's dance!
+        </p>
+        
+        <div class="booking-options">
+            <div class="booking-option">
+                <h4>Quick Booking</h4>
+                <p>Open our calendar in a popup window</p>
+                {% include 'components/calendly_widget.html' with type='popup' text='Book Now - Popup' %}
+            </div>
+            
+            <div class="booking-option">
+                <h4>Browse Schedule</h4>
+                <p>View full calendar inline below</p>
+                <button class="btn btn-outline" onclick="document.getElementById('inline-calendar').scrollIntoView({behavior: 'smooth'})">
+                    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+                    View Full Calendar
+                </button>
+            </div>
+        </div>
+        
+        <!-- Inline Calendar Widget -->
+        <div id="inline-calendar">
+            {% include 'components/calendly_widget.html' with type='inline' height=650 %}
+        </div>
+    </div>
+    
+    <!-- Badge Widget for Persistent Access -->
+    {% include 'components/calendly_widget.html' with type='badge' text='Schedule Private Lesson' %}
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Calendly Integration JavaScript -->
+<script src="{% static 'js/calendly.js' %}" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Track private lesson page visits
+    if (typeof gtag === 'function') {
+        gtag('event', 'page_view', {
+            'page_title': 'Private Lessons',
+            'page_location': window.location.href
+        });
+    }
+    
+    // Add URL prefill support for private lessons
+    const urlParams = new URLSearchParams(window.location.search);
+    const lessonType = urlParams.get('lesson_type');
+    const experience = urlParams.get('experience');
+    
+    if (lessonType || experience) {
+        console.log('Prefill data detected:', { lessonType, experience });
+    }
+    
+    // Listen for Calendly events specific to private lessons
+    document.addEventListener('calendly:booking_completed', function(event) {
+        console.log('Private lesson booking completed!', event.detail);
+        
+        // Track private lesson conversion
+        if (typeof gtag === 'function') {
+            gtag('event', 'conversion', {
+                'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
+                'event_category': 'private_lessons',
+                'event_label': 'booking_completed'
+            });
+        }
+    });
+});
+</script>
 {% endblock %} 

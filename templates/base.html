@@ -1,101 +1,483 @@
 {% load static %}
+{% load responsive_images %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Sabor Con Flow{% endblock %}</title>
-    <!-- Favicon configuration -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <title>{% block title %}Sabor Con Flow Dance{% endblock title %}</title>
+    
+    <!-- DNS Prefetch and Preconnect for performance -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//assets.calendly.com">
+    <link rel="dns-prefetch" href="//www.googletagmanager.com">
+    <link rel="dns-prefetch" href="//www.google-analytics.com">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    
+    {% block meta_tags %}
+    <meta name="description" content="{% block meta_description %}Sabor Con Flow Dance - Your premier destination for dance classes and events{% endblock %}">
+    <meta name="keywords" content="{% block meta_keywords %}dance, salsa, bachata, dance classes, dance events, Boulder, Cuban salsa, casino{% endblock %}">
+    <meta name="author" content="Sabor Con Flow Dance">
+    <meta name="theme-color" content="#C7B375">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="{% block og_title %}Sabor Con Flow Dance{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}Sabor Con Flow Dance - Your premier destination for dance classes and events{% endblock %}">
+    <meta property="og:type" content="{% block og_type %}website{% endblock %}">
+    <meta property="og:url" content="{% block og_url %}{{ request.build_absolute_uri }}{% endblock %}">
+    <meta property="og:image" content="{% block og_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/sabor-con-flow-logo.png' %}{% endblock %}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Sabor Con Flow Dance">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}Sabor Con Flow Dance{% endblock %}">
+    <meta name="twitter:description" content="{% block twitter_description %}Sabor Con Flow Dance - Your premier destination for dance classes and events{% endblock %}">
+    <meta name="twitter:image" content="{% block twitter_image %}{{ request.scheme }}://{{ request.get_host }}{% static 'images/sabor-con-flow-logo.png' %}{% endblock %}">
+    
+    <!-- Local Business Schema.org Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "DanceGroup",
+      "name": "Sabor Con Flow Dance",
+      "alternateName": "SCF Dance",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      "logo": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/sabor-con-flow-logo.png' %}",
+      "image": "{{ request.scheme }}://{{ request.get_host }}{% static 'images/sabor-con-flow-logo.png' %}",
+      "description": "Premier Cuban salsa dance studio in Boulder offering Sunday classes for all skill levels. Join our passionate community of dancers.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Avalon Ballroom",
+        "addressLocality": "Boulder",
+        "addressRegion": "CO",
+        "addressCountry": "US"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "40.0150",
+        "longitude": "-105.2705"
+      },
+      "telephone": "(555) 123-4567",
+      "email": "info@saborconflow.com",
+      "sameAs": [
+        "https://www.facebook.com/profile.php?id=61575502290591",
+        "https://www.instagram.com/saborconflow.dance/",
+        "https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x"
+      ],
+      "openingHours": "Su 12:00-15:00",
+      "priceRange": "$20-$120",
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Dance Classes",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Drop-in Class",
+              "description": "Single Cuban salsa dance class"
+            },
+            "price": "20",
+            "priceCurrency": "USD"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "4-Class Package",
+              "description": "Package of 4 Cuban salsa dance classes"
+            },
+            "price": "70",
+            "priceCurrency": "USD"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service", 
+              "name": "8-Class Package",
+              "description": "Package of 8 Cuban salsa dance classes"
+            },
+            "price": "120",
+            "priceCurrency": "USD"
+          }
+        ]
+      }
+    }
+    </script>
+    
+    <!-- Page-specific structured data -->
+    {% block structured_data %}{% endblock %}
+    {% endblock meta_tags %}
+    
+    <!-- Favicon configuration with WebP support -->
+    <link rel="icon" type="image/webp" href="{% static 'images/favicon/favicon.webp' %}">
     <link rel="icon" type="image/png" href="{% static 'images/favicon/favicon.png' %}">
     <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sabor-con-flow-logo.png' %}">
     <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/sabor-con-flow-logo.png' %}">
     <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="152x152" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="144x144" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="120x120" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="114x114" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="72x72" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="60x60" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="apple-touch-icon" sizes="57x57" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <meta name="apple-mobile-web-app-title" content="Sabor Con Flow">
+    <meta name="application-name" content="Sabor Con Flow">
+    <meta name="msapplication-TileColor" content="#C7B375">
+    <meta name="msapplication-TileImage" content="{% static 'images/sabor-con-flow-logo.png' %}">
     <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
-    <meta name="theme-color" content="#000000">
-    <!-- End favicon configuration -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link href="{% static 'css/styles.css' %}" rel="stylesheet" type="text/css">
-    <!-- Calendly badge widget begin -->
-    <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
-    <!-- Calendly badge widget end -->
-    {% block extra_css %}{% endblock %}
+    
+    <!-- Preload critical fonts for performance -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"></noscript>
+    
+    <!-- Font Awesome 6.0 - Async Loading for performance -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer"></noscript>
+    
+    <!-- Calendly widget CSS - Lazy Load for performance -->
+    <link rel="preload" href="https://assets.calendly.com/assets/external/widget.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://assets.calendly.com/assets/external/widget.css"></noscript>
+    
+    <!-- SPEC_06 Group A Task 2: Critical CSS Extraction and Optimization -->
+    {% load critical_css_tags %}
+    <style id="critical-css">
+        /* Critical CSS - Inlined for sub-1s first paint performance */
+        {% get_critical_css request.resolver_match.url_name|default:'home' %}
+    </style>
+    
+    <!-- Critical CSS Performance Monitoring -->
+    <script>
+        // Mark critical CSS as loaded for performance tracking
+        window.criticalCSSStartTime = performance.now();
+        document.documentElement.classList.add('critical-css-loaded');
+    </script>
+    
+    <!-- SPEC_06 Group A Task 2: Optimized Async CSS Loading -->
+    <!-- Preload high-priority CSS -->
+    <link rel="preload" href="{% static 'css/navigation.css' %}" as="style" importance="high">
+    <link rel="preload" href="{% static 'css/hero.css' %}" as="style" importance="high">
+    
+    <!-- Preload medium-priority CSS -->
+    <link rel="preload" href="{% static 'css/styles.css' %}" as="style" importance="medium">
+    <link rel="preload" href="{% static 'css/forms.css' %}" as="style" importance="medium">
+    <link rel="preload" href="{% static 'css/image-optimization.css' %}" as="style" importance="medium">
+    
+    <!-- Async CSS Loading with Performance Optimization -->
+    <script>
+        {% get_async_css_loader %}
+    </script>
+    
+    <!-- Fallback CSS loading for browsers without JavaScript -->
+    <noscript>
+        <link rel="stylesheet" href="{% static 'css/navigation.css' %}">
+        <link rel="stylesheet" href="{% static 'css/hero.css' %}">
+        <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+        <link rel="stylesheet" href="{% static 'css/forms.css' %}">
+        <link rel="stylesheet" href="{% static 'css/image-optimization.css' %}">
+        <link rel="stylesheet" href="{% static 'css/whatsapp.css' %}">
+        <link rel="stylesheet" href="{% static 'css/social_links.css' %}">
+    </noscript>
+    
+    <!-- WCAG 2.1 AA Accessibility Enhancements - SPEC_06 Group C Task 8 -->
+    <link rel="preload" href="{% static 'css/accessibility.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="{% static 'css/accessibility.css' %}"></noscript>
+    
+    <!-- Enhanced CSS Loading with Performance Monitoring -->
+    <script>
+    /*! Enhanced loadCSS with performance tracking - SPEC_04 Group D */
+    !function(e){"use strict";var t=function(t,n,r,o){var i,a=e.document,d=a.createElement("link");if(n)i=n;else{var f=(a.body||a.getElementsByTagName("head")[0]).childNodes;i=f[f.length-1]}var l=a.styleSheets;if(o)for(var c in o)o.hasOwnProperty(c)&&d.setAttribute(c,o[c]);d.rel="stylesheet",d.href=t,d.media="only x";var startTime=performance.now();function e(t){if(a.body)return t();setTimeout(function(){e(t)})}(function(){i.parentNode.insertBefore(d,n?i:i.nextSibling)});var s=function(e){for(var t=d.href,n=l.length;n--;)if(l[n].href===t)return e();setTimeout(function(){s(e)})};function u(){d.addEventListener&&d.removeEventListener("load",u),d.media=r||"all";var loadTime=performance.now()-startTime;console.log('CSS loaded:',t,'in',loadTime+'ms');if(window.performanceAnalytics){window.performanceAnalytics.addCustomEvent('css_load',{url:t,loadTime:loadTime});}}return d.addEventListener&&d.addEventListener("load",u),d.onloadcssdefined=s,s(u),d};"undefined"!=typeof exports?exports.loadCSS=t:e.loadCSS=t}("undefined"!=typeof global?global:this);
+    
+    // WebP Detection for advanced lazy loading
+    (function(){
+        var webP=new Image();webP.onload=webP.onerror=function(){document.documentElement.classList.add(webP.height===2?'webp':'no-webp');};webP.src='data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+    })();
+    
+    // Network Information API detection
+    (function(){
+        if('connection'in navigator){var c=navigator.connection;document.documentElement.classList.add('connection-'+c.effectiveType);if(c.saveData){document.documentElement.classList.add('save-data');}}
+    })();
+    </script>
+    
+    {% block extra_css %}
+    <!-- Additional CSS files or styles go here -->
+    {% endblock extra_css %}
+    
+    <!-- Advanced Resource Hints for Performance -->
+    <link rel="preload" href="{% static 'css/styles.css' %}" as="style" importance="high">
+    <link rel="preload" href="{% static 'js/advanced-lazy-load.js' %}" as="script" importance="high">
+    <link rel="preload" href="{% static 'js/performance-analytics.js' %}" as="script" importance="medium">
+    
+    <!-- Preload critical images with WebP support -->
+    <link rel="preload" href="{% static 'images/sabor-con-flow-logo.webp' %}" as="image" type="image/webp" importance="high">
+    <link rel="preload" href="{% static 'images/sabor-con-flow-logo.png' %}" as="image" type="image/png" importance="medium">
+    
+    <!-- Preconnect to external performance-critical domains -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" importance="high">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" importance="high">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous" importance="medium">
+    
+    <!-- Page-specific preloading -->
+    {% block preload %}
+    {% endblock preload %}
+    
+    <!-- Google Analytics 4 Configuration -->
+    <script>
+        // GA4 Configuration - SPEC_05 Group A Task 3
+        window.GA4_MEASUREMENT_ID = '{{ analytics.ga4_measurement_id|default:"G-DEBUG-MODE" }}';
+        window.GA4_DEBUG_MODE = {{ analytics.ga4_debug_mode|yesno:"true,false" }};
+        window.ENABLE_ANALYTICS = {{ analytics.enable_analytics|yesno:"true,false" }};
+        
+        // Enhanced Ecommerce Configuration
+        window.GA4_ECOMMERCE_CONFIG = {
+            currency: 'USD',
+            business_name: '{{ business_info.name|default:"Sabor Con Flow Dance" }}',
+            business_type: 'Dance Studio',
+            location: '{{ business_info.address|default:"Boulder, CO" }}',
+            pricing: {
+                drop_in: {{ class_pricing.drop_in|default:20 }},
+                package_4: {{ class_pricing.package_4|default:70 }},
+                package_8: {{ class_pricing.package_8|default:120 }},
+                private_lesson: {{ class_pricing.private_lesson|default:80 }},
+                workshop: {{ class_pricing.workshop|default:30 }}
+            }
+        };
+        
+        // Privacy and GDPR Configuration
+        window.GA4_PRIVACY_CONFIG = {
+            consent_required: true,
+            consent_mode: 'opt-in',
+            anonymize_ip: {{ analytics.anonymize_ip|yesno:"true,false" }},
+            respect_dnt: {{ analytics.respect_dnt|yesno:"true,false" }}
+        };
+    </script>
+    
+    <!-- Preload analytics script for performance -->
+    <link rel="preload" href="{% static 'js/analytics.js' %}" as="script" importance="high">
+    
+    <!-- Service Worker Registration -->
+    <link rel="preload" href="{% static 'js/sw-registration.js' %}" as="script" importance="high">
 </head>
 <body>
-    <header class="header">
-        <button class="menu-toggle" aria-label="Toggle navigation">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <nav class="nav">
-            <a href="{% url 'core:home' %}"><span>Home</span></a>
-            <a href="{% url 'core:events' %}"><span>Events</span></a>
-            <a href="{% url 'core:pricing' %}"><span>Pricing</span></a>
-            <a href="{% url 'core:private_lessons' %}"><span>Private Lessons</span></a>
-            <a href="{% url 'core:contact' %}"><span>Contact</span></a>
-        </nav>
-    </header>
-
-    <main class="main-content">
-        {% block content %}{% endblock %}
+    <!-- Skip Links for Accessibility - WCAG 2.4.1 -->
+    <div class="skip-links">
+        <a href="#main-content" class="skip-link">Skip to main content</a>
+        <a href="#navbar-menu" class="skip-link">Skip to navigation</a>
+        <a href="#footer" class="skip-link">Skip to footer</a>
+    </div>
+    
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container navbar-container">
+            <a href="{% url 'core:home' %}" class="navbar-brand" aria-label="Sabor Con Flow Dance Home">
+                <i class="fas fa-music"></i> Sabor Con Flow
+            </a>
+            
+            <!-- Desktop Menu -->
+            <ul id="navbar-menu" class="navbar-menu" role="menubar">
+                <li role="none"><a href="{% url 'core:home' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %}>Home</a></li>
+                <li role="none"><a href="#about" class="navbar-item" role="menuitem">About</a></li>
+                <li role="none"><a href="#classes" class="navbar-item" role="menuitem">Classes</a></li>
+                <li role="none"><a href="{% url 'core:schedule' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'schedule' %}aria-current="page"{% endif %}>Schedule</a></li>
+                <li role="none"><a href="{% url 'core:events' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'events' %}aria-current="page"{% endif %}>Events</a></li>
+                <li role="none"><a href="{% url 'core:instructors' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'instructors' %}aria-current="page"{% endif %}>Instructors</a></li>
+                <li role="none"><a href="{% url 'core:resources' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'resources' %}aria-current="page"{% endif %}>Resources</a></li>
+                <li role="none"><a href="#gallery" class="navbar-item" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="{% url 'core:pricing' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'pricing' %}aria-current="page"{% endif %}>Pricing</a></li>
+                <li role="none"><a href="{% url 'core:testimonials' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'testimonials' %}aria-current="page"{% endif %}>Testimonials</a></li>
+                <li role="none"><a href="{% url 'core:private_lessons' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'private_lessons' %}aria-current="page"{% endif %}>Private Lessons</a></li>
+                <li role="none"><a href="{% url 'core:contact' %}" class="navbar-item" role="menuitem" {% if request.resolver_match.url_name == 'contact' %}aria-current="page"{% endif %}>Contact</a></li>
+            </ul>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-mobile">
+                <span class="hamburger-line hamburger-line-1"></span>
+                <span class="hamburger-line hamburger-line-2"></span>
+                <span class="hamburger-line hamburger-line-3"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay" aria-hidden="true"></div>
+    
+    <!-- Mobile Menu Container -->
+    <div class="mobile-menu-container" id="navbar-mobile" aria-label="Mobile navigation menu" role="dialog" aria-modal="true" aria-hidden="true">
+            <!-- Close button for accessibility -->
+            <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close navigation menu">
+                <span class="sr-only">Close menu</span>
+                <i class="fas fa-times"></i>
+            </button>
+            
+            <ul class="navbar-mobile-menu" role="menubar">
+                <li role="none"><a href="{% url 'core:home' %}" class="navbar-item" role="menuitem">Home</a></li>
+                <li role="none"><a href="#about" class="navbar-item" role="menuitem">About</a></li>
+                <li role="none"><a href="#classes" class="navbar-item" role="menuitem">Classes</a></li>
+                <li role="none"><a href="{% url 'core:schedule' %}" class="navbar-item" role="menuitem">Schedule</a></li>
+                <li role="none"><a href="{% url 'core:events' %}" class="navbar-item" role="menuitem">Events</a></li>
+                <li role="none"><a href="{% url 'core:instructors' %}" class="navbar-item" role="menuitem">Instructors</a></li>
+                <li role="none"><a href="{% url 'core:resources' %}" class="navbar-item" role="menuitem">Resources</a></li>
+                <li role="none"><a href="#gallery" class="navbar-item" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="{% url 'core:pricing' %}" class="navbar-item" role="menuitem">Pricing</a></li>
+                <li role="none"><a href="{% url 'core:testimonials' %}" class="navbar-item" role="menuitem">Testimonials</a></li>
+                <li role="none"><a href="{% url 'core:private_lessons' %}" class="navbar-item" role="menuitem">Private Lessons</a></li>
+                <li role="none"><a href="{% url 'core:contact' %}" class="navbar-item" role="menuitem">Contact</a></li>
+            </ul>
+        </div>
+    
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        {% block content %}
+        <!-- Page content goes here -->
+        {% endblock content %}
     </main>
-
-    <footer class="footer text-center py-4">
+    
+    <!-- Footer -->
+    <footer id="footer" role="contentinfo">
         <div class="container">
-            <div class="social-links">
-                <a href="https://www.instagram.com/saborconflow.dance/" target="_blank" rel="noopener noreferrer" class="social-link" style="text-decoration: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36">
-                        <defs>
-                            <linearGradient id="instaFooterGradient" x1="0%" y1="100%" x2="100%" y2="0%">
-                                <stop offset="0%" stop-color="#FEDA75"/><stop offset="25%" stop-color="#F58529"/><stop offset="50%" stop-color="#DD2A7B"/><stop offset="75%" stop-color="#833AB4"/><stop offset="100%" stop-color="#405DE6"/>
-                            </linearGradient>
-                        </defs>
-                        <rect width="24" height="24" rx="6" ry="6" fill="url(#instaFooterGradient)"/>
-                        <path fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"
-                              d="M12 16.14a4.14 4.14 0 100-8.28 4.14 4.14 0 000 8.28z"/>
-                        <circle fill="#ffffff" cx="17.3" cy="6.7" r="1.1"/>
-                        <rect x="3.5" y="3.5" width="17" height="17" rx="4" ry="4" fill="none" stroke="#ffffff" stroke-width="1.8"/>
-                    </svg>
-                </a>
-                <a href="https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x" target="_blank" rel="noopener noreferrer" class="social-link" style="text-decoration: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36">
-                        <rect width="24" height="24" rx="6" ry="6" fill="#25D366"/>
-                        <path fill="#ffffff" d="M17.6 6.2c-1.5-1.5-3.4-2.3-5.5-2.3-4.3 0-7.8 3.5-7.8 7.8 0 1.4.4 2.7 1 3.9l-1.1 4 4.1-1.1c1.1.6 2.4 1 3.7 1 4.3 0 7.8-3.5 7.8-7.8.1-2.1-.7-4-2.2-5.5zm-5.5 12c-1.2 0-2.3-.3-3.3-.9l-.2-.1-2.4.6.6-2.3-.2-.2c-.6-1-1-2.2-1-3.4 0-3.6 2.9-6.5 6.5-6.5 1.7 0 3.3.7 4.6 1.9 1.2 1.2 1.9 2.8 1.9 4.6-.1 3.5-3 6.3-6.5 6.3zm3.6-4.9c-.2-.1-1.1-.6-1.3-.6-.2-.1-.3-.1-.4.1-.1.2-.5.6-.6.8-.1.1-.2.1-.4 0-.6-.3-1.3-.7-1.9-1.3-.8-.7-1.2-1.5-1.3-1.7-.1-.2 0-.3.1-.4l.3-.3s.1-.2.2-.3c.1-.1.1-.2.1-.3 0-.1 0-.2-.1-.3l-.6-1.4c-.1-.3-.3-.3-.4-.3h-.4c-.1 0-.3.1-.5.2-.2.1-.6.6-.6 1.4s.6 1.6.7 1.7c.1.1 1.3 2 3.2 2.8.4.2.8.3 1 .3.2.1.5.1.7.1.2 0 .6-.3.7-.5.1-.3.1-.5.1-.6-.1-.1-.2-.1-.4-.2z"/>
-                    </svg>
-                </a>
-                <a href="https://www.facebook.com/profile.php?id=61575502290591" target="_blank" rel="noopener noreferrer" class="social-link" style="text-decoration: none;">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36">
-                        <rect width="24" height="24" rx="6" ry="6" fill="#1877F2"/>
-                        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" fill="#ffffff"/>
-                    </svg>
-                </a>
+            <div class="footer-content">
+                <!-- About Section -->
+                <div class="footer-section">
+                    <h4>About Sabor Con Flow</h4>
+                    <p>Your premier destination for Latin dance classes and unforgettable dance experiences. Join us to discover the rhythm within you.</p>
+                    {% include 'components/social_links.html' %}
+                </div>
+                
+                <!-- Quick Links -->
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#classes">Dance Classes</a>
+                    <a href="{% url 'core:schedule' %}">Class Schedule</a>
+                    <a href="{% url 'core:events' %}">Upcoming Events</a>
+                    <a href="#gallery">Photo Gallery</a>
+                </div>
+                
+                <!-- Contact Info -->
+                <div class="footer-section">
+                    <h4>Contact Us</h4>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Dance Street, City, State 12345</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@saborconflow.com</p>
+                </div>
+                
+                <!-- Newsletter -->
+                <div class="footer-section">
+                    <h4>Stay Updated</h4>
+                    <p>Subscribe to our newsletter for the latest updates on classes and events.</p>
+                    <form action="#" method="post" style="margin-top: var(--spacing-md);">
+                        {% csrf_token %}
+                        <input type="email" name="email" placeholder="Your email" required 
+                               style="padding: var(--spacing-sm); width: 100%; margin-bottom: var(--spacing-sm); background: rgba(255,255,255,0.1); border: 1px solid var(--color-gold); color: white;">
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">Subscribe</button>
+                    </form>
+                </div>
             </div>
-            <p class="mt-3">&copy; {% now "Y" %} Sabor Con Flow. All rights reserved.</p>
+            
+            <!-- Footer Bottom -->
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} Sabor Con Flow Dance. All rights reserved. | 
+                   <a href="javascript:void(0)" onclick="document.getElementById('privacy-policy-modal').style.display='block'" style="color: var(--color-gray-light);">Privacy Policy</a> | 
+                   <a href="#terms" style="color: var(--color-gray-light);">Terms of Service</a> |
+                   <a href="javascript:void(0)" onclick="showAnalyticsSettings()" style="color: var(--color-gray-light);">Cookie Settings</a>
+                </p>
+            </div>
         </div>
     </footer>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- WhatsApp Floating Chat Button - SPEC_05 Group A Task 2 -->
+    {% include 'components/whatsapp_button.html' %}
+    
+    <!-- Privacy Policy Modal - SPEC_05 Group A Task 3 -->
+    {% include 'components/privacy_policy.html' %}
+    
+    <!-- Base JavaScript -->
+    <!-- Mobile navigation JavaScript moved to mobile-nav.js -->
+    
+    <!-- Advanced Performance Optimizations - SPEC_04 Group D -->
+    <!-- Advanced Lazy Loading with WebP Support -->
+    <script src="{% static 'js/advanced-lazy-load.js' %}" defer></script>
+    
+    <!-- CSS Optimization and Minification -->
+    <script src="{% static 'js/css-minifier.js' %}" defer></script>
+    
+    <!-- Resource Optimization and Intelligent Preloading -->
+    <script src="{% static 'js/resource-optimizer.js' %}" defer></script>
+    
+    <!-- Advanced Performance Analytics and Core Web Vitals -->
+    <script src="{% static 'js/performance-analytics.js' %}" defer></script>
+    
+    <!-- Google Analytics 4 Implementation - SPEC_05 Group A Task 3 -->
+    <script src="{% static 'js/analytics.js' %}" defer></script>
+    
+    <!-- Performance Dashboard (Development/Debug Mode) -->
+    {% if debug or request.GET.debug %}
+    <script src="{% static 'js/performance-dashboard.js' %}" defer></script>
+    {% endif %}
+    
+    <!-- Enhanced Image Optimization Scripts -->
+    <script src="{% static 'js/enhanced-lazy-load.js' %}" defer></script>
+    <script src="{% static 'js/image-performance-monitor.js' %}" defer></script>
+    
+    <!-- Legacy Fallback Scripts -->
+    <script src="{% static 'js/lazy-load.js' %}" defer></script>
+    <script src="{% static 'js/main.js' %}" defer></script>
+    <script src="{% static 'js/mobile-nav.js' %}" defer></script>
+    
+    <!-- WhatsApp Chat Button JavaScript - SPEC_05 Group A Task 2 -->
+    <script src="{% static 'js/whatsapp-chat.js' %}" defer></script>
+    
+    <!-- Social Links Component JavaScript - SPEC_05 Group A Task 4 -->
+    <script src="{% static 'js/social-links.js' %}" defer></script>
+    
+    <!-- Accessibility Enhancement Scripts - SPEC_06 Group C Task 8 -->
+    <script src="{% static 'js/accessibility.js' %}" defer></script>
+    
+    <!-- Accessibility Testing (Debug Mode) -->
+    {% if debug or request.GET.accessibility %}
+    <script src="{% static 'js/accessibility-testing.js' %}" defer></script>
+    {% endif %}
+    
+    <!-- SPEC_06 Group A Task 2: CSS Performance Monitoring -->
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.querySelector('.menu-toggle');
-            const nav = document.querySelector('.nav');
-            
-            menuToggle.addEventListener('click', function() {
-                nav.classList.toggle('active');
-                menuToggle.classList.toggle('active');
-            });
-
-            // Close menu when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!nav.contains(event.target) && !menuToggle.contains(event.target)) {
-                    nav.classList.remove('active');
-                    menuToggle.classList.remove('active');
-                }
-            });
-        });
+        {% get_performance_script %}
     </script>
-    {% block extra_js %}{% endblock %}
+    
+    <!-- Original Performance Monitor (Fallback) -->
+    {% if debug %}
+    <script src="{% static 'js/performance-monitor.js' %}" defer></script>
+    {% endif %}
+    
+    <!-- Service Worker Registration and PWA Features - SPEC_06 Group B Task 5 -->
+    <script src="{% static 'js/sw-registration.js' %}" defer></script>
+    <script src="{% static 'js/background-sync.js' %}" defer></script>
+    <script src="{% static 'js/pwa-features.js' %}" defer></script>
+    <script src="{% static 'js/sw-performance.js' %}" defer></script>
+    
+    {% block extra_js %}
+    <!-- Additional JavaScript files or scripts go here -->
+    {% endblock extra_js %}
 </body>
-</html> 
+</html>

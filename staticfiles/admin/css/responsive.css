@@ -114,7 +114,7 @@ input[type="submit"], button {
         margin: 0 10px 0 6px;
     }
 
-    #toolbar form input[type=submit] {
+    #toolbar form input[type="submit"] {
         flex: 0 1 auto;
     }
 
@@ -179,12 +179,12 @@ input[type="submit"], button {
     tags. Add input:not([type]) to make the CSS stylesheet work the same.
     */
     .form-row input:not([type]),
-    .form-row input[type=text],
-    .form-row input[type=password],
-    .form-row input[type=email],
-    .form-row input[type=url],
-    .form-row input[type=tel],
-    .form-row input[type=number],
+    .form-row input[type="text"],
+    .form-row input[type="password"],
+    .form-row input[type="email"],
+    .form-row input[type="url"],
+    .form-row input[type="tel"],
+    .form-row input[type="number"],
     .form-row textarea,
     .form-row select,
     .form-row .vTextField {
@@ -238,7 +238,7 @@ input[type="submit"], button {
         padding: 10px 7px;
     }
 
-    .button, input[type=submit], input[type=button], .submit-row input, a.button {
+    .button, input[type="submit"], input[type="button"], .submit-row input, a.button {
         padding: 7px;
     }
 

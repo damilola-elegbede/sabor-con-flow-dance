@@ -11,7 +11,7 @@ global.IntersectionObserver = class {
     this.callback = callback;
     this.options = options;
   }
-  
+
   observe() {}
   unobserve() {}
   disconnect() {}
@@ -25,7 +25,7 @@ global.performance = global.performance || {
   getEntriesByType: () => [],
   getEntriesByName: () => [],
   clearMarks: () => {},
-  clearMeasures: () => {}
+  clearMeasures: () => {},
 };
 
 // Mock console methods for tests
@@ -34,7 +34,7 @@ global.console = {
   log: vi.fn(),
   warn: vi.fn(),
   error: vi.fn(),
-  info: vi.fn()
+  info: vi.fn(),
 };
 
 // Mock window.matchMedia (for Node environment)
@@ -95,8 +95,8 @@ Object.defineProperty(navigator, 'connection', {
     effectiveType: '4g',
     saveData: false,
     downlink: 10,
-    rtt: 100
-  }
+    rtt: 100,
+  },
 });
 
 // Add custom matchers for Vitest
@@ -116,7 +116,7 @@ if (typeof expect !== 'undefined') {
         };
       }
     },
-    
+
     toBeProgressivelyEnhanced(received) {
       // Only test if we have DOM environment
       if (typeof document === 'undefined') {
@@ -125,12 +125,13 @@ if (typeof expect !== 'undefined') {
           pass: true,
         };
       }
-      
-      const hasNoJSFallback = received.classList?.contains('no-js-fallback') ||
-                             received.querySelector?.('.no-js-fallback');
-      const hasJSEnhancement = received.classList?.contains('js-enhanced') ||
-                              received.querySelector?.('.js-enhanced');
-      
+
+      const hasNoJSFallback =
+        received.classList?.contains('no-js-fallback') ||
+        received.querySelector?.('.no-js-fallback');
+      const hasJSEnhancement =
+        received.classList?.contains('js-enhanced') || received.querySelector?.('.js-enhanced');
+
       const pass = hasNoJSFallback || hasJSEnhancement;
       if (pass) {
         return {
@@ -143,7 +144,7 @@ if (typeof expect !== 'undefined') {
           pass: false,
         };
       }
-    }
+    },
   });
 }
 
@@ -157,30 +158,30 @@ if (typeof document !== 'undefined') {
       });
       return element;
     },
-    
+
     simulateIntersection: (element, isIntersecting = true) => {
       const observer = element._intersectionObserver;
       if (observer && observer.callback) {
-        observer.callback([{
-          target: element,
-          isIntersecting,
-          intersectionRatio: isIntersecting ? 1 : 0
-        }]);
+        observer.callback([
+          {
+            target: element,
+            isIntersecting,
+            intersectionRatio: isIntersecting ? 1 : 0,
+          },
+        ]);
       }
     },
-    
+
     waitForAsync: () => new Promise(resolve => setTimeout(resolve, 0)),
-    
+
     mockWebPSupport: (supported = true) => {
       const canvas = document.createElement('canvas');
-      canvas.toDataURL = vi.fn(() => 
-        supported ? 'data:image/webp' : 'data:image/png'
-      );
-      document.createElement = vi.fn((tag) => {
+      canvas.toDataURL = vi.fn(() => (supported ? 'data:image/webp' : 'data:image/png'));
+      document.createElement = vi.fn(tag => {
         if (tag === 'canvas') return canvas;
         return document.createElement.bind(document)(tag);
       });
-    }
+    },
   };
 }
 

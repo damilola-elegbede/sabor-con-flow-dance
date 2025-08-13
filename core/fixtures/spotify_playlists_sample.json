@@ -1,0 +1,110 @@
+[
+  {
+    "model": "core.spotifyplaylist",
+    "pk": 1,
+    "fields": {
+      "class_type": "choreo_team",
+      "title": "SCF Choreo Team Intensive",
+      "description": "High-energy Cuban salsa tracks perfect for advanced choreography training. Features complex rhythms and authentic Havana sounds.",
+      "spotify_playlist_id": "37i9dQZF1DX0XUsuxWHRQd",
+      "spotify_embed_url": "https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUsuxWHRQd?utm_source=generator&theme=0",
+      "is_active": true,
+      "order": 1,
+      "theme_color": "#dc3545",
+      "tracks_count": 25,
+      "duration_minutes": 89,
+      "last_updated": "2024-01-15T10:00:00Z",
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.spotifyplaylist",
+    "pk": 2,
+    "fields": {
+      "class_type": "pasos_basicos",
+      "title": "Pasos Básicos Fundamentals",
+      "description": "Essential Cuban salsa tracks for learning basic steps and footwork. Perfect tempo for beginners to practice timing and rhythm.",
+      "spotify_playlist_id": "37i9dQZF1DX4SBhb3fqCJd",
+      "spotify_embed_url": "https://open.spotify.com/embed/playlist/37i9dQZF1DX4SBhb3fqCJd?utm_source=generator&theme=0",
+      "is_active": true,
+      "order": 2,
+      "theme_color": "#28a745",
+      "tracks_count": 20,
+      "duration_minutes": 67,
+      "last_updated": "2024-01-15T10:00:00Z",
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.spotifyplaylist",
+    "pk": 3,
+    "fields": {
+      "class_type": "casino_royale",
+      "title": "Casino Royale Intermediate",
+      "description": "Dynamic casino dancing tracks with intricate percussion patterns. Builds on basic steps with more complex musical elements.",
+      "spotify_playlist_id": "37i9dQZF1DX2Nc3B70tvx0",
+      "spotify_embed_url": "https://open.spotify.com/embed/playlist/37i9dQZF1DX2Nc3B70tvx0?utm_source=generator&theme=0",
+      "is_active": true,
+      "order": 3,
+      "theme_color": "#ffc107",
+      "tracks_count": 22,
+      "duration_minutes": 78,
+      "last_updated": "2024-01-15T10:00:00Z",
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.spotifyplaylist",
+    "pk": 4,
+    "fields": {
+      "class_type": "general",
+      "title": "General Practice Sessions",
+      "description": "Mixed collection of Cuban salsa classics perfect for general practice and social dancing. All skill levels welcome.",
+      "spotify_playlist_id": "37i9dQZF1DXbYM3nMM0oPk",
+      "spotify_embed_url": "https://open.spotify.com/embed/playlist/37i9dQZF1DXbYM3nMM0oPk?utm_source=generator&theme=0",
+      "is_active": true,
+      "order": 4,
+      "theme_color": "#6c757d",
+      "tracks_count": 30,
+      "duration_minutes": 105,
+      "last_updated": "2024-01-15T10:00:00Z",
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.spotifyplaylist",
+    "pk": 5,
+    "fields": {
+      "class_type": "warm_up",
+      "title": "Warm Up & Stretching",
+      "description": "Gentle Latin rhythms perfect for warming up before class. Includes son, bolero, and slower salsa tracks.",
+      "spotify_playlist_id": "37i9dQZF1DX1lVhptIYRda",
+      "spotify_embed_url": "https://open.spotify.com/embed/playlist/37i9dQZF1DX1lVhptIYRda?utm_source=generator&theme=0",
+      "is_active": true,
+      "order": 5,
+      "theme_color": "#17a2b8",
+      "tracks_count": 15,
+      "duration_minutes": 45,
+      "last_updated": "2024-01-15T10:00:00Z",
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  },
+  {
+    "model": "core.spotifyplaylist",
+    "pk": 6,
+    "fields": {
+      "class_type": "cool_down",
+      "title": "Cool Down & Relaxation",
+      "description": "Smooth Latin jazz and ballads for cooling down after intense practice sessions. Perfect for stretching and relaxation.",
+      "spotify_playlist_id": "37i9dQZF1DX0SM0LYsmbMT",
+      "spotify_embed_url": "https://open.spotify.com/embed/playlist/37i9dQZF1DX0SM0LYsmbMT?utm_source=generator&theme=0",
+      "is_active": true,
+      "order": 6,
+      "theme_color": "#6f42c1",
+      "tracks_count": 12,
+      "duration_minutes": 38,
+      "last_updated": "2024-01-15T10:00:00Z",
+      "created_at": "2024-01-15T10:00:00Z"
+    }
+  }
+]

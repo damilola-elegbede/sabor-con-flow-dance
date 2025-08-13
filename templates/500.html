@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Server Error - Sabor Con Flow{% endblock %}
+{% block title %}Server Error - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Server error. Something went wrong on our end. Please try again later or contact Sabor con Flow Dance.{% endblock %}
+
+{% block meta_tags %}
+<meta name="robots" content="noindex, nofollow">
+{{ block.super }}
+{% endblock %}
 
 {% block content %}
 <div class="container text-center" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">

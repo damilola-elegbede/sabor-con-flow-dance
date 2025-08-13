@@ -1,0 +1,1 @@
+{"version":3,"file":"787.ee86c46d.js","mappings":"wJACe,MAAMA,EACnB,WAAOC,GAEP,E","sources":["webpack://sabor-con-flow-dance/./src/js/features/analytics.js"],"sourcesContent":["// Analytics module placeholder\nexport default class Analytics {\n  static init() {\n    console.log('Analytics module initialized');\n  }\n}\n"],"names":["Analytics","init"],"sourceRoot":""}

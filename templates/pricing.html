@@ -1,50 +1,251 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Pricing - Sabor Con Flow{% endblock %}
+{% block title %}Pricing & Packages - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Affordable dance classes starting at $20. Save with our 4-class and 8-class packages. Private lessons available.{% endblock %}
+
+{% block meta_keywords %}dance class pricing Boulder, salsa class packages, affordable dance lessons, private dance lessons Boulder, dance class deals{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'core:pricing' %}{% endblock %}
+
+{% block og_title %}Pricing & Packages - Sabor con Flow Dance{% endblock %}
+{% block og_description %}Affordable dance classes starting at $20. Save with our 4-class and 8-class packages. Private lessons available.{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Pricing & Packages - Sabor con Flow Dance",
+  "description": "Affordable dance classes starting at $20. Save with our 4-class and 8-class packages. Private lessons available.",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'core:pricing' %}",
+  "mainEntity": {
+    "@type": "Service",
+    "name": "Cuban Salsa Dance Classes",
+    "provider": {
+      "@type": "Organization",
+      "name": "Sabor Con Flow Dance"
+    },
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Drop-in Class",
+        "description": "Single Cuban salsa dance class for all levels",
+        "price": "20",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "validThrough": "2024-12-31",
+        "category": "Dance Class"
+      },
+      {
+        "@type": "Offer",
+        "name": "4-Class Package",
+        "description": "Package of 4 Cuban salsa dance classes - Most Popular",
+        "price": "70",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "validThrough": "2024-12-31",
+        "category": "Dance Package",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "Savings",
+          "value": "$10 (12.5% off)"
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "8-Class Package", 
+        "description": "Package of 8 Cuban salsa dance classes - Best Value",
+        "price": "120",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "validThrough": "2024-12-31",
+        "category": "Dance Package",
+        "additionalProperty": {
+          "@type": "PropertyValue",
+          "name": "Savings",
+          "value": "$40 (25% off)"
+        }
+      },
+      {
+        "@type": "Offer",
+        "name": "Private Lessons",
+        "description": "One-on-one Cuban salsa instruction tailored to your skill level",
+        "priceRange": "$60-$100",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock",
+        "validThrough": "2024-12-31",
+        "category": "Private Instruction"
+      }
+    ],
+    "serviceType": "Dance Instruction",
+    "areaServed": {
+      "@type": "Place",
+      "name": "Boulder, Colorado"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/pricing.css' %}">
+{% endblock %}
 
 {% block content %}
-<div class="container main-content-pricing text-center">
-    <h1 class="page-title">Our Pricing</h1>
-    
-    <h3 class="pricing-heading">Standard Class Pricing</h3>
-    <p class="pricing-description">Join any of our classes with these options:</p>
-    
-    <table class="pricing-table">
-        <thead>
-            <tr>
-                <th>Class</th>
-                <th>Drop-In per Class</th>
-                <th>Monthly</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Pasos Básicos (PB)</td>
-                <td>$20</td>
-                <td>$60</td>
-            </tr>
-            <tr>
-                <td>Casino Royale (CR)</td>
-                <td>$20</td>
-                <td>$60</td>
-            </tr>
-            <tr>
-                <td>PB + CR</td>
-                <td>$35</td>
-                <td>$120</td>
-            </tr>
-            <tr>
-                <td>Choreo Team</td>
-                <td>$20</td>
-                <td>$70</td>
-            </tr>
-        </tbody>
-    </table>
-    
-    <div class="pricing-note">
-        <p><strong>Note:</strong> Special workshops and events may have separate pricing. See our <a href="{% url 'core:events' %}" style="color: #C7B375; text-decoration: none;">Events page</a> for details.</p>
-        <p>For private lessons, visit our <a href="{% url 'core:private_lessons' %}" style="color: #C7B375; text-decoration: none;">Private Lessons page</a>.</p>
+<div class="pricing-hero">
+    <div class="container">
+        <h1 class="pricing-title">Choose Your Dance Journey</h1>
+        <p class="pricing-subtitle">Flexible pricing options for every dancer - from beginners to professionals</p>
     </div>
 </div>
+
+<div class="container pricing-content">
+    <!-- Pricing Cards Grid -->
+    <div class="pricing-grid">
+        <!-- Drop-in Card -->
+        <div class="pricing-card">
+            <div class="pricing-card-header">
+                <h3 class="pricing-card-title">{{ pricing_data.drop_in.name }}</h3>
+                <p class="pricing-card-description">{{ pricing_data.drop_in.description }}</p>
+            </div>
+            <div class="pricing-card-price">
+                <span class="price-currency">$</span>
+                <span class="price-amount">{{ pricing_data.drop_in.price }}</span>
+                <span class="price-period">per class</span>
+            </div>
+            <ul class="pricing-card-features">
+                {% for feature in pricing_data.drop_in.features %}
+                <li><i class="fas fa-check"></i> {{ feature }}</li>
+                {% endfor %}
+            </ul>
+            <button class="pricing-card-button">Get Started</button>
+        </div>
+
+        <!-- 4-Class Package Card (Most Popular) -->
+        <div class="pricing-card pricing-card-popular">
+            <div class="popular-badge">Most Popular</div>
+            <div class="pricing-card-header">
+                <h3 class="pricing-card-title">{{ pricing_data.package_4.name }}</h3>
+                <p class="pricing-card-description">{{ pricing_data.package_4.description }}</p>
+            </div>
+            <div class="pricing-card-price">
+                <span class="price-currency">$</span>
+                <span class="price-amount">{{ pricing_data.package_4.price }}</span>
+                <span class="price-period">4 classes</span>
+            </div>
+            <div class="savings-badge">
+                Save ${{ pricing_data.package_4.savings }} ({{ pricing_data.package_4.savings_percentage }}%)
+            </div>
+            <ul class="pricing-card-features">
+                {% for feature in pricing_data.package_4.features %}
+                <li><i class="fas fa-check"></i> {{ feature }}</li>
+                {% endfor %}
+            </ul>
+            <button class="pricing-card-button">Choose Package</button>
+        </div>
+
+        <!-- 8-Class Package Card -->
+        <div class="pricing-card">
+            <div class="pricing-card-header">
+                <h3 class="pricing-card-title">{{ pricing_data.package_8.name }}</h3>
+                <p class="pricing-card-description">{{ pricing_data.package_8.description }}</p>
+            </div>
+            <div class="pricing-card-price">
+                <span class="price-currency">$</span>
+                <span class="price-amount">{{ pricing_data.package_8.price }}</span>
+                <span class="price-period">8 classes</span>
+            </div>
+            <div class="savings-badge">
+                Save ${{ pricing_data.package_8.savings }} ({{ pricing_data.package_8.savings_percentage }}%)
+            </div>
+            <ul class="pricing-card-features">
+                {% for feature in pricing_data.package_8.features %}
+                <li><i class="fas fa-check"></i> {{ feature }}</li>
+                {% endfor %}
+            </ul>
+            <button class="pricing-card-button">Best Value</button>
+        </div>
+    </div>
+
+    <!-- Private Lessons Section -->
+    <div class="private-lessons-section">
+        <div class="private-lessons-card">
+            <div class="private-lessons-header">
+                <h3 class="private-lessons-title">{{ pricing_data.private_lessons.name }}</h3>
+                <p class="private-lessons-description">{{ pricing_data.private_lessons.description }}</p>
+            </div>
+            <div class="private-lessons-price">
+                <span class="price-currency">$</span>
+                <span class="price-range">{{ pricing_data.private_lessons.price_min }} - {{ pricing_data.private_lessons.price_max }}</span>
+                <span class="price-period">per hour</span>
+            </div>
+            <ul class="private-lessons-features">
+                {% for feature in pricing_data.private_lessons.features %}
+                <li><i class="fas fa-star"></i> {{ feature }}</li>
+                {% endfor %}
+            </ul>
+            <a href="{% url 'core:private_lessons' %}" class="private-lessons-button">Book Private Lesson</a>
+        </div>
+    </div>
+
+    <!-- Savings Calculator Section -->
+    <div class="calculator-section">
+        <h2 class="calculator-title">Savings Calculator</h2>
+        <p class="calculator-description">See how much you can save with our package deals</p>
+        
+        <div class="calculator-container">
+            <div class="calculator-input-group">
+                <label for="classes-per-month" class="calculator-label">Classes per month:</label>
+                <input type="number" id="classes-per-month" min="1" max="20" value="4" class="calculator-input">
+            </div>
+            
+            <div class="calculator-results">
+                <div class="calculator-result-item">
+                    <h4>Drop-in Cost</h4>
+                    <span id="drop-in-cost" class="result-amount">$80</span>
+                </div>
+                <div class="calculator-result-item">
+                    <h4>Package Cost</h4>
+                    <span id="package-cost" class="result-amount">$70</span>
+                </div>
+                <div class="calculator-result-item savings-highlight">
+                    <h4>Your Savings</h4>
+                    <span id="savings-amount" class="result-amount savings">$10</span>
+                    <span id="savings-percentage" class="savings-percent">(12.5%)</span>
+                </div>
+            </div>
+            
+            <div class="calculator-recommendation">
+                <p id="recommendation-text">The 4-Class Package is perfect for you!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Additional Information -->
+    <div class="pricing-info">
+        <div class="info-grid">
+            <div class="info-item">
+                <i class="fas fa-calendar-alt"></i>
+                <h4>Flexible Scheduling</h4>
+                <p>Use your package classes anytime within the validity period</p>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-users"></i>
+                <h4>All Skill Levels</h4>
+                <p>Our classes welcome dancers from beginners to advanced</p>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-heart"></i>
+                <h4>Community Focus</h4>
+                <p>Join a supportive community of passionate dancers</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/pricing-calculator.js' %}"></script>
 {% endblock %} 

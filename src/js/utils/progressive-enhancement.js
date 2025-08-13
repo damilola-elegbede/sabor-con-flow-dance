@@ -53,7 +53,7 @@ export class ProgressiveEnhancement {
         cursor: pointer;
       }
     `;
-    
+
     // Only add if JavaScript is disabled
     if (!document.documentElement.classList.contains('js')) {
       document.head.appendChild(style);
@@ -100,7 +100,7 @@ export class ProgressiveEnhancement {
           justify-content: center;
           z-index: 100;
         `;
-        
+
         // Make form container relative
         form.style.position = 'relative';
         form.appendChild(loadingDiv);
@@ -150,13 +150,13 @@ export class ProgressiveEnhancement {
   static setupAccessibilityEnhancements() {
     // Add skip links
     this.addSkipLinks();
-    
+
     // Enhance keyboard navigation
     this.enhanceKeyboardNavigation();
-    
+
     // Add ARIA attributes
     this.addARIAAttributes();
-    
+
     // Setup focus management
     this.setupFocusManagement();
   }
@@ -165,7 +165,7 @@ export class ProgressiveEnhancement {
     const skipLinks = [
       { href: '#main-content', text: 'Skip to main content' },
       { href: '#navigation', text: 'Skip to navigation' },
-      { href: '#footer', text: 'Skip to footer' }
+      { href: '#footer', text: 'Skip to footer' },
     ];
 
     const skipNav = document.createElement('nav');
@@ -210,13 +210,13 @@ export class ProgressiveEnhancement {
     });
 
     // Add focus-visible polyfill behavior
-    document.addEventListener('focusin', (e) => {
+    document.addEventListener('focusin', e => {
       if (hadKeyboardEvent) {
         e.target.classList.add('focus-visible');
       }
     });
 
-    document.addEventListener('focusout', (e) => {
+    document.addEventListener('focusout', e => {
       e.target.classList.remove('focus-visible');
     });
 
@@ -242,7 +242,7 @@ export class ProgressiveEnhancement {
       if (icon && !button.textContent.trim()) {
         const iconClass = icon.className;
         let label = 'Button';
-        
+
         if (iconClass.includes('fa-menu') || iconClass.includes('fa-bars')) {
           label = 'Open menu';
         } else if (iconClass.includes('fa-close') || iconClass.includes('fa-times')) {
@@ -250,7 +250,7 @@ export class ProgressiveEnhancement {
         } else if (iconClass.includes('fa-search')) {
           label = 'Search';
         }
-        
+
         button.setAttribute('aria-label', label);
       }
     });
@@ -266,7 +266,7 @@ export class ProgressiveEnhancement {
 
   static setupFocusManagement() {
     // Trap focus in modals
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
       if (e.key === 'Tab') {
         const modal = document.querySelector('.modal.active, .lightbox.active');
         if (modal) {
@@ -276,7 +276,7 @@ export class ProgressiveEnhancement {
     });
 
     // Close modals on Escape
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
         const modal = document.querySelector('.modal.active, .lightbox.active');
         if (modal) {
@@ -293,7 +293,7 @@ export class ProgressiveEnhancement {
     const focusableElements = container.querySelectorAll(
       'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    
+
     const firstFocusable = focusableElements[0];
     const lastFocusable = focusableElements[focusableElements.length - 1];
 
@@ -321,11 +321,11 @@ export class ProgressiveEnhancement {
 
     // Network-aware optimizations
     if ('connection' in navigator) {
-      const connection = navigator.connection;
+      const { connection } = navigator;
       if (connection.effectiveType === 'slow-2g' || connection.effectiveType === '2g') {
         document.documentElement.classList.add('slow-connection');
       }
-      
+
       if (connection.saveData) {
         document.documentElement.classList.add('save-data');
       }
@@ -340,7 +340,7 @@ export class ProgressiveEnhancement {
   static setupPerformanceObserver() {
     // Observe layout shifts
     try {
-      const clsObserver = new PerformanceObserver((list) => {
+      const clsObserver = new PerformanceObserver(list => {
         for (const entry of list.getEntries()) {
           if (!entry.hadRecentInput) {
             console.log('CLS detected:', entry.value);
@@ -354,7 +354,7 @@ export class ProgressiveEnhancement {
 
     // Observe largest contentful paint
     try {
-      const lcpObserver = new PerformanceObserver((list) => {
+      const lcpObserver = new PerformanceObserver(list => {
         const entries = list.getEntries();
         const lastEntry = entries[entries.length - 1];
         console.log('LCP:', lastEntry.startTime);

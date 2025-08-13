@@ -22,4 +22,21 @@ htmlcov/
 .DS_Store
 node_modules/
 staticfiles_build_cache/
-media/ 
+media/
+
+# Exclude heavy development files
+*.md
+docs/
+test_*.py
+*_test.py
+tests/
+.tmp/
+.cache/
+*.dylib
+*.dll
+*.exe
+.bandit
+.pre-commit-config.yaml
+Makefile
+webpack.config.js
+.babelrc 

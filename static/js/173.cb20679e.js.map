@@ -1,0 +1,1 @@
+{"version":3,"file":"173.cb20679e.js","mappings":"wJACe,MAAMA,EACnB,WAAOC,GAEP,E","sources":["webpack://sabor-con-flow-dance/./src/js/features/gallery.js"],"sourcesContent":["// Gallery module placeholder\nexport default class Gallery {\n  static init() {\n    console.log('Gallery module initialized');\n  }\n}\n"],"names":["Gallery","init"],"sourceRoot":""}

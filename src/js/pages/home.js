@@ -14,17 +14,14 @@ export default class HomePage {
     await this.loadCriticalModules();
     this.setupHomePageFeatures();
     this.setupIntersectionObservers();
-    
+
     // Home page enhanced
   }
 
   async loadCriticalModules() {
-    const criticalModules = [
-      'lazy-load',
-      'mobile-nav'
-    ];
+    const criticalModules = ['lazy-load', 'mobile-nav'];
 
-    const loadPromises = criticalModules.map(async (moduleName) => {
+    const loadPromises = criticalModules.map(async moduleName => {
       try {
         const module = await this.dynamicImport(moduleName);
         this.modules.set(moduleName, module);
@@ -40,8 +37,8 @@ export default class HomePage {
     const moduleMap = {
       'lazy-load': () => import('../features/lazy-load.js'),
       'mobile-nav': () => import('../features/mobile-nav.js'),
-      'gallery': () => import('../features/gallery.js'),
-      'analytics': () => import('../features/analytics.js')
+      gallery: () => import('../features/gallery.js'),
+      analytics: () => import('../features/analytics.js'),
     };
 
     const importFn = moduleMap[moduleName];
@@ -56,13 +53,13 @@ export default class HomePage {
   setupHomePageFeatures() {
     // Setup hero section enhancements
     this.enhanceHeroSection();
-    
+
     // Setup classes preview section
     this.enhanceClassesSection();
-    
+
     // Setup testimonials
     this.enhanceTestimonialsSection();
-    
+
     // Setup call-to-action buttons
     this.enhanceCTAButtons();
   }
@@ -100,7 +97,7 @@ export default class HomePage {
 
     // Add loading state
     mediaElement.classList.add('hero-media-loading');
-    
+
     const handleLoad = () => {
       mediaElement.classList.remove('hero-media-loading');
       mediaElement.classList.add('hero-media-loaded');
@@ -118,24 +115,25 @@ export default class HomePage {
     // Only use parallax on capable devices
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const isTouch = 'ontouchstart' in window;
-    const isSlowConnection = navigator.connection?.effectiveType === 'slow-2g' || 
-                            navigator.connection?.effectiveType === '2g';
+    const isSlowConnection =
+      navigator.connection?.effectiveType === 'slow-2g' ||
+      navigator.connection?.effectiveType === '2g';
 
     return !prefersReducedMotion && !isTouch && !isSlowConnection;
   }
 
   setupParallaxEffect(heroSection) {
     let ticking = false;
-    
+
     const updateParallax = () => {
       const scrolled = window.pageYOffset;
       const parallaxElement = heroSection.querySelector('.parallax-element');
-      
+
       if (parallaxElement) {
         const yPos = -(scrolled * 0.5);
         parallaxElement.style.transform = `translateY(${yPos}px)`;
       }
-      
+
       ticking = false;
     };
 
@@ -155,7 +153,7 @@ export default class HomePage {
 
     // Setup intersection observer for animation
     const classCards = classesSection.querySelectorAll('.class-card');
-    
+
     if (classCards.length > 0) {
       this.setupCardAnimations(classCards);
     }
@@ -164,7 +162,7 @@ export default class HomePage {
     const bookingButtons = classesSection.querySelectorAll('.book-class-btn');
     bookingButtons.forEach(button => {
       this.enhanceButton(button, 'class_booking_clicked', {
-        class_type: button.dataset.classType || 'unknown'
+        class_type: button.dataset.classType || 'unknown',
       });
     });
   }
@@ -172,17 +170,20 @@ export default class HomePage {
   setupCardAnimations(cards) {
     if (!('IntersectionObserver' in window)) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('animate-in');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.2,
-      rootMargin: '50px'
-    });
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.2,
+        rootMargin: '50px',
+      }
+    );
 
     cards.forEach(card => {
       card.classList.add('animate-ready');
@@ -211,13 +212,13 @@ export default class HomePage {
     const slides = carousel.querySelectorAll('.testimonial-slide');
     const prevBtn = carousel.querySelector('.carousel-prev');
     const nextBtn = carousel.querySelector('.carousel-next');
-    
+
     if (slides.length <= 1) return;
 
     let currentSlide = 0;
     let autoPlayInterval;
 
-    const showSlide = (index) => {
+    const showSlide = index => {
       slides.forEach((slide, i) => {
         slide.classList.toggle('active', i === index);
       });
@@ -266,7 +267,7 @@ export default class HomePage {
 
   enhanceCTAButtons() {
     const ctaButtons = document.querySelectorAll('.cta-button, .btn-primary[data-cta]');
-    
+
     ctaButtons.forEach(button => {
       const ctaType = button.dataset.cta || 'general';
       this.enhanceButton(button, 'cta_clicked', { cta_type: ctaType });
@@ -275,18 +276,18 @@ export default class HomePage {
 
   enhanceButton(button, eventName, additionalData = {}) {
     // Add loading state on click
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', _e => {
       // Track analytics
       this.trackEvent(eventName, additionalData);
-      
+
       // Add loading state for buttons that submit forms or navigate
       if (button.type === 'submit' || button.dataset.loading === 'true') {
         button.classList.add('loading');
         button.disabled = true;
-        
+
         const originalText = button.textContent;
         button.textContent = 'Loading...';
-        
+
         // Reset after timeout as fallback
         setTimeout(() => {
           button.classList.remove('loading');
@@ -301,18 +302,18 @@ export default class HomePage {
   }
 
   addRippleEffect(button) {
-    button.addEventListener('click', (e) => {
+    button.addEventListener('click', e => {
       const ripple = document.createElement('span');
       ripple.classList.add('ripple');
-      
+
       const rect = button.getBoundingClientRect();
       const size = Math.max(rect.width, rect.height);
-      ripple.style.width = ripple.style.height = size + 'px';
-      ripple.style.left = (e.clientX - rect.left - size / 2) + 'px';
-      ripple.style.top = (e.clientY - rect.top - size / 2) + 'px';
-      
+      ripple.style.width = ripple.style.height = `${size}px`;
+      ripple.style.left = `${e.clientX - rect.left - size / 2}px`;
+      ripple.style.top = `${e.clientY - rect.top - size / 2}px`;
+
       button.appendChild(ripple);
-      
+
       setTimeout(() => {
         ripple.remove();
       }, 600);
@@ -353,11 +354,11 @@ export default class HomePage {
       try {
         const module = await this.dynamicImport(moduleName);
         this.modules.set(moduleName, module);
-        
+
         if (eventName) {
           this.trackEvent(eventName);
         }
-        
+
         // Initialize module if it has an init method
         if (module && typeof module.init === 'function') {
           module.init();
@@ -385,16 +386,19 @@ export default class HomePage {
     if (!section) return;
 
     if ('IntersectionObserver' in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            this.trackEvent(eventName);
-            observer.unobserve(entry.target);
-          }
-        });
-      }, {
-        threshold: 0.5
-      });
+      const observer = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              this.trackEvent(eventName);
+              observer.unobserve(entry.target);
+            }
+          });
+        },
+        {
+          threshold: 0.5,
+        }
+      );
 
       observer.observe(section);
     }
@@ -404,7 +408,7 @@ export default class HomePage {
     if (window.gtag) {
       window.gtag('event', eventName, {
         event_category: 'homepage',
-        ...parameters
+        ...parameters,
       });
     }
   }
@@ -418,9 +422,11 @@ export default class HomePage {
 // Auto-initialize if not using module system
 if (typeof window !== 'undefined' && !window.moduleSystem) {
   // Only initialize on home page
-  if (document.body.classList.contains('page-home') || 
-      document.querySelector('.hero-section') ||
-      window.location.pathname === '/') {
+  if (
+    document.body.classList.contains('page-home') ||
+    document.querySelector('.hero-section') ||
+    window.location.pathname === '/'
+  ) {
     document.addEventListener('DOMContentLoaded', () => {
       HomePage.init();
     });

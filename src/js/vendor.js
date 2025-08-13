@@ -35,7 +35,7 @@ export const VendorUtils = {
     if (window.FB) {
       window.FB.init({
         appId: process.env.FACEBOOK_APP_ID,
-        version: 'v18.0'
+        version: 'v18.0',
       });
     }
   },
@@ -49,16 +49,16 @@ export const VendorUtils = {
   },
 
   // Check if vendor is loaded
-  isVendorLoaded: (vendor) => {
+  isVendorLoaded: vendor => {
     const vendors = {
       'google-analytics': () => typeof gtag === 'function',
-      'facebook': () => typeof FB !== 'undefined',
-      'calendly': () => typeof Calendly !== 'undefined',
-      'whatsapp': () => typeof WhatsAppWidget !== 'undefined'
+      facebook: () => typeof FB !== 'undefined',
+      calendly: () => typeof Calendly !== 'undefined',
+      whatsapp: () => typeof WhatsAppWidget !== 'undefined',
     };
 
     return vendors[vendor] ? vendors[vendor]() : false;
-  }
+  },
 };
 
 // Load external scripts dynamically
@@ -68,7 +68,7 @@ export const ExternalLoader = {
       const script = document.createElement('script');
       script.src = src;
       script.async = true;
-      
+
       Object.keys(attributes).forEach(key => {
         script.setAttribute(key, attributes[key]);
       });
@@ -81,18 +81,18 @@ export const ExternalLoader = {
   },
 
   // Load Google Analytics
-  loadGoogleAnalytics: async (measurementId) => {
+  loadGoogleAnalytics: async measurementId => {
     try {
       await ExternalLoader.loadScript(
         `https://www.googletagmanager.com/gtag/js?id=${measurementId}`
       );
-      
+
       window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', measurementId);
-      
-      window.gtag = gtag;
+      window.gtag = function gtag(...args) {
+        window.dataLayer.push(args);
+      };
+      window.gtag('js', new Date());
+      window.gtag('config', measurementId);
       return true;
     } catch (error) {
       console.error('Failed to load Google Analytics:', error);
@@ -101,17 +101,17 @@ export const ExternalLoader = {
   },
 
   // Load Facebook SDK
-  loadFacebookSDK: async (appId) => {
+  loadFacebookSDK: async appId => {
     try {
       await ExternalLoader.loadScript('https://connect.facebook.net/en_US/sdk.js');
-      
+
       window.FB.init({
-        appId: appId,
+        appId,
         version: 'v18.0',
         cookie: true,
-        xfbml: true
+        xfbml: true,
       });
-      
+
       return true;
     } catch (error) {
       console.error('Failed to load Facebook SDK:', error);
@@ -128,73 +128,73 @@ export const ExternalLoader = {
       console.error('Failed to load Calendly:', error);
       return false;
     }
-  }
+  },
 };
 
 // Performance monitoring with Web Vitals
 export const WebVitalsMonitor = {
   init: () => {
     // Track Core Web Vitals
-    getCLS((metric) => {
+    getCLS(metric => {
       console.log('CLS:', metric);
       if (window.gtag) {
-        gtag('event', 'web_vitals', {
+        window.gtag('event', 'web_vitals', {
           name: metric.name,
           value: Math.round(metric.value * 1000),
           event_label: metric.id,
-          non_interaction: true
+          non_interaction: true,
         });
       }
     });
 
-    getFID((metric) => {
+    getFID(metric => {
       console.log('FID:', metric);
       if (window.gtag) {
-        gtag('event', 'web_vitals', {
+        window.gtag('event', 'web_vitals', {
           name: metric.name,
           value: Math.round(metric.value),
           event_label: metric.id,
-          non_interaction: true
+          non_interaction: true,
         });
       }
     });
 
-    getFCP((metric) => {
+    getFCP(metric => {
       console.log('FCP:', metric);
       if (window.gtag) {
-        gtag('event', 'web_vitals', {
+        window.gtag('event', 'web_vitals', {
           name: metric.name,
           value: Math.round(metric.value),
           event_label: metric.id,
-          non_interaction: true
+          non_interaction: true,
         });
       }
     });
 
-    getLCP((metric) => {
+    getLCP(metric => {
       console.log('LCP:', metric);
       if (window.gtag) {
-        gtag('event', 'web_vitals', {
+        window.gtag('event', 'web_vitals', {
           name: metric.name,
           value: Math.round(metric.value),
           event_label: metric.id,
-          non_interaction: true
+          non_interaction: true,
         });
       }
     });
 
-    getTTFB((metric) => {
+    getTTFB(metric => {
       console.log('TTFB:', metric);
       if (window.gtag) {
-        gtag('event', 'web_vitals', {
+        window.gtag('event', 'web_vitals', {
           name: metric.name,
           value: Math.round(metric.value),
           event_label: metric.id,
-          non_interaction: true
+          non_interaction: true,
         });
       }
     });
-  }
+  },
 };
 
 // Initialize all vendor utilities

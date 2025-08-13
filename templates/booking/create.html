@@ -1,0 +1,334 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Book a Class or Lesson - {{ site_name }}{% endblock %}
+
+{% block meta_description %}Book your dance classes and private lessons with Sabor Con Flow Dance. Easy online booking with instant confirmation emails.{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/forms.css' %}">
+<style>
+    .booking-form-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    
+    .booking-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+    
+    .booking-header h1 {
+        color: #C7B375;
+        margin-bottom: 0.5rem;
+    }
+    
+    .booking-form .form-group {
+        margin-bottom: 1.5rem;
+    }
+    
+    .booking-form label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 600;
+        color: #333;
+    }
+    
+    .booking-form input,
+    .booking-form select,
+    .booking-form textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 2px solid #e9ecef;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s ease;
+    }
+    
+    .booking-form input:focus,
+    .booking-form select:focus,
+    .booking-form textarea:focus {
+        outline: none;
+        border-color: #C7B375;
+        box-shadow: 0 0 0 3px rgba(199, 179, 117, 0.1);
+    }
+    
+    .booking-form .help-text {
+        font-size: 0.875rem;
+        color: #6c757d;
+        margin-top: 0.25rem;
+    }
+    
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+    }
+    
+    .submit-btn {
+        background: #C7B375;
+        color: white;
+        padding: 1rem 2rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: background-color 0.3s ease;
+    }
+    
+    .submit-btn:hover {
+        background: #b8a566;
+    }
+    
+    .booking-info {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 2rem;
+    }
+    
+    .booking-info h3 {
+        color: #C7B375;
+        margin-bottom: 1rem;
+    }
+    
+    .info-list {
+        list-style: none;
+        padding: 0;
+    }
+    
+    .info-list li {
+        padding: 0.5rem 0;
+        border-bottom: 1px solid #e9ecef;
+    }
+    
+    .info-list li:last-child {
+        border-bottom: none;
+    }
+    
+    .info-list li strong {
+        color: #495057;
+    }
+    
+    @media (max-width: 768px) {
+        .booking-form-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .form-row {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="booking-form-container">
+    <div class="booking-header">
+        <h1>📅 Book Your Dance Experience</h1>
+        <p>Reserve your spot in our classes or schedule a private lesson</p>
+    </div>
+    
+    <div class="booking-info">
+        <h3>Booking Information</h3>
+        <ul class="info-list">
+            <li><strong>Confirmation:</strong> You'll receive an instant email confirmation</li>
+            <li><strong>Payment:</strong> Pay at the studio or via Venmo/PayPal</li>
+            <li><strong>Cancellation:</strong> Free cancellation up to 24 hours before</li>
+            <li><strong>Questions:</strong> Contact us at <a href="mailto:info@saborconflowdance.com">info@saborconflowdance.com</a></li>
+        </ul>
+    </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    
+    <form method="post" class="booking-form" novalidate>
+        {% csrf_token %}
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ form.customer_name.id_for_label }}">{{ form.customer_name.label }}</label>
+                {{ form.customer_name }}
+                {% if form.customer_name.help_text %}
+                    <div class="help-text">{{ form.customer_name.help_text }}</div>
+                {% endif %}
+                {% if form.customer_name.errors %}
+                    <div class="error-text">{{ form.customer_name.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.customer_email.id_for_label }}">{{ form.customer_email.label }}</label>
+                {{ form.customer_email }}
+                {% if form.customer_email.help_text %}
+                    <div class="help-text">{{ form.customer_email.help_text }}</div>
+                {% endif %}
+                {% if form.customer_email.errors %}
+                    <div class="error-text">{{ form.customer_email.errors.0 }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ form.customer_phone.id_for_label }}">{{ form.customer_phone.label }}</label>
+                {{ form.customer_phone }}
+                {% if form.customer_phone.help_text %}
+                    <div class="help-text">{{ form.customer_phone.help_text }}</div>
+                {% endif %}
+                {% if form.customer_phone.errors %}
+                    <div class="error-text">{{ form.customer_phone.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.booking_type.id_for_label }}">{{ form.booking_type.label }}</label>
+                {{ form.booking_type }}
+                {% if form.booking_type.help_text %}
+                    <div class="help-text">{{ form.booking_type.help_text }}</div>
+                {% endif %}
+                {% if form.booking_type.errors %}
+                    <div class="error-text">{{ form.booking_type.errors.0 }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.class_name.id_for_label }}">{{ form.class_name.label }}</label>
+            {{ form.class_name }}
+            {% if form.class_name.help_text %}
+                <div class="help-text">{{ form.class_name.help_text }}</div>
+            {% endif %}
+            {% if form.class_name.errors %}
+                <div class="error-text">{{ form.class_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ form.instructor_name.id_for_label }}">{{ form.instructor_name.label }}</label>
+                {{ form.instructor_name }}
+                {% if form.instructor_name.help_text %}
+                    <div class="help-text">{{ form.instructor_name.help_text }}</div>
+                {% endif %}
+                {% if form.instructor_name.errors %}
+                    <div class="error-text">{{ form.instructor_name.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.booking_date.id_for_label }}">{{ form.booking_date.label }}</label>
+                {{ form.booking_date }}
+                {% if form.booking_date.help_text %}
+                    <div class="help-text">{{ form.booking_date.help_text }}</div>
+                {% endif %}
+                {% if form.booking_date.errors %}
+                    <div class="error-text">{{ form.booking_date.errors.0 }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ form.duration_minutes.id_for_label }}">Duration (minutes)</label>
+                {{ form.duration_minutes }}
+                {% if form.duration_minutes.help_text %}
+                    <div class="help-text">{{ form.duration_minutes.help_text }}</div>
+                {% endif %}
+                {% if form.duration_minutes.errors %}
+                    <div class="error-text">{{ form.duration_minutes.errors.0 }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.price.id_for_label }}">Price ($)</label>
+                {{ form.price }}
+                {% if form.price.help_text %}
+                    <div class="help-text">{{ form.price.help_text }}</div>
+                {% endif %}
+                {% if form.price.errors %}
+                    <div class="error-text">{{ form.price.errors.0 }}</div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.payment_method.id_for_label }}">{{ form.payment_method.label }}</label>
+            {{ form.payment_method }}
+            {% if form.payment_method.help_text %}
+                <div class="help-text">{{ form.payment_method.help_text }}</div>
+            {% endif %}
+            {% if form.payment_method.errors %}
+                <div class="error-text">{{ form.payment_method.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.special_instructions.id_for_label }}">{{ form.special_instructions.label }}</label>
+            {{ form.special_instructions }}
+            {% if form.special_instructions.help_text %}
+                <div class="help-text">{{ form.special_instructions.help_text }}</div>
+            {% endif %}
+            {% if form.special_instructions.errors %}
+                <div class="error-text">{{ form.special_instructions.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <button type="submit" class="submit-btn">
+            🎉 Confirm Booking
+        </button>
+    </form>
+    
+    <div style="text-align: center; margin-top: 2rem; color: #6c757d;">
+        <small>
+            By booking, you agree to our terms and cancellation policy.<br>
+            Questions? <a href="{% url 'core:contact' %}">Contact us</a> or call (555) 123-4567
+        </small>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-fill price based on booking type
+    document.getElementById('id_booking_type').addEventListener('change', function() {
+        const priceField = document.getElementById('id_price');
+        const prices = {
+            'class': 20,
+            'private_lesson': 80,
+            'workshop': 30,
+            'package': 70,
+            'event': 25
+        };
+        
+        if (prices[this.value]) {
+            priceField.value = prices[this.value];
+        }
+    });
+    
+    // Set minimum date to today
+    const dateField = document.getElementById('id_booking_date');
+    if (dateField) {
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, '0');
+        const day = String(now.getDate()).padStart(2, '0');
+        const hours = String(now.getHours()).padStart(2, '0');
+        const minutes = String(now.getMinutes()).padStart(2, '0');
+        
+        dateField.min = `${year}-${month}-${day}T${hours}:${minutes}`;
+    }
+</script>
+{% endblock %}

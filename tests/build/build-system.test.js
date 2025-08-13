@@ -200,31 +200,32 @@ describe('Build System Tests', () => {
       }
     });
 
-    it('should copy assets from src/assets to dist/assets', async () => {
-      // Run asset copying
+    it('should optimize assets from static to staticfiles', async () => {
+      // Run asset optimization
       const result = execSync('npm run build:assets', { 
         encoding: 'utf8',
         cwd: projectRoot
       });
       
-      // Verify copying completed without errors
+      // Verify optimization completed without errors
       expect(result).toBeDefined();
       
-      // Check that dist/assets directory exists
-      const distAssetsDir = path.join(projectRoot, 'dist/assets');
-      expect(fs.existsSync(distAssetsDir)).toBe(true);
+      // Check that staticfiles directories exist
+      const staticfilesDir = path.join(projectRoot, 'staticfiles');
+      expect(fs.existsSync(staticfilesDir)).toBe(true);
       
-      // Verify subdirectories were copied
-      ['images', 'fonts', 'videos'].forEach(subdir => {
-        const distSubdir = path.join(distAssetsDir, subdir);
-        expect(fs.existsSync(distSubdir)).toBe(true);
-        
-        // Verify test files were copied
-        const testFile = path.join(distSubdir, `test-${subdir}.txt`);
-        if (fs.existsSync(path.join(projectRoot, 'src/assets', subdir, `test-${subdir}.txt`))) {
-          expect(fs.existsSync(testFile)).toBe(true);
+      // Verify asset optimization outputs exist
+      ['images', 'css', 'js'].forEach(subdir => {
+        const staticSubdir = path.join(staticfilesDir, subdir);
+        if (fs.existsSync(staticSubdir)) {
+          const files = fs.readdirSync(staticSubdir);
+          expect(files.length).toBeGreaterThan(0);
         }
       });
+      
+      // Check for asset manifest
+      const assetManifest = path.join(staticfilesDir, 'asset-manifest.json');
+      expect(fs.existsSync(assetManifest)).toBe(true);
     }, buildTimeout);
 
     it('should handle missing source directories gracefully', async () => {
@@ -276,7 +277,7 @@ describe('Build System Tests', () => {
       const outputs = [
         'staticfiles/css/styles.min.css',  // Production CSS
         'static/js',                      // JavaScript output directory
-        'dist/assets'                     // Assets directory
+        'staticfiles/asset-manifest.json' // Asset manifest
       ];
       
       outputs.forEach(outputPath => {
@@ -335,7 +336,11 @@ describe('Build System Tests', () => {
         
         // Files should be actual JavaScript files or source maps
         jsFiles.forEach(file => {
-          expect(file.endsWith('.js') || file.endsWith('.js.map')).toBe(true);
+          expect(
+            file.endsWith('.js') || 
+            file.endsWith('.js.map') || 
+            file.endsWith('.js.gz')  // Allow gzipped files
+          ).toBe(true);
         });
       }
     });
@@ -438,8 +443,8 @@ describe('Build System Tests', () => {
       
       const buildTime = Date.now() - startTime;
       
-      // Asset copying should complete within 5 seconds
-      expect(buildTime).toBeLessThan(5000);
+      // Asset optimization should complete within 10 seconds (includes image processing)
+      expect(buildTime).toBeLessThan(10000);
       console.log(`Asset copying completed in ${buildTime}ms`);
     });
   });

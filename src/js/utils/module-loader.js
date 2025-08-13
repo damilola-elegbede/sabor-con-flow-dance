@@ -19,7 +19,7 @@ export class ModuleLoader {
       retry = true,
       priority = 'normal',
       preload = false,
-      fallback = null
+      fallback = null,
     } = options;
 
     // Return cached module if already loaded
@@ -38,7 +38,7 @@ export class ModuleLoader {
       retry,
       priority,
       preload,
-      fallback
+      fallback,
     });
 
     this.pendingModules.set(moduleName, loadingPromise);
@@ -50,26 +50,26 @@ export class ModuleLoader {
       return module;
     } catch (error) {
       this.pendingModules.delete(moduleName);
-      
+
       if (retry && this.shouldRetry(moduleName)) {
         return this.retryLoad(moduleName, options);
       }
-      
+
       if (fallback) {
         return this.loadFallback(moduleName, fallback);
       }
-      
+
       throw error;
     }
   }
 
   async createLoadingPromise(moduleName, options) {
     const startTime = performance.now();
-    
+
     try {
       // Determine the best loading strategy
       const strategy = this.getLoadingStrategy(moduleName, options);
-      
+
       let module;
       switch (strategy) {
         case 'dynamic-import':
@@ -91,11 +91,11 @@ export class ModuleLoader {
         loadTime,
         strategy,
         timestamp: Date.now(),
-        success: true
+        success: true,
       });
 
       console.log(`✅ Module ${moduleName} loaded in ${loadTime.toFixed(2)}ms using ${strategy}`);
-      
+
       return module;
     } catch (error) {
       const loadTime = performance.now() - startTime;
@@ -104,7 +104,7 @@ export class ModuleLoader {
         strategy: 'failed',
         timestamp: Date.now(),
         success: false,
-        error: error.message
+        error: error.message,
       });
 
       throw error;
@@ -115,24 +115,24 @@ export class ModuleLoader {
     // Check browser capabilities
     const hasModuleSupport = 'noModule' in document.createElement('script');
     const hasFetch = 'fetch' in window;
-    
+
     // Prefer dynamic imports for modern browsers
     if (hasModuleSupport && !options.forceLegacy) {
       return 'dynamic-import';
     }
-    
+
     // Use fetch for capable browsers
     if (hasFetch && !options.forceScriptTag) {
       return 'fetch-eval';
     }
-    
+
     // Fallback to script tag injection
     return 'script-tag';
   }
 
   async loadWithDynamicImport(moduleName, options) {
     const modulePath = this.getModulePath(moduleName, 'esm');
-    
+
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
         reject(new Error(`Module ${moduleName} load timeout`));
@@ -152,7 +152,7 @@ export class ModuleLoader {
 
   async loadWithFetchEval(moduleName, options) {
     const modulePath = this.getModulePath(moduleName, 'umd');
-    
+
     return new Promise((resolve, reject) => {
       const timeoutId = setTimeout(() => {
         reject(new Error(`Module ${moduleName} fetch timeout`));
@@ -170,11 +170,17 @@ export class ModuleLoader {
           // Create a safe evaluation context
           const moduleScope = this.createModuleScope(moduleName);
           const wrappedCode = this.wrapModuleCode(code, moduleName);
-          
+
           // Evaluate the module code
+          // eslint-disable-next-line no-new-func
           const moduleFunction = new Function('module', 'exports', 'require', wrappedCode);
-          moduleFunction.call(moduleScope, moduleScope.module, moduleScope.exports, moduleScope.require);
-          
+          moduleFunction.call(
+            moduleScope,
+            moduleScope.module,
+            moduleScope.exports,
+            moduleScope.require
+          );
+
           resolve(moduleScope.module.exports);
         })
         .catch(error => {
@@ -188,7 +194,7 @@ export class ModuleLoader {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       const modulePath = this.getModulePath(moduleName, 'iife');
-      
+
       const timeoutId = setTimeout(() => {
         script.remove();
         reject(new Error(`Module ${moduleName} script load timeout`));
@@ -197,7 +203,7 @@ export class ModuleLoader {
       script.onload = () => {
         clearTimeout(timeoutId);
         script.remove();
-        
+
         // Look for the module in global scope
         const globalName = this.getGlobalName(moduleName);
         if (window[globalName]) {
@@ -224,14 +230,14 @@ export class ModuleLoader {
     const moduleMap = {
       'mobile-nav': `features/mobile-nav.${format}.js`,
       'lazy-load': `features/lazy-load.${format}.js`,
-      'gallery': `features/gallery.${format}.js`,
-      'analytics': `features/analytics.${format}.js`,
+      gallery: `features/gallery.${format}.js`,
+      analytics: `features/analytics.${format}.js`,
       'performance-monitor': `features/performance-monitor.${format}.js`,
       'social-features': `features/social-features.${format}.js`,
       'whatsapp-chat': `features/whatsapp-chat.${format}.js`,
       'pricing-calculator': `features/pricing-calculator.${format}.js`,
       'testimonial-form': `features/testimonial-form.${format}.js`,
-      'contact-form': `features/contact-form.${format}.js`
+      'contact-form': `features/contact-form.${format}.js`,
     };
 
     const modulePath = moduleMap[moduleName];
@@ -246,24 +252,24 @@ export class ModuleLoader {
     const globalMap = {
       'mobile-nav': 'MobileNav',
       'lazy-load': 'LazyLoad',
-      'gallery': 'Gallery',
-      'analytics': 'Analytics',
+      gallery: 'Gallery',
+      analytics: 'Analytics',
       'performance-monitor': 'PerformanceMonitor',
       'social-features': 'SocialFeatures',
       'whatsapp-chat': 'WhatsAppChat',
       'pricing-calculator': 'PricingCalculator',
       'testimonial-form': 'TestimonialForm',
-      'contact-form': 'ContactForm'
+      'contact-form': 'ContactForm',
     };
 
     return globalMap[moduleName] || moduleName.replace(/-./g, x => x[1].toUpperCase());
   }
 
-  createModuleScope(moduleName) {
+  createModuleScope(_moduleName) {
     const exports = {};
     const module = { exports };
-    
-    const require = (name) => {
+
+    const require = name => {
       if (this.loadedModules.has(name)) {
         return this.loadedModules.get(name);
       }
@@ -292,43 +298,43 @@ export class ModuleLoader {
   async retryLoad(moduleName, options) {
     const attempts = this.retryAttempts.get(moduleName) || 0;
     this.retryAttempts.set(moduleName, attempts + 1);
-    
+
     // Exponential backoff
     const delay = Math.pow(2, attempts) * 1000;
     await new Promise(resolve => setTimeout(resolve, delay));
-    
+
     console.warn(`🔄 Retrying module ${moduleName} (attempt ${attempts + 1})`);
     return this.loadModule(moduleName, options);
   }
 
   async loadFallback(moduleName, fallback) {
     console.warn(`⚠️ Loading fallback for ${moduleName}: ${fallback.name || fallback}`);
-    
+
     if (typeof fallback === 'string') {
       return this.loadModule(fallback);
     }
-    
+
     if (typeof fallback === 'function') {
       return fallback();
     }
-    
+
     return fallback;
   }
 
   // Preload modules based on user interaction patterns
-  preloadModule(moduleName, options = {}) {
+  preloadModule(moduleName, _options = {}) {
     const link = document.createElement('link');
     link.rel = 'modulepreload';
     link.href = this.getModulePath(moduleName, 'esm');
-    
+
     link.onload = () => {
       console.log(`📦 Preloaded module: ${moduleName}`);
     };
-    
+
     link.onerror = () => {
       console.warn(`❌ Failed to preload module: ${moduleName}`);
     };
-    
+
     document.head.appendChild(link);
   }
 
@@ -339,7 +345,7 @@ export class ModuleLoader {
       pricing: ['pricing-calculator'],
       contact: ['contact-form'],
       testimonials: ['testimonial-form'],
-      whatsapp: ['whatsapp-chat']
+      whatsapp: ['whatsapp-chat'],
     };
 
     Object.entries(interactionMap).forEach(([trigger, modules]) => {

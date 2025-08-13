@@ -1,11 +1,29 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Contact Us - Sabor Con Flow{% endblock %}
+{% block title %}Contact Us - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Get in touch with Sabor con Flow Dance. Email us for class info, join our WhatsApp community, or follow us on social media.{% endblock %}
+
+{% block meta_keywords %}contact Sabor con Flow, dance class inquiries Boulder, WhatsApp dance community, Cuban salsa contact information{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'core:contact' %}{% endblock %}
+
+{% block og_title %}Contact Us - Sabor con Flow Dance{% endblock %}
+{% block og_description %}Get in touch with Sabor con Flow Dance. Email us for class info, join our WhatsApp community, or follow us on social media.{% endblock %}
 
 {% block content %}
 <div class="container main-content-contact">
     <h1 class="page-title">Get In Touch</h1>
+    
+    <!-- Quick Booking Section -->
+    <div class="contact-booking-section" style="margin-bottom: 3rem; text-align: center; padding: 2rem; background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%); border-radius: 12px; border: 1px solid #C7B375;">
+        <h2 style="color: #C7B375; font-family: var(--font-heading, 'Playfair Display', serif); margin-bottom: 1rem;">Book a Private Lesson</h2>
+        <p style="color: #FFFFFF; margin-bottom: 1.5rem; font-size: 1.1rem;">
+            Ready to start your dance journey? Schedule a private lesson directly with us.
+        </p>
+        {% include 'components/calendly_widget.html' with type='popup' text='Schedule Your Lesson' %}
+    </div>
 
     <div class="contact-section">
         <h2 class="contact-title">Email Us</h2>
@@ -40,6 +58,22 @@
             </div>
         </div>
     </div>
+
+    <!-- Google Maps Section -->
+    {% if ENABLE_GOOGLE_MAPS and GOOGLE_MAPS_API_KEY %}
+    <div class="sabor-map-section">
+        <div class="sabor-map-header">
+            <h2>Visit Our Studio</h2>
+            <p>Find us at Avalon Ballroom in the heart of Boulder</p>
+        </div>
+        <div id="sabor-google-map" class="loading" 
+             role="application" 
+             aria-label="Interactive map showing Sabor con Flow Dance studio location"
+             tabindex="0">
+            <!-- Map will be loaded here -->
+        </div>
+    </div>
+    {% endif %}
 
     <div class="contact-section">
         <h2 class="contact-title">Social Media</h2>
@@ -77,4 +111,112 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<!-- Google Maps Styles -->
+{% if ENABLE_GOOGLE_MAPS and GOOGLE_MAPS_API_KEY %}
+<link rel="stylesheet" href="{% static 'css/google-maps.css' %}">
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<!-- Calendly Integration JavaScript -->
+<script src="{% static 'js/calendly.js' %}" defer></script>
+
+<!-- Google Maps Integration -->
+{% if ENABLE_GOOGLE_MAPS and GOOGLE_MAPS_API_KEY %}
+<!-- Google Maps API -->
+<script>
+    // Global configuration for Google Maps
+    window.SABOR_MAP_CONFIG = {
+        apiKey: '{{ GOOGLE_MAPS_API_KEY }}',
+        studioLocation: {
+            lat: {{ STUDIO_COORDINATES.latitude }},
+            lng: {{ STUDIO_COORDINATES.longitude }}
+        },
+        zoomLevel: {{ GOOGLE_MAPS_ZOOM_LEVEL }},
+        businessInfo: {
+            name: '{{ BUSINESS_INFO.name }}',
+            address: '{{ BUSINESS_INFO.address }}',
+            phone: '{{ BUSINESS_INFO.phone }}',
+            email: '{{ BUSINESS_INFO.email }}'
+        }
+    };
+</script>
+<script src="{% static 'js/google-maps.js' %}" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAPS_API_KEY }}&callback=initSaborMap&libraries=&v=weekly&loading=async" 
+        async defer 
+        onerror="handleMapError()"></script>
+{% endif %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Track contact page visits
+    if (typeof gtag === 'function') {
+        gtag('event', 'page_view', {
+            'page_title': 'Contact Us',
+            'page_location': window.location.href
+        });
+    }
+    
+    // Listen for Calendly events from contact page
+    document.addEventListener('calendly:booking_completed', function(event) {
+        console.log('Booking completed from contact page!', event.detail);
+        
+        // Track contact page conversion
+        if (typeof gtag === 'function') {
+            gtag('event', 'conversion', {
+                'send_to': 'AW-CONVERSION_ID/CONVERSION_LABEL',
+                'event_category': 'contact_page',
+                'event_label': 'booking_from_contact'
+            });
+        }
+    });
+    
+    // Google Maps event tracking
+    {% if ENABLE_GOOGLE_MAPS and GOOGLE_MAPS_API_KEY %}
+    document.addEventListener('sabor:map:mapLoaded', function(event) {
+        console.log('Google Maps loaded successfully');
+        
+        // Remove loading state
+        const mapContainer = document.getElementById('sabor-google-map');
+        if (mapContainer) {
+            mapContainer.classList.remove('loading');
+        }
+        
+        // Track map load
+        if (typeof gtag === 'function') {
+            gtag('event', 'map_loaded', {
+                'event_category': 'google_maps',
+                'event_label': 'contact_page_map',
+                'value': 1
+            });
+        }
+    });
+    
+    document.addEventListener('sabor:map:infoWindowOpened', function(event) {
+        if (typeof gtag === 'function') {
+            gtag('event', 'info_window_opened', {
+                'event_category': 'google_maps',
+                'event_label': 'studio_info',
+                'value': 1
+            });
+        }
+    });
+    
+    document.addEventListener('sabor:map:mapError', function(event) {
+        console.error('Google Maps failed to load');
+        
+        if (typeof gtag === 'function') {
+            gtag('event', 'map_error', {
+                'event_category': 'google_maps',
+                'event_label': 'load_failed',
+                'value': 1
+            });
+        }
+    });
+    {% endif %}
+});
+</script>
 {% endblock %} 

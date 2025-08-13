@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Booking - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #C7B375;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #C7B375;
+            margin: 0;
+            font-size: 24px;
+        }
+        .urgent-alert {
+            background-color: #f8d7da;
+            border: 2px solid #dc3545;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #721c24;
+            text-align: center;
+        }
+        .urgent-alert strong {
+            color: #dc3545;
+            font-size: 18px;
+        }
+        .booking-summary {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .booking-summary h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+        .booking-summary .booking-id {
+            font-size: 16px;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .booking-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .detail-label {
+            font-weight: bold;
+            min-width: 140px;
+            color: #495057;
+        }
+        .detail-value {
+            flex: 1;
+            color: #212529;
+        }
+        .detail-value.highlight {
+            color: #C7B375;
+            font-weight: bold;
+        }
+        .customer-info {
+            background-color: #e8f4fd;
+            border-left: 4px solid #0d6efd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .customer-info h3 {
+            color: #0d6efd;
+            margin-top: 0;
+        }
+        .datetime-highlight {
+            background: linear-gradient(135deg, #C7B375 0%, #d4c085 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 20px 0;
+        }
+        .datetime-highlight .date {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .datetime-highlight .time {
+            font-size: 16px;
+        }
+        .payment-summary {
+            background-color: #d1ecf1;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .payment-summary h4 {
+            color: #0c5460;
+            margin-top: 0;
+        }
+        .price-display {
+            font-size: 20px;
+            font-weight: bold;
+            color: #28a745;
+            text-align: center;
+            margin: 10px 0;
+        }
+        .action-items {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .action-items h4 {
+            color: #856404;
+            margin-top: 0;
+        }
+        .action-items ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .action-items li {
+            margin-bottom: 8px;
+        }
+        .quick-actions {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #C7B375;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #b8a566;
+        }
+        .btn-primary {
+            background-color: #0d6efd;
+        }
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .contact-quick {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        .contact-quick h4 {
+            color: #C7B375;
+            margin-top: 0;
+        }
+        .contact-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .contact-row .icon {
+            margin-right: 10px;
+            font-size: 16px;
+            width: 20px;
+        }
+        .contact-row a {
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact-row a:hover {
+            text-decoration: underline;
+        }
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 3px solid #C7B375;
+        }
+        .stat-card .number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #C7B375;
+        }
+        .stat-card .label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .instructor-note {
+            background-color: #e8f5e8;
+            border: 1px solid #c3e6cb;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            color: #155724;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .detail-row {
+                flex-direction: column;
+            }
+            .detail-label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            .btn {
+                display: block;
+                margin: 10px 0;
+            }
+            .stats-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>💼 New Booking Alert</h1>
+            <p>{{ site_name }} Administration</p>
+        </div>
+
+        {% if is_urgent %}
+        <div class="urgent-alert">
+            <strong>⚡ URGENT BOOKING</strong><br>
+            This booking is scheduled within 24 hours and requires immediate attention!
+        </div>
+        {% endif %}
+
+        <div class="booking-summary">
+            <h2>📅 New {{ booking_type_display }} Booking</h2>
+            <p><strong>{{ booking.customer_name }}</strong> has booked <strong>{{ booking.class_name }}</strong></p>
+            <div class="booking-id">ID: {{ booking.booking_id }}</div>
+        </div>
+
+        <div class="customer-info">
+            <h3>👤 Customer Information</h3>
+            <div class="contact-quick">
+                {% if booking.customer_phone %}
+                <div class="contact-row">
+                    <span class="icon">📞</span>
+                    <span><strong>Phone:</strong> <a href="tel:{{ booking.customer_phone }}">{{ booking.customer_phone }}</a></span>
+                </div>
+                {% endif %}
+                <div class="contact-row">
+                    <span class="icon">📧</span>
+                    <span><strong>Email:</strong> <a href="mailto:{{ booking.customer_email }}">{{ booking.customer_email }}</a></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="booking-details">
+            <h3>📋 Booking Details</h3>
+            
+            <div class="detail-row">
+                <div class="detail-label">Service:</div>
+                <div class="detail-value highlight">{{ booking.class_name }}</div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Type:</div>
+                <div class="detail-value">{{ booking_type_display }}</div>
+            </div>
+            
+            {% if booking.instructor_name %}
+            <div class="detail-row">
+                <div class="detail-label">Instructor:</div>
+                <div class="detail-value highlight">{{ booking.instructor_name }}</div>
+            </div>
+            {% endif %}
+            
+            <div class="detail-row">
+                <div class="detail-label">Duration:</div>
+                <div class="detail-value">{{ booking.duration_minutes }} minutes</div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Location:</div>
+                <div class="detail-value">{{ booking.location }}</div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Status:</div>
+                <div class="detail-value">
+                    <span style="color: #28a745; font-weight: bold;">{{ status_display }}</span>
+                </div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Created:</div>
+                <div class="detail-value">{{ created_date }}</div>
+            </div>
+        </div>
+
+        <div class="datetime-highlight">
+            <div class="date">📅 {{ booking_datetime }}</div>
+            <div style="margin-top: 10px; font-size: 14px;">
+                ⏰ {{ time_until_booking }}
+            </div>
+        </div>
+
+        <div class="payment-summary">
+            <h4>💰 Payment Summary</h4>
+            <div class="price-display">${{ booking.price }}</div>
+            {% if booking.payment_method %}
+                <p><strong>Payment Method:</strong> {{ booking.payment_method }}</p>
+            {% endif %}
+            {% if booking.payment_reference %}
+                <p><strong>Reference:</strong> {{ booking.payment_reference }}</p>
+            {% else %}
+                <p><em>Payment to be collected in-person</em></p>
+            {% endif %}
+        </div>
+
+        {% if booking.special_instructions %}
+        <div class="instructor-note">
+            <h4>📝 Special Instructions</h4>
+            <p>{{ booking.special_instructions|linebreaks }}</p>
+        </div>
+        {% endif %}
+
+        <div class="action-items">
+            <h4>✅ Action Items</h4>
+            <ul>
+                {% if booking.booking_type == 'private_lesson' %}
+                <li><strong>Instructor Coordination:</strong> Contact {{ booking.instructor_name|default:"assigned instructor" }} to confirm availability</li>
+                <li><strong>Room Preparation:</strong> Ensure private lesson space is available and prepared</li>
+                {% else %}
+                <li><strong>Class Capacity:</strong> Verify class capacity and space availability</li>
+                <li><strong>Equipment Check:</strong> Ensure all necessary equipment is ready</li>
+                {% endif %}
+                
+                {% if not booking.payment_reference %}
+                <li><strong>Payment Collection:</strong> Prepare to collect ${{ booking.price }} payment on arrival</li>
+                {% endif %}
+                
+                {% if booking.customer_phone %}
+                <li><strong>Confirmation Call:</strong> Consider calling customer to confirm details</li>
+                {% endif %}
+                
+                {% if is_urgent %}
+                <li><strong>URGENT:</strong> Send immediate confirmation and prepare for same-day booking</li>
+                {% endif %}
+                
+                <li><strong>Follow-up:</strong> Send reminder email 24 hours before the booking</li>
+            </ul>
+        </div>
+
+        <div class="quick-actions">
+            <a href="{{ admin_url }}" class="btn btn-primary">📊 Manage in Admin</a>
+            <a href="mailto:{{ booking.customer_email }}?subject=Booking Confirmation - {{ booking.booking_id }}&body=Hi {{ booking.customer_name }},%0D%0A%0D%0AThank you for your booking with {{ site_name }}!" class="btn btn-success">📧 Email Customer</a>
+            {% if booking.customer_phone %}
+                <a href="tel:{{ booking.customer_phone }}" class="btn btn-danger">📞 Call Customer</a>
+            {% endif %}
+        </div>
+
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="number">${{ booking.price }}</div>
+                <div class="label">Revenue</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">{{ booking.duration_minutes }}m</div>
+                <div class="label">Duration</div>
+            </div>
+            <div class="stat-card">
+                <div class="number">{% if is_urgent %}⚡{% else %}📅{% endif %}</div>
+                <div class="label">{% if is_urgent %}Urgent{% else %}Scheduled{% endif %}</div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>This email was sent automatically from {{ site_name }}.<br>
+            Please take appropriate action to ensure excellent customer service.</p>
+            <p><strong>Admin Panel:</strong> <a href="{{ admin_url }}">{{ admin_url }}</a></p>
+            <p style="font-size: 12px; color: #999; margin-top: 15px;">
+                Booking created: {{ created_date }}
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -7,9 +7,41 @@
       "config": {
         "maxLambdaSize": "15mb"
       }
+    },
+    {
+      "src": "staticfiles/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/static/css/styles.css",
+      "dest": "/staticfiles/css/styles.css"
+    },
+    {
+      "src": "/static/css/(.*)",
+      "dest": "/staticfiles/css/$1"
+    },
+    {
+      "src": "/static/js/(.*)",
+      "dest": "/staticfiles/js/$1"
+    },
+    {
+      "src": "/static/images/sabor-con-flow-logo.png",
+      "dest": "/staticfiles/images/sabor-con-flow-logo.png"
+    },
+    {
+      "src": "/static/images/site.webmanifest",
+      "dest": "/staticfiles/site.webmanifest"
+    },
+    {
+      "src": "/static/images/(.*)",
+      "dest": "/staticfiles/images/$1"
+    },
+    {
+      "src": "/static/videos/(.*)",
+      "dest": "/staticfiles/videos/$1"
+    },
     {
       "src": "/static/(.*)",
       "dest": "/staticfiles/$1"
@@ -23,12 +55,40 @@
       "dest": "/api/index.py"
     },
     {
-      "src": "/favicon.(ico|png|jpg|jpeg|gif|svg)",
+      "src": "/favicon\\.(ico|png|jpg|jpeg|gif|svg)",
       "dest": "/staticfiles/images/favicon/favicon.png"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/(contact|booking|admin)/(.*)",
+      "dest": "/api/index.py"
     },
     {
       "src": "/(.*)",
       "dest": "/api/index.py"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/staticfiles/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ]
 }

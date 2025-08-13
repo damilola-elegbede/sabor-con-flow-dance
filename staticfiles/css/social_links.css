@@ -1,0 +1,444 @@
+/* ==========================================================================
+   Social Media Links Component - SPEC_05 Group A Task 4
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Component Base Styles
+   ========================================================================== */
+
+.social-links {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg, 1.5rem);
+    font-family: var(--font-body, 'Inter', sans-serif);
+}
+
+.social-links__text {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--color-white, #fff);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    transition: opacity var(--transition-base, 250ms ease);
+    white-space: nowrap;
+}
+
+.social-links__container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, 1rem);
+}
+
+/* ==========================================================================
+   2. Social Media Item Styles
+   ========================================================================== */
+
+.social-links__item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: var(--color-white, #fff);
+    text-decoration: none;
+    font-size: 1.25rem;
+    transition: all var(--transition-base, 250ms ease);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    transform: translateZ(0); /* Enable hardware acceleration */
+    will-change: transform, background-color, color;
+}
+
+.social-links__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    opacity: 0;
+    transition: opacity var(--transition-base, 250ms ease);
+    z-index: 1;
+}
+
+.social-links__item i {
+    position: relative;
+    z-index: 2;
+    transition: transform var(--transition-fast, 150ms ease);
+}
+
+/* ==========================================================================
+   3. Hover Effects and Animations
+   ========================================================================== */
+
+.social-links__item:hover,
+.social-links__item:focus {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.social-links__item:hover::before,
+.social-links__item:focus::before {
+    opacity: 1;
+}
+
+.social-links__item:hover i,
+.social-links__item:focus i {
+    transform: scale(1.1);
+}
+
+.social-links__item:active {
+    transform: translateY(-1px) scale(1.02);
+    transition-duration: var(--transition-fast, 150ms);
+}
+
+/* ==========================================================================
+   4. Platform-Specific Brand Colors
+   ========================================================================== */
+
+/* Instagram */
+.social-links__item--instagram:hover,
+.social-links__item--instagram:focus {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    color: var(--color-white, #fff);
+}
+
+/* Facebook */
+.social-links__item--facebook:hover,
+.social-links__item--facebook:focus {
+    background-color: #1877f2;
+    color: var(--color-white, #fff);
+}
+
+/* WhatsApp */
+.social-links__item--whatsapp:hover,
+.social-links__item--whatsapp:focus {
+    background-color: #25d366;
+    color: var(--color-white, #fff);
+}
+
+/* Email */
+.social-links__item--email:hover,
+.social-links__item--email:focus {
+    background-color: var(--color-gold, #C7B375);
+    color: var(--color-black, #000);
+}
+
+/* ==========================================================================
+   5. Tooltip Styles
+   ========================================================================== */
+
+.social-links__tooltip {
+    position: absolute;
+    bottom: -35px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-black, #000);
+    color: var(--color-white, #fff);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-base, 250ms ease);
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.social-links__tooltip::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 4px solid var(--color-black, #000);
+}
+
+.social-links__item:hover .social-links__tooltip,
+.social-links__item:focus .social-links__tooltip {
+    opacity: 1;
+    visibility: visible;
+    bottom: -40px;
+}
+
+/* ==========================================================================
+   6. Loading and Performance Optimizations
+   ========================================================================== */
+
+.social-links__item {
+    /* Optimize for smooth animations */
+    contain: layout style paint;
+    isolation: isolate;
+}
+
+/* Preload hover states for better performance */
+.social-links__item:not(:hover, :focus) {
+    will-change: auto;
+}
+
+.social-links__item:hover,
+.social-links__item:focus {
+    will-change: transform, background-color;
+}
+
+/* ==========================================================================
+   7. Dark Theme Support (Optional)
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .social-links__item {
+        background-color: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+    
+    .social-links__tooltip {
+        background-color: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(10px);
+    }
+}
+
+/* ==========================================================================
+   8. Responsive Design
+   ========================================================================== */
+
+/* Mobile Devices */
+@media (max-width: 640px) {
+    .social-links {
+        gap: var(--spacing-md, 1rem);
+        justify-content: center;
+    }
+    
+    .social-links__text {
+        display: none; /* Hide "Follow us" text on mobile */
+    }
+    
+    .social-links__container {
+        gap: var(--spacing-sm, 0.75rem);
+    }
+    
+    .social-links__item {
+        width: 40px;
+        height: 40px;
+        font-size: 1.125rem;
+    }
+    
+    /* Disable hover effects on touch devices */
+    .social-links__item:hover {
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Enable touch-friendly active states */
+    .social-links__item:active {
+        transform: scale(0.95);
+        transition-duration: var(--transition-fast, 150ms);
+    }
+    
+    /* Disable tooltips on mobile for better UX */
+    .social-links__tooltip {
+        display: none;
+    }
+}
+
+/* Tablet Devices */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .social-links {
+        gap: var(--spacing-lg, 1.25rem);
+    }
+    
+    .social-links__container {
+        gap: var(--spacing-md, 0.875rem);
+    }
+    
+    .social-links__item {
+        width: 42px;
+        height: 42px;
+        font-size: 1.1875rem;
+    }
+}
+
+/* Desktop Devices */
+@media (min-width: 1025px) {
+    .social-links:hover .social-links__text {
+        opacity: 1;
+    }
+    
+    /* Enhanced hover effects for desktop */
+    .social-links__item:hover {
+        transform: translateY(-4px) scale(1.08);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+    }
+}
+
+/* ==========================================================================
+   9. Accessibility Enhancements
+   ========================================================================== */
+
+/* Focus Indicators */
+.social-links__item:focus {
+    outline: 2px solid var(--color-gold, #C7B375);
+    outline-offset: 2px;
+}
+
+.social-links__item:focus:not(:focus-visible) {
+    outline: none;
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+    .social-links__item {
+        border-width: 2px;
+        border-style: solid;
+    }
+    
+    .social-links__text {
+        font-weight: 600;
+    }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+    .social-links__item,
+    .social-links__item::before,
+    .social-links__item i,
+    .social-links__tooltip {
+        transition: none !important;
+    }
+    
+    .social-links__item:hover,
+    .social-links__item:focus {
+        transform: none;
+    }
+}
+
+/* ==========================================================================
+   10. Footer Integration Styles
+   ========================================================================== */
+
+/* When used in footer context */
+.footer-section .social-links {
+    margin-top: var(--spacing-lg, 1.5rem);
+    justify-content: flex-start;
+}
+
+.footer-section .social-links__text {
+    color: var(--color-gold, #C7B375);
+    font-weight: 600;
+}
+
+.footer-section .social-links__item {
+    background-color: rgba(199, 179, 117, 0.1);
+    border-color: rgba(199, 179, 117, 0.3);
+}
+
+.footer-section .social-links__item:hover,
+.footer-section .social-links__item:focus {
+    border-color: var(--color-gold, #C7B375);
+}
+
+/* Click feedback styles */
+.social-links__item--clicked {
+    transform: scale(0.95) !important;
+    transition-duration: var(--transition-fast, 150ms) !important;
+}
+
+.social-links__item--touched {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* ==========================================================================
+   11. Header/Navigation Integration Styles (Optional)
+   ========================================================================== */
+
+/* When used in header/navigation context */
+.navbar .social-links {
+    gap: var(--spacing-md, 1rem);
+}
+
+.navbar .social-links__text {
+    display: none; /* Hide text in navigation */
+}
+
+.navbar .social-links__item {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* ==========================================================================
+   12. Standalone Usage Styles
+   ========================================================================== */
+
+/* When used as standalone component */
+.social-links--standalone {
+    padding: var(--spacing-lg, 1.5rem);
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02));
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-links--centered {
+    justify-content: center;
+    text-align: center;
+}
+
+.social-links--large .social-links__item {
+    width: 52px;
+    height: 52px;
+    font-size: 1.5rem;
+}
+
+.social-links--small .social-links__item {
+    width: 36px;
+    height: 36px;
+    font-size: 1rem;
+}
+
+/* ==========================================================================
+   13. Animation Enhancement Classes
+   ========================================================================== */
+
+.social-links--animated .social-links__item {
+    animation: socialPulse 2s infinite;
+    animation-delay: calc(var(--item-index, 0) * 0.2s);
+}
+
+@keyframes socialPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    50% {
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+}
+
+/* Disable animations if user prefers reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    .social-links--animated .social-links__item {
+        animation: none;
+    }
+}
+
+/* ==========================================================================
+   14. Print Styles
+   ========================================================================== */
+
+@media print {
+    .social-links {
+        display: none; /* Hide social links in print */
+    }
+}

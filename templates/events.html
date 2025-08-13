@@ -1,7 +1,16 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Events - Sabor Con Flow{% endblock %}
+{% block title %}Events & Classes - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Upcoming Cuban salsa events and classes at Sabor con Flow. Join our dance community for fun and learning in Boulder.{% endblock %}
+
+{% block meta_keywords %}Cuban salsa events Boulder, dance events Colorado, salsa workshops, Cuban dance classes, Boulder dance community{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'core:events' %}{% endblock %}
+
+{% block og_title %}Events & Classes - Sabor con Flow Dance{% endblock %}
+{% block og_description %}Upcoming Cuban salsa events and classes at Sabor con Flow. Join our dance community for fun and learning in Boulder.{% endblock %}
 
 {% block extra_css %}
 {# Add any page-specific CSS links here if needed, or ensure styles are in main.css #}

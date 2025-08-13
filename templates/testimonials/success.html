@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Thank You - Testimonial Submitted | Sabor Con Flow Dance{% endblock %}
+
+{% block meta_description %}Thank you for submitting your testimonial to Sabor Con Flow Dance. Your feedback helps us improve our dance classes and community.{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10">
+            <!-- Success Card -->
+            <div class="card shadow-lg border-0 testimonial-success-card">
+                <div class="card-body text-center p-5">
+                    <!-- Success Icon -->
+                    <div class="success-icon mb-4">
+                        <i class="fas fa-check-circle text-success" style="font-size: 72px;"></i>
+                    </div>
+                    
+                    <!-- Thank You Message -->
+                    <h1 class="display-4 mb-3" style="color: #C7B375;">Thank You!</h1>
+                    <h2 class="h4 mb-4 text-muted">Your Testimonial Has Been Submitted</h2>
+                    
+                    <!-- Explanation -->
+                    <div class="alert alert-info border-0 mb-4" style="background-color: rgba(199, 179, 117, 0.1);">
+                        <p class="mb-0">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Your testimonial is currently being reviewed by our team. Once approved, it will be displayed on our website and help future students discover the joy of dancing with Sabor Con Flow!
+                        </p>
+                    </div>
+                    
+                    <!-- Review Processing Timeline -->
+                    <div class="review-timeline mb-5">
+                        <h3 class="h5 mb-3">What Happens Next?</h3>
+                        <div class="row text-start">
+                            <div class="col-md-4 mb-3">
+                                <div class="timeline-item">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge rounded-circle bg-primary p-2 me-2">1</span>
+                                        <strong>Review</strong>
+                                    </div>
+                                    <small class="text-muted">Our team reviews your testimonial (1-2 business days)</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="timeline-item">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge rounded-circle bg-primary p-2 me-2">2</span>
+                                        <strong>Approval</strong>
+                                    </div>
+                                    <small class="text-muted">Once approved, your testimonial goes live on our site</small>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="timeline-item">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge rounded-circle bg-primary p-2 me-2">3</span>
+                                        <strong>Share</strong>
+                                    </div>
+                                    <small class="text-muted">We may feature your review on our social media</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Google Business Profile Section -->
+                    <div class="google-review-section p-4 mb-4" style="background-color: #f8f9fa; border-radius: 10px;">
+                        <h3 class="h5 mb-3">
+                            <i class="fab fa-google text-primary me-2"></i>
+                            Help Others Find Us on Google!
+                        </h3>
+                        <p class="mb-3">
+                            Your feedback is invaluable! Consider leaving a review on our Google Business Profile to help other dancers discover our community.
+                        </p>
+                        <a href="https://g.page/r/YOUR_GOOGLE_REVIEW_LINK/review" 
+                           target="_blank" 
+                           rel="noopener noreferrer" 
+                           class="btn btn-outline-primary">
+                            <i class="fab fa-google me-2"></i>
+                            Leave a Google Review
+                        </a>
+                    </div>
+                    
+                    <!-- Social Sharing Section -->
+                    <div class="social-sharing-section mb-5">
+                        <h3 class="h5 mb-3">Share Your Experience</h3>
+                        <p class="text-muted mb-3">Spread the word about Sabor Con Flow Dance!</p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <!-- Facebook Share -->
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="btn btn-outline-primary btn-sm social-share-btn"
+                               aria-label="Share on Facebook">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                            
+                            <!-- Twitter Share -->
+                            <a href="https://twitter.com/intent/tweet?text=I%20just%20shared%20my%20experience%20at%20Sabor%20Con%20Flow%20Dance!%20Check%20them%20out!&url={{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="btn btn-outline-info btn-sm social-share-btn"
+                               aria-label="Share on Twitter">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                            
+                            <!-- Instagram (Link to profile) -->
+                            <a href="https://www.instagram.com/saborconflowdance/" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="btn btn-outline-danger btn-sm social-share-btn"
+                               aria-label="Follow on Instagram">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                            
+                            <!-- WhatsApp Share -->
+                            <a href="https://wa.me/?text=I%20just%20shared%20my%20experience%20at%20Sabor%20Con%20Flow%20Dance!%20Check%20them%20out!%20{{ request.build_absolute_uri|urlencode }}" 
+                               target="_blank" 
+                               rel="noopener noreferrer"
+                               class="btn btn-outline-success btn-sm social-share-btn"
+                               aria-label="Share on WhatsApp">
+                                <i class="fab fa-whatsapp"></i>
+                            </a>
+                            
+                            <!-- Email Share -->
+                            <a href="mailto:?subject=Check%20out%20Sabor%20Con%20Flow%20Dance&body=I%20just%20shared%20my%20experience%20at%20Sabor%20Con%20Flow%20Dance!%20Check%20them%20out!%20{{ request.build_absolute_uri|urlencode }}" 
+                               class="btn btn-outline-secondary btn-sm social-share-btn"
+                               aria-label="Share via Email">
+                                <i class="fas fa-envelope"></i>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Call to Action Buttons -->
+                    <div class="cta-section">
+                        <h3 class="h5 mb-4">Ready to Dance More?</h3>
+                        <div class="d-flex flex-column flex-md-row justify-content-center gap-3">
+                            <a href="{% url 'core:home' %}" class="btn btn-primary btn-lg">
+                                <i class="fas fa-home me-2"></i>
+                                Return to Homepage
+                            </a>
+                            <a href="{% url 'core:schedule' %}" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-calendar-alt me-2"></i>
+                                View Class Schedule
+                            </a>
+                            <a href="{% url 'core:pricing' %}" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-tag me-2"></i>
+                                Book More Classes
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Info -->
+                    <div class="mt-5 pt-4 border-top">
+                        <p class="text-muted small mb-2">
+                            <i class="fas fa-question-circle me-1"></i>
+                            Have questions about your testimonial?
+                        </p>
+                        <p class="text-muted small">
+                            Contact us at 
+                            <a href="mailto:info@saborconflowdance.com" class="text-decoration-none">
+                                info@saborconflowdance.com
+                            </a>
+                            or call 
+                            <a href="tel:+17205555555" class="text-decoration-none">
+                                (720) 555-5555
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter Signup (Optional) -->
+            <div class="card mt-4 border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <h4 class="h5 mb-3">Stay Connected!</h4>
+                    <p class="text-muted mb-3">Get updates about new classes, workshops, and events.</p>
+                    <form class="row g-2 justify-content-center" id="newsletter-form">
+                        <div class="col-auto">
+                            <input type="email" 
+                                   class="form-control" 
+                                   placeholder="Enter your email" 
+                                   required
+                                   aria-label="Email for newsletter">
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-1"></i>
+                                Subscribe
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom Styles -->
+<style>
+.testimonial-success-card {
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.success-icon {
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    0% {
+        transform: scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.1);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.timeline-item {
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    transition: transform 0.3s ease;
+}
+
+.timeline-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.social-share-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.social-share-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.google-review-section {
+    border: 2px solid #4285f4;
+    position: relative;
+}
+
+.google-review-section::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #4285f4, #34a853, #fbbc04, #ea4335);
+    border-radius: 10px;
+    opacity: 0.3;
+    z-index: -1;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .card-body.p-5 {
+        padding: 2rem !important;
+    }
+    
+    .display-4 {
+        font-size: 2.5rem;
+    }
+    
+    .timeline-item {
+        margin-bottom: 1rem;
+    }
+    
+    .cta-section .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+    
+    .social-share-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 14px;
+    }
+}
+
+/* Accessibility */
+.social-share-btn:focus,
+.btn:focus {
+    outline: 2px solid #C7B375;
+    outline-offset: 2px;
+}
+
+/* Print styles */
+@media print {
+    .social-sharing-section,
+    .google-review-section,
+    .newsletter-form {
+        display: none;
+    }
+}
+</style>
+
+<!-- JavaScript for Newsletter Form -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const newsletterForm = document.getElementById('newsletter-form');
+    if (newsletterForm) {
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            
+            // Show success message
+            const button = this.querySelector('button');
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check me-1"></i> Subscribed!';
+            button.classList.remove('btn-primary');
+            button.classList.add('btn-success');
+            button.disabled = true;
+            
+            // Reset after 3 seconds
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.classList.remove('btn-success');
+                button.classList.add('btn-primary');
+                button.disabled = false;
+                this.reset();
+            }, 3000);
+            
+            // Here you would normally send the email to your backend
+            console.log('Newsletter subscription for:', email);
+        });
+    }
+    
+    // Animate elements on page load
+    const animateElements = document.querySelectorAll('.timeline-item, .social-share-btn');
+    animateElements.forEach((el, index) => {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+            el.style.transition = 'all 0.5s ease';
+            el.style.opacity = '1';
+            el.style.transform = 'translateY(0)';
+        }, 100 * index);
+    });
+});
+</script>
+{% endblock %}

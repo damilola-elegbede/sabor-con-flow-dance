@@ -1,0 +1,60 @@
+# Coverage configuration for Sabor Con Flow Dance
+# SPEC_06 Group C Task 7: 80% Coverage Target
+
+[run]
+source = .
+branch = True
+omit = 
+    */venv/*
+    */env/*
+    */migrations/*
+    manage.py
+    */settings/*
+    */test_*.py
+    .venv/*
+    venv/*
+    venv_old/*
+    */node_modules/*
+    */static/*
+    */staticfiles/*
+    */templates/*
+    vercel.json
+    vercel-build
+    optimize_images.py
+    *.md
+    *.txt
+    *.json
+    sabor_con_flow/wsgi.py
+    sabor_con_flow/asgi.py
+    api/index.py
+
+[report]
+show_missing = True
+skip_covered = False
+sort = cover
+exclude_lines =
+    pragma: no cover
+    def __repr__
+    def __str__
+    raise AssertionError
+    raise NotImplementedError
+    if __name__ == .__main__.:
+    if TYPE_CHECKING:
+    @abstract
+    pass
+    \.\.\.$
+
+precision = 2
+fail_under = 80
+
+[html]
+directory = htmlcov
+title = Sabor Con Flow Dance - Test Coverage Report
+show_contexts = True
+
+[xml]
+output = coverage.xml
+
+[json]
+output = coverage.json
+pretty_print = True

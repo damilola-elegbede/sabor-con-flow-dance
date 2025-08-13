@@ -33,7 +33,7 @@ export class FeatureDetection {
   static detectIntersectionObserver() {
     const supported = 'IntersectionObserver' in window;
     this.features.set('intersection-observer', supported);
-    
+
     if (!supported) {
       // Load polyfill if needed
       this.loadPolyfill('intersection-observer');
@@ -67,18 +67,17 @@ export class FeatureDetection {
   }
 
   static detectTouchSupport() {
-    const supported = 'ontouchstart' in window || 
-                     navigator.maxTouchPoints > 0 || 
-                     navigator.msMaxTouchPoints > 0;
+    const supported =
+      'ontouchstart' in window || navigator.maxTouchPoints > 0 || navigator.msMaxTouchPoints > 0;
     this.features.set('touch', supported);
   }
 
   static detectNetworkInformation() {
     const supported = 'connection' in navigator;
     this.features.set('network-information', supported);
-    
+
     if (supported) {
-      const connection = navigator.connection;
+      const { connection } = navigator;
       this.features.set('connection-type', connection.effectiveType);
       this.features.set('save-data', connection.saveData || false);
     }
@@ -124,7 +123,7 @@ export class FeatureDetection {
 
   static addFeatureClasses() {
     const html = document.documentElement;
-    
+
     this.features.forEach((supported, feature) => {
       if (typeof supported === 'boolean') {
         html.classList.add(supported ? feature : `no-${feature}`);
@@ -151,7 +150,7 @@ export class FeatureDetection {
     const polyfills = {
       'intersection-observer': () => {
         return import('intersection-observer');
-      }
+      },
     };
 
     const polyfillLoader = polyfills[feature];
@@ -183,12 +182,12 @@ export class FeatureDetection {
       'es-modules': 20,
       'intersection-observer': 15,
       'service-worker': 15,
-      'webp': 10,
+      webp: 10,
       'css-grid': 10,
       'native-lazy-loading': 10,
       'local-storage': 10,
-      'webgl': 5,
-      'network-information': 5
+      webgl: 5,
+      'network-information': 5,
     };
 
     let score = 0;
@@ -204,8 +203,9 @@ export class FeatureDetection {
   // Determine if device should receive enhanced experience
   static shouldUseEnhancedExperience() {
     const score = this.getDeviceScore();
-    const hasSlowConnection = this.features.get('connection-type') === 'slow-2g' || 
-                             this.features.get('connection-type') === '2g';
+    const hasSlowConnection =
+      this.features.get('connection-type') === 'slow-2g' ||
+      this.features.get('connection-type') === '2g';
     const saveData = this.features.get('save-data');
 
     // Don't enhance for very low-end devices or slow connections
@@ -220,8 +220,9 @@ export class FeatureDetection {
   static getRecommendedBundleStrategy() {
     const score = this.getDeviceScore();
     const esModules = this.features.get('es-modules');
-    const slowConnection = this.features.get('connection-type') === 'slow-2g' || 
-                          this.features.get('connection-type') === '2g';
+    const slowConnection =
+      this.features.get('connection-type') === 'slow-2g' ||
+      this.features.get('connection-type') === '2g';
 
     if (slowConnection || this.features.get('save-data')) {
       return 'minimal'; // Load only critical features

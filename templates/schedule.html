@@ -1,0 +1,454 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Class Schedule - Sabor con Flow Dance{% endblock title %}
+
+{% block meta_description %}Sunday dance classes at Sabor con Flow. SCF Choreo Team, Pasos Básicos, Casino Royale. All levels welcome. Book your spot today!{% endblock %}
+
+{% block meta_keywords %}Sunday dance classes Boulder, Cuban salsa schedule, SCF Choreo Team, Pasos Básicos, Casino Royale, dance class times, Avalon Ballroom{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'core:schedule' %}{% endblock %}
+
+{% block og_title %}Class Schedule - Sabor con Flow Dance{% endblock %}
+{% block og_description %}Sunday dance classes at Sabor con Flow. SCF Choreo Team, Pasos Básicos, Casino Royale. All levels welcome. Book your spot today!{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Class Schedule - Sabor con Flow Dance",
+  "description": "Sunday dance classes at Sabor con Flow. SCF Choreo Team, Pasos Básicos, Casino Royale. All levels welcome.",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'core:schedule' %}",
+  "mainEntity": [
+    {
+      "@type": "Event",
+      "name": "SCF Choreo Team",
+      "description": "Advanced choreography team training session focusing on Cuban salsa techniques and performance routines",
+      "startDate": "2024-01-14T12:00:00-07:00",
+      "endDate": "2024-01-14T13:00:00-07:00",
+      "eventSchedule": {
+        "@type": "Schedule",
+        "scheduleTimezone": "America/Denver",
+        "repeatFrequency": "P1W",
+        "byDay": "Sunday"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "Avalon Ballroom",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Boulder",
+          "addressRegion": "CO",
+          "addressCountry": "US"
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Sabor Con Flow Dance"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "20",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "Event", 
+      "name": "Pasos Básicos",
+      "description": "Beginner Cuban salsa class focusing on basic footwork, turn patterns, and afro-Cuban elements",
+      "startDate": "2024-01-14T13:00:00-07:00",
+      "endDate": "2024-01-14T14:00:00-07:00",
+      "eventSchedule": {
+        "@type": "Schedule",
+        "scheduleTimezone": "America/Denver",
+        "repeatFrequency": "P1W",
+        "byDay": "Sunday"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "Avalon Ballroom",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Boulder",
+          "addressRegion": "CO", 
+          "addressCountry": "US"
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Sabor Con Flow Dance"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "20",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    },
+    {
+      "@type": "Event",
+      "name": "Casino Royale", 
+      "description": "Intermediate casino dancing class focusing on building blocks of casino dance techniques",
+      "startDate": "2024-01-14T14:00:00-07:00",
+      "endDate": "2024-01-14T15:00:00-07:00",
+      "eventSchedule": {
+        "@type": "Schedule",
+        "scheduleTimezone": "America/Denver",
+        "repeatFrequency": "P1W",
+        "byDay": "Sunday"
+      },
+      "location": {
+        "@type": "Place",
+        "name": "Avalon Ballroom",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Boulder",
+          "addressRegion": "CO",
+          "addressCountry": "US"
+        }
+      },
+      "organizer": {
+        "@type": "Organization",
+        "name": "Sabor Con Flow Dance"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "20",
+        "priceCurrency": "USD",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ]
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/schedule.css' %}">
+{% endblock extra_css %}
+
+{% block content %}
+<section class="schedule-hero">
+    <div class="container">
+        <h1>Sunday Class Schedule</h1>
+        <p class="schedule-subtitle">Join us every Sunday for our Cuban salsa classes at Avalon Ballroom</p>
+    </div>
+</section>
+
+<section class="schedule-content">
+    <div class="container">
+        <div class="schedule-grid">
+            {% for class in sunday_classes %}
+            <div class="class-card">
+                <div class="class-header">
+                    <h3 class="class-name">{{ class.name }}</h3>
+                    <span class="level-badge level-{{ class.level }}">{{ class.get_level_display }}</span>
+                </div>
+                
+                <div class="class-details">
+                    <div class="class-time">
+                        <i class="fas fa-clock"></i>
+                        <span>{{ class.start_time|time:"g:i A" }} - {{ class.end_time|time:"g:i A" }}</span>
+                    </div>
+                    
+                    <div class="class-instructor">
+                        <i class="fas fa-user"></i>
+                        <span>{{ class.instructor.name }}</span>
+                    </div>
+                    
+                    <div class="class-capacity">
+                        <i class="fas fa-users"></i>
+                        <span>Max {{ class.capacity }} students</span>
+                    </div>
+                </div>
+                
+                <div class="class-description">
+                    <p>{{ class.description }}</p>
+                </div>
+                
+                <div class="class-actions">
+                    <button class="btn btn-primary book-lesson-btn" 
+                            data-class-name="{{ class.name }}" 
+                            data-instructor="{{ class.instructor.name }}">
+                        Book Private Lesson
+                    </button>
+                    
+                    <div class="external-links">
+                        <a href="https://www.facebook.com/events" 
+                           class="external-link facebook-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fab fa-facebook-f"></i>
+                            Facebook Event
+                        </a>
+                        
+                        <a href="https://pastio.fun" 
+                           class="external-link pastio-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-calendar-plus"></i>
+                            Pastio.fun
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="no-classes">
+                <h3>No Sunday classes scheduled</h3>
+                <p>Please check back later or contact us for more information.</p>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Default classes if no database entries -->
+        {% if not sunday_classes %}
+        <div class="schedule-grid">
+            <div class="class-card">
+                <div class="class-header">
+                    <h3 class="class-name">SCF Choreo Team</h3>
+                    <span class="level-badge level-advanced">Advanced</span>
+                </div>
+                
+                <div class="class-details">
+                    <div class="class-time">
+                        <i class="fas fa-clock"></i>
+                        <span>12:00 PM - 1:00 PM</span>
+                    </div>
+                    
+                    <div class="class-instructor">
+                        <i class="fas fa-user"></i>
+                        <span>Sabor Con Flow Team</span>
+                    </div>
+                    
+                    <div class="class-capacity">
+                        <i class="fas fa-users"></i>
+                        <span>Max 20 students</span>
+                    </div>
+                </div>
+                
+                <div class="class-description">
+                    <p>Join our choreography team for an intensive dance training session focusing on advanced Cuban salsa techniques and performance routines.</p>
+                </div>
+                
+                <div class="class-actions">
+                    <button class="btn btn-primary book-lesson-btn" 
+                            data-class-name="SCF Choreo Team" 
+                            data-instructor="Sabor Con Flow Team">
+                        Book Private Lesson
+                    </button>
+                    
+                    <div class="external-links">
+                        <a href="https://www.facebook.com/events" 
+                           class="external-link facebook-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fab fa-facebook-f"></i>
+                            Facebook Event
+                        </a>
+                        
+                        <a href="https://pastio.fun" 
+                           class="external-link pastio-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-calendar-plus"></i>
+                            Pastio.fun
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="class-card">
+                <div class="class-header">
+                    <h3 class="class-name">Pasos Básicos</h3>
+                    <span class="level-badge level-beginner">Beginner</span>
+                </div>
+                
+                <div class="class-details">
+                    <div class="class-time">
+                        <i class="fas fa-clock"></i>
+                        <span>1:00 PM - 2:00 PM</span>
+                    </div>
+                    
+                    <div class="class-instructor">
+                        <i class="fas fa-user"></i>
+                        <span>Sabor Con Flow Team</span>
+                    </div>
+                    
+                    <div class="class-capacity">
+                        <i class="fas fa-users"></i>
+                        <span>Max 20 students</span>
+                    </div>
+                </div>
+                
+                <div class="class-description">
+                    <p>Pasos Básicos will focus on basic Cuban salsa footwork, turn patterns, and a little bit of afro-Cuban in salsa.</p>
+                </div>
+                
+                <div class="class-actions">
+                    <button class="btn btn-primary book-lesson-btn" 
+                            data-class-name="Pasos Básicos" 
+                            data-instructor="Sabor Con Flow Team">
+                        Book Private Lesson
+                    </button>
+                    
+                    <div class="external-links">
+                        <a href="https://www.facebook.com/events" 
+                           class="external-link facebook-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fab fa-facebook-f"></i>
+                            Facebook Event
+                        </a>
+                        
+                        <a href="https://pastio.fun" 
+                           class="external-link pastio-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-calendar-plus"></i>
+                            Pastio.fun
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="class-card">
+                <div class="class-header">
+                    <h3 class="class-name">Casino Royale</h3>
+                    <span class="level-badge level-intermediate">Intermediate</span>
+                </div>
+                
+                <div class="class-details">
+                    <div class="class-time">
+                        <i class="fas fa-clock"></i>
+                        <span>2:00 PM - 3:00 PM</span>
+                    </div>
+                    
+                    <div class="class-instructor">
+                        <i class="fas fa-user"></i>
+                        <span>Sabor Con Flow Team</span>
+                    </div>
+                    
+                    <div class="class-capacity">
+                        <i class="fas fa-users"></i>
+                        <span>Max 20 students</span>
+                    </div>
+                </div>
+                
+                <div class="class-description">
+                    <p>Take your casino dancing to the next level with this class. We focus on the building blocks of Casino dancing.</p>
+                </div>
+                
+                <div class="class-actions">
+                    <button class="btn btn-primary book-lesson-btn" 
+                            data-class-name="Casino Royale" 
+                            data-instructor="Sabor Con Flow Team">
+                        Book Private Lesson
+                    </button>
+                    
+                    <div class="external-links">
+                        <a href="https://www.facebook.com/events" 
+                           class="external-link facebook-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fab fa-facebook-f"></i>
+                            Facebook Event
+                        </a>
+                        
+                        <a href="https://pastio.fun" 
+                           class="external-link pastio-link" 
+                           target="_blank" 
+                           rel="noopener noreferrer">
+                            <i class="fas fa-calendar-plus"></i>
+                            Pastio.fun
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="schedule-info">
+            <div class="venue-info">
+                <h3><i class="fas fa-map-marker-alt"></i> Venue Information</h3>
+                <p><strong>Avalon Ballroom</strong></p>
+                <p>North Lobby & Tango Room</p>
+                <p>Join us every Sunday for authentic Cuban salsa classes!</p>
+            </div>
+            
+            <div class="booking-info">
+                <h3><i class="fas fa-info-circle"></i> How to Book</h3>
+                <p>Click "Book Private Lesson" to schedule one-on-one sessions with our instructors.</p>
+                <p>For group classes, check out the Facebook Events or register on Pastio.fun.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Facebook Events Section - SPEC_05 Group B Task 6 -->
+{% include 'components/facebook_events.html' %}
+
+<!-- Pastio.fun Events Section - SPEC_05 Group B Task 7 -->
+{% include 'components/pastio_events.html' %}
+
+<!-- Calendly Modal Placeholder -->
+<div id="calendly-modal" class="calendly-modal" style="display: none;">
+    <div class="calendly-modal-content">
+        <span class="calendly-close">&times;</span>
+        <div id="calendly-inline-widget" style="min-width:320px;height:630px;"></div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<!-- Calendly widget -->
+<script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Book lesson button functionality
+    const bookButtons = document.querySelectorAll('.book-lesson-btn');
+    const calendlyModal = document.getElementById('calendly-modal');
+    const calendlyClose = document.querySelector('.calendly-close');
+    
+    bookButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const className = this.getAttribute('data-class-name');
+            const instructor = this.getAttribute('data-instructor');
+            
+            // Show Calendly modal
+            calendlyModal.style.display = 'block';
+            
+            // Initialize Calendly widget (placeholder URL - replace with actual Calendly link)
+            Calendly.initInlineWidget({
+                url: 'https://calendly.com/your-calendly-link',
+                parentElement: document.getElementById('calendly-inline-widget'),
+                prefill: {
+                    name: '',
+                    email: '',
+                    customAnswers: {
+                        a1: className,
+                        a2: instructor
+                    }
+                }
+            });
+        });
+    });
+    
+    // Close modal functionality
+    if (calendlyClose) {
+        calendlyClose.addEventListener('click', function() {
+            calendlyModal.style.display = 'none';
+        });
+    }
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === calendlyModal) {
+            calendlyModal.style.display = 'none';
+        }
+    });
+});
+</script>
+{% endblock extra_js %}

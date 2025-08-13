@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Page Not Found - Sabor Con Flow{% endblock %}
+{% block title %}Page Not Found - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Page not found. The page you're looking for doesn't exist. Return to Sabor con Flow Dance homepage.{% endblock %}
+
+{% block meta_tags %}
+<meta name="robots" content="noindex, nofollow">
+{{ block.super }}
+{% endblock %}
 
 {% block content %}
 <div class="container text-center" style="min-height: 60vh; display: flex; align-items: center; justify-content: center;">

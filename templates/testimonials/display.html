@@ -1,0 +1,451 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Student Testimonials - Sabor Con Flow Dance{% endblock %}
+
+{% block meta_description %}Read what our students say about their dance journey at Sabor Con Flow. Real testimonials from our Cuban salsa community in Boulder.{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Testimonials Page Styles */
+    .testimonials-hero {
+        background: linear-gradient(135deg, var(--color-black) 0%, var(--color-gray-dark) 100%);
+        color: var(--color-white);
+        padding: var(--spacing-3xl) 0 var(--spacing-2xl);
+        text-align: center;
+    }
+    
+    .testimonials-hero h1 {
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .testimonials-subtitle {
+        font-size: 1.25rem;
+        max-width: 600px;
+        margin: 0 auto;
+        opacity: 0.9;
+    }
+    
+    /* Rating Summary */
+    .rating-summary {
+        background: var(--color-white);
+        padding: var(--spacing-xl);
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+        margin: -40px auto var(--spacing-2xl);
+        max-width: 400px;
+        text-align: center;
+    }
+    
+    .rating-number {
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .rating-stars {
+        color: var(--color-gold);
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-sm);
+    }
+    
+    .rating-count {
+        color: var(--color-gray-medium);
+    }
+    
+    /* Filters Section */
+    .filters-section {
+        background: var(--color-gray-lighter);
+        padding: var(--spacing-xl) 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .filters-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-lg);
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .filter-group {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+    }
+    
+    .filter-label {
+        font-weight: 600;
+        color: var(--color-gray-dark);
+    }
+    
+    .filter-select {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border: 2px solid var(--color-gold);
+        border-radius: 6px;
+        background: var(--color-white);
+        color: var(--color-black);
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all var(--transition-base);
+    }
+    
+    .filter-select:hover,
+    .filter-select:focus {
+        border-color: var(--color-gold-dark);
+        box-shadow: 0 0 0 3px rgba(199, 179, 117, 0.1);
+    }
+    
+    .clear-filters {
+        padding: var(--spacing-sm) var(--spacing-lg);
+        background: var(--color-gray-medium);
+        color: var(--color-white);
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        text-decoration: none;
+        display: inline-block;
+    }
+    
+    .clear-filters:hover {
+        background: var(--color-gray-dark);
+        transform: translateY(-2px);
+    }
+    
+    /* Testimonials Grid - Masonry Layout */
+    .testimonials-container {
+        padding: var(--spacing-3xl) 0;
+    }
+    
+    .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: var(--spacing-xl);
+        align-items: start;
+    }
+    
+    /* Testimonial Card */
+    .testimonial-card {
+        background: var(--color-white);
+        border-radius: 12px;
+        padding: var(--spacing-xl);
+        box-shadow: var(--shadow-md);
+        transition: all var(--transition-base);
+        border: 1px solid rgba(199, 179, 117, 0.1);
+        break-inside: avoid;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-5px);
+        box-shadow: var(--shadow-xl);
+        border-color: var(--color-gold);
+    }
+    
+    /* Card Header */
+    .testimonial-header {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-md);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .testimonial-photo {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--color-gold);
+    }
+    
+    .testimonial-photo-placeholder {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--color-gold-light) 0%, var(--color-gold) 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-white);
+        font-size: 1.5rem;
+        font-weight: 700;
+        border: 3px solid var(--color-gold);
+    }
+    
+    .testimonial-info {
+        flex: 1;
+    }
+    
+    .testimonial-name {
+        font-weight: 700;
+        font-size: 1.125rem;
+        color: var(--color-black);
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .testimonial-rating {
+        color: var(--color-gold);
+        font-size: 1rem;
+        margin-bottom: var(--spacing-xs);
+    }
+    
+    .testimonial-class {
+        display: inline-block;
+        background: var(--color-gold);
+        color: var(--color-black);
+        padding: var(--spacing-xs) var(--spacing-md);
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 600;
+    }
+    
+    /* Testimonial Content */
+    .testimonial-content {
+        position: relative;
+        padding-left: var(--spacing-lg);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .testimonial-content::before {
+        content: '"';
+        position: absolute;
+        left: 0;
+        top: -10px;
+        font-size: 3rem;
+        color: var(--color-gold);
+        font-family: var(--font-heading);
+        line-height: 1;
+    }
+    
+    .testimonial-text {
+        color: var(--color-gray-dark);
+        line-height: 1.7;
+        font-style: italic;
+    }
+    
+    /* Testimonial Footer */
+    .testimonial-footer {
+        padding-top: var(--spacing-md);
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        color: var(--color-gray-medium);
+        font-size: 0.875rem;
+    }
+    
+    /* No Testimonials Message */
+    .no-testimonials {
+        text-align: center;
+        padding: var(--spacing-3xl);
+        background: var(--color-white);
+        border-radius: 12px;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .no-testimonials h3 {
+        color: var(--color-gray-dark);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .no-testimonials p {
+        color: var(--color-gray-medium);
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .testimonials-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .filters-container {
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+        
+        .filter-group {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .filter-select {
+            flex: 1;
+            max-width: 200px;
+        }
+        
+        .rating-summary {
+            margin: -30px 20px var(--spacing-xl);
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .testimonials-grid {
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+        }
+    }
+    
+    /* Masonry effect for varied heights */
+    @supports (grid-template-rows: masonry) {
+        .testimonials-grid {
+            grid-template-rows: masonry;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="testimonials-hero">
+    <div class="container">
+        <h1>What Our Students Say</h1>
+        <p class="testimonials-subtitle">
+            Real stories from our vibrant dance community
+        </p>
+    </div>
+</section>
+
+<!-- Rating Summary -->
+{% if total_reviews > 0 %}
+<div class="container">
+    <div class="rating-summary">
+        <div class="rating-number">{{ average_rating }}</div>
+        <div class="rating-stars">
+            {% for i in "12345" %}
+                {% if forloop.counter <= average_rating %}
+                    <i class="fas fa-star"></i>
+                {% elif forloop.counter|add:"-0.5" <= average_rating %}
+                    <i class="fas fa-star-half-alt"></i>
+                {% else %}
+                    <i class="far fa-star"></i>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <div class="rating-count">Based on {{ total_reviews }} review{{ total_reviews|pluralize }}</div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Filters Section -->
+<section class="filters-section">
+    <div class="container">
+        <form method="get" class="filters-container">
+            <div class="filter-group">
+                <label for="rating-filter" class="filter-label">Rating:</label>
+                <select name="rating" id="rating-filter" class="filter-select" onchange="this.form.submit()">
+                    <option value="">All Ratings</option>
+                    <option value="5" {% if selected_rating == "5" %}selected{% endif %}>5 Stars</option>
+                    <option value="4" {% if selected_rating == "4" %}selected{% endif %}>4 Stars</option>
+                    <option value="3" {% if selected_rating == "3" %}selected{% endif %}>3 Stars</option>
+                    <option value="2" {% if selected_rating == "2" %}selected{% endif %}>2 Stars</option>
+                    <option value="1" {% if selected_rating == "1" %}selected{% endif %}>1 Star</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="class-filter" class="filter-label">Class Type:</label>
+                <select name="class_type" id="class-filter" class="filter-select" onchange="this.form.submit()">
+                    <option value="">All Classes</option>
+                    {% for class_type in class_types %}
+                        <option value="{{ class_type }}" {% if selected_class == class_type %}selected{% endif %}>
+                            {{ class_type }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            {% if selected_rating or selected_class %}
+                <a href="{% url 'core:testimonials' %}" class="clear-filters">
+                    <i class="fas fa-times"></i> Clear Filters
+                </a>
+            {% endif %}
+        </form>
+    </div>
+</section>
+
+<!-- Testimonials Grid -->
+<section class="testimonials-container">
+    <div class="container">
+        {% if testimonials %}
+            <div class="testimonials-grid">
+                {% for testimonial in testimonials %}
+                    <div class="testimonial-card">
+                        <!-- Card Header -->
+                        <div class="testimonial-header">
+                            {% if testimonial.photo %}
+                                <img src="{{ testimonial.photo.url }}" alt="{{ testimonial.student_name }}" class="testimonial-photo">
+                            {% else %}
+                                <div class="testimonial-photo-placeholder">
+                                    {{ testimonial.student_name|first }}
+                                </div>
+                            {% endif %}
+                            
+                            <div class="testimonial-info">
+                                <h3 class="testimonial-name">{{ testimonial.student_name }}</h3>
+                                <div class="testimonial-rating">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= testimonial.rating %}
+                                            <i class="fas fa-star"></i>
+                                        {% else %}
+                                            <i class="far fa-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <span class="testimonial-class">{{ testimonial.class_type }}</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Card Content -->
+                        <div class="testimonial-content">
+                            <p class="testimonial-text">{{ testimonial.content }}</p>
+                        </div>
+                        
+                        <!-- Card Footer -->
+                        {% if testimonial.published_at %}
+                            <div class="testimonial-footer">
+                                <i class="far fa-calendar"></i> {{ testimonial.published_at|date:"F j, Y" }}
+                            </div>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-testimonials">
+                <h3>No Testimonials Found</h3>
+                <p>We don't have any testimonials matching your filters yet.</p>
+                <a href="{% url 'core:submit_testimonial' %}" class="btn btn-primary">
+                    Share Your Experience
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="testimonials-cta" style="background: var(--color-gray-lighter); padding: var(--spacing-3xl) 0; text-align: center;">
+    <div class="container">
+        <h2 style="margin-bottom: var(--spacing-lg);">Ready to Start Your Dance Journey?</h2>
+        <p style="color: var(--color-gray-medium); margin-bottom: var(--spacing-xl); max-width: 600px; margin-left: auto; margin-right: auto;">
+            Join our welcoming community and discover the joy of Cuban salsa dancing
+        </p>
+        <div style="display: flex; gap: var(--spacing-md); justify-content: center; flex-wrap: wrap;">
+            <a href="{% url 'core:schedule' %}" class="btn btn-primary">View Schedule</a>
+            <a href="{% url 'core:submit_testimonial' %}" class="btn btn-outline">Share Your Story</a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Auto-submit form when filters change (progressive enhancement)
+    document.addEventListener('DOMContentLoaded', function() {
+        const filterSelects = document.querySelectorAll('.filter-select');
+        
+        filterSelects.forEach(select => {
+            select.addEventListener('change', function() {
+                this.form.submit();
+            });
+        });
+    });
+</script>
+{% endblock %}

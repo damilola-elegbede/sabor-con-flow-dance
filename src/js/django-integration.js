@@ -28,18 +28,18 @@ class DjangoBundleLoader {
 
   getDevManifest() {
     return {
-      'main': 'main.bundle.js',
-      'vendor': 'vendor.bundle.js',
-      'mobile': 'mobile.bundle.js',
-      'gallery': 'gallery.bundle.js',
-      'analytics': 'analytics.bundle.js',
-      'home': 'home.bundle.js',
-      'contact': 'contact.bundle.js',
-      'pricing': 'pricing.bundle.js',
+      main: 'main.bundle.js',
+      vendor: 'vendor.bundle.js',
+      mobile: 'mobile.bundle.js',
+      gallery: 'gallery.bundle.js',
+      analytics: 'analytics.bundle.js',
+      home: 'home.bundle.js',
+      contact: 'contact.bundle.js',
+      pricing: 'pricing.bundle.js',
       'lazy-load': 'lazy-load.bundle.js',
       'performance-monitor': 'performance-monitor.bundle.js',
       'social-features': 'social-features.bundle.js',
-      'whatsapp-chat': 'whatsapp-chat.bundle.js'
+      'whatsapp-chat': 'whatsapp-chat.bundle.js',
     };
   }
 
@@ -63,12 +63,12 @@ class DjangoBundleLoader {
     }
 
     const bundlePath = this.getBundlePath(bundleName);
-    
+
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = bundlePath;
       script.async = true;
-      
+
       if (options.defer) {
         script.defer = true;
       }
@@ -113,11 +113,11 @@ class DjangoBundleLoader {
 
   async loadFeatureBundle(feature) {
     const featureBundles = {
-      'gallery': 'gallery',
-      'analytics': 'analytics',
-      'whatsapp': 'whatsapp-chat',
-      'social': 'social-features',
-      'performance': 'performance-monitor'
+      gallery: 'gallery',
+      analytics: 'analytics',
+      whatsapp: 'whatsapp-chat',
+      social: 'social-features',
+      performance: 'performance-monitor',
     };
 
     const bundleName = featureBundles[feature];
@@ -135,7 +135,7 @@ class DjangoBundleLoader {
     // Load bundles based on data attributes
     document.querySelectorAll('[data-requires-bundle]').forEach(element => {
       const bundleName = element.dataset.requiresBundle;
-      
+
       // Load on interaction
       const loadOnInteraction = () => {
         this.loadBundle(bundleName);
@@ -148,19 +148,22 @@ class DjangoBundleLoader {
 
     // Load bundles based on intersection observer
     if ('IntersectionObserver' in window) {
-      const bundleObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const bundleName = entry.target.dataset.lazyBundle;
-            if (bundleName) {
-              this.loadBundle(bundleName);
-              bundleObserver.unobserve(entry.target);
+      const bundleObserver = new IntersectionObserver(
+        entries => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const bundleName = entry.target.dataset.lazyBundle;
+              if (bundleName) {
+                this.loadBundle(bundleName);
+                bundleObserver.unobserve(entry.target);
+              }
             }
-          }
-        });
-      }, {
-        rootMargin: '50px'
-      });
+          });
+        },
+        {
+          rootMargin: '50px',
+        }
+      );
 
       document.querySelectorAll('[data-lazy-bundle]').forEach(element => {
         bundleObserver.observe(element);
@@ -171,16 +174,16 @@ class DjangoBundleLoader {
   // Public API for Django templates
   static async loadCriticalBundles() {
     const loader = new DjangoBundleLoader();
-    
+
     // Load vendor bundle first
     await loader.loadBundle('vendor');
-    
+
     // Load main bundle
     await loader.loadBundle('main');
-    
+
     // Load page-specific bundle
     await loader.loadPageBundle();
-    
+
     return loader;
   }
 
@@ -193,7 +196,7 @@ class DjangoBundleLoader {
 // Initialize and expose globally for Django templates
 if (typeof window !== 'undefined') {
   window.DjangoBundleLoader = DjangoBundleLoader;
-  
+
   // Auto-initialize on DOM ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', async () => {

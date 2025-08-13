@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Contacting {{ site_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #C7B375;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #C7B375;
+            margin: 0;
+            font-size: 24px;
+        }
+        .header .subtitle {
+            color: #666;
+            margin-top: 10px;
+            font-style: italic;
+        }
+        .logo-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo-section .brand-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #C7B375;
+            margin: 10px 0;
+        }
+        .confirmation-box {
+            background: linear-gradient(135deg, #C7B375 0%, #d4c085 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .confirmation-box h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+        .confirmation-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .detail-label {
+            font-weight: bold;
+            min-width: 140px;
+            color: #495057;
+        }
+        .detail-value {
+            flex: 1;
+            color: #212529;
+        }
+        .next-steps {
+            background-color: #e8f4fd;
+            border-left: 4px solid #0d6efd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .next-steps h3 {
+            color: #0d6efd;
+            margin-top: 0;
+        }
+        .next-steps ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .next-steps li {
+            margin-bottom: 8px;
+        }
+        .social-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .social-section h3 {
+            color: #C7B375;
+            margin-top: 0;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-link {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .social-link:hover {
+            transform: translateY(-2px);
+        }
+        .social-whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+        .social-instagram {
+            background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D, #F56040, #F77737, #FCAF45, #FFDC80);
+            color: white;
+        }
+        .social-facebook {
+            background-color: #1877F2;
+            color: white;
+        }
+        .class-info {
+            background-color: #fff8e1;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .class-info h3 {
+            color: #C7B375;
+            margin-top: 0;
+        }
+        .class-schedule {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .class-item {
+            background-color: white;
+            padding: 10px;
+            border-radius: 4px;
+            border-left: 3px solid #C7B375;
+        }
+        .class-item .time {
+            font-weight: bold;
+            color: #C7B375;
+        }
+        .class-item .name {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .class-item .location {
+            color: #666;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .contact-info {
+            background-color: #e9ecef;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+        .emergency-note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 4px;
+            padding: 10px;
+            margin-top: 15px;
+            color: #856404;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .detail-row {
+                flex-direction: column;
+            }
+            .detail-label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            .social-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .social-link {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="brand-name">{{ site_name }}</div>
+            <p style="color: #666; margin: 0;">Experience the Passion of Cuban Salsa</p>
+        </div>
+
+        <div class="header">
+            <h1>🎉 Thank You for Your Interest!</h1>
+            <p class="subtitle">We've received your inquiry and are excited to help you start your dance journey</p>
+        </div>
+
+        <div class="confirmation-box">
+            <h2>✅ Message Received</h2>
+            <p>Hi {{ contact_name }}! Your inquiry about <strong>{{ interest_display }}</strong> has been received and logged in our system.</p>
+        </div>
+
+        <div class="confirmation-details">
+            <h3>Your Inquiry Details</h3>
+            
+            <div class="detail-row">
+                <div class="detail-label">Submitted:</div>
+                <div class="detail-value">{{ submission_date }}</div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Interest:</div>
+                <div class="detail-value"><strong>{{ interest_display }}</strong></div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Expected Response:</div>
+                <div class="detail-value">Within <strong>{{ expected_response_time }}</strong></div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Contact Email:</div>
+                <div class="detail-value">{{ contact_email }}</div>
+            </div>
+        </div>
+
+        <div class="next-steps">
+            <h3>🎯 What Happens Next?</h3>
+            <ul>
+                <li><strong>Personal Response:</strong> We'll respond to your inquiry within {{ expected_response_time }} with personalized information</li>
+                <li><strong>Class Information:</strong> You'll receive details about our current schedule and pricing</li>
+                <li><strong>Booking Options:</strong> We'll help you find the perfect class or lesson time</li>
+                {% if contact.interest == 'private_lesson' %}
+                <li><strong>Private Lesson Scheduling:</strong> We'll coordinate directly with our instructors for availability</li>
+                {% endif %}
+            </ul>
+        </div>
+
+        {% if contact.interest == 'classes' or contact.interest == 'general' %}
+        <div class="class-info">
+            <h3>🗓️ Current Sunday Schedule</h3>
+            <p>Our regular classes happen every Sunday at Avalon Ballroom in Boulder, CO:</p>
+            
+            <div class="class-schedule">
+                <div class="class-item">
+                    <div class="time">12:00 PM - 1:00 PM</div>
+                    <div class="name">SCF Choreo Team</div>
+                    <div class="location">Avalon Ballroom (North Lobby)</div>
+                </div>
+                <div class="class-item">
+                    <div class="time">1:00 PM - 2:00 PM</div>
+                    <div class="name">Pasos Básicos</div>
+                    <div class="location">Avalon Ballroom (Tango Room)</div>
+                </div>
+                <div class="class-item">
+                    <div class="time">2:00 PM - 3:00 PM</div>
+                    <div class="name">Casino Royale</div>
+                    <div class="location">Avalon Ballroom (Tango Room)</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="social-section">
+            <h3>🌟 Stay Connected</h3>
+            <p>While you wait for our response, connect with our vibrant dance community:</p>
+            
+            <div class="social-links">
+                <a href="{{ whatsapp_url }}" class="social-link social-whatsapp" target="_blank">
+                    💬 Join WhatsApp Group
+                </a>
+                <a href="{{ instagram_url }}" class="social-link social-instagram" target="_blank">
+                    📸 Follow on Instagram
+                </a>
+                <a href="{{ facebook_url }}" class="social-link social-facebook" target="_blank">
+                    👍 Like on Facebook
+                </a>
+            </div>
+        </div>
+
+        <div class="contact-info">
+            <h4>Need Immediate Assistance?</h4>
+            <p><strong>Email:</strong> <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+            <p><strong>Location:</strong> Avalon Ballroom, Boulder, CO</p>
+            <p><strong>Class Days:</strong> Sundays, 12:00 PM - 3:00 PM</p>
+        </div>
+
+        <div class="emergency-note">
+            <strong>🔔 Note:</strong> If you have an urgent question or need immediate assistance, please respond to this email or contact us directly. We're here to help make your dance journey amazing!
+        </div>
+
+        <div class="footer">
+            <p>Thank you for choosing {{ site_name }}!<br>
+            We can't wait to help you discover the joy of Cuban salsa dancing.</p>
+            <p><strong>Website:</strong> <a href="{{ site_url }}">{{ site_url }}</a></p>
+            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+                This is an automated confirmation email. Please do not reply directly to this message.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

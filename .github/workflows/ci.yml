@@ -1,0 +1,453 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop, feature/* ]
+  pull_request:
+    branches: [ main, develop ]
+
+env:
+  PYTHON_VERSION: '3.12'
+  NODE_VERSION: '18'
+  COVERAGE_THRESHOLD: 80
+
+jobs:
+  # Test and quality checks for pull requests
+  test:
+    name: Test & Quality Checks
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main')
+    
+    strategy:
+      matrix:
+        test-type: [unit, integration, security]
+    
+    services:
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 black isort safety bandit
+      
+      - name: Install Node.js dependencies
+        run: |
+          npm ci
+          npm audit --audit-level=moderate
+      
+      - name: Create environment file
+        run: |
+          cat > .env << EOF
+          DJANGO_DEBUG=True
+          DJANGO_SECRET_KEY=test-secret-key-for-ci-only
+          DATABASE_URL=sqlite:///db.sqlite3
+          REDIS_URL=redis://localhost:6379/0
+          TURSO_DATABASE_URL=libsql://test.sqlite
+          TURSO_AUTH_TOKEN=test-token
+          EOF
+      
+      - name: Run Python linting
+        run: |
+          echo "=== Python Code Quality Checks ==="
+          flake8 core/ sabor_con_flow/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 core/ sabor_con_flow/ --count --max-complexity=10 --max-line-length=88 --statistics
+          
+          echo "=== Import Sorting Check ==="
+          isort --check-only --diff core/ sabor_con_flow/
+          
+          echo "=== Black Formatting Check ==="
+          black --check --diff core/ sabor_con_flow/
+      
+      - name: Run JavaScript linting
+        run: |
+          echo "=== JavaScript Linting ==="
+          npm run lint
+          
+          echo "=== JavaScript Tests ==="
+          npm test
+      
+      - name: Run security checks
+        if: matrix.test-type == 'security'
+        run: |
+          echo "=== Python Security Scan ==="
+          safety check --json || true
+          bandit -r core/ sabor_con_flow/ -f json || true
+          
+          echo "=== Node.js Security Audit ==="
+          npm audit --audit-level=high || true
+      
+      - name: Run Django migrations
+        run: |
+          python manage.py makemigrations --check --dry-run
+          python manage.py migrate
+      
+      - name: Run tests with coverage
+        run: |
+          if [ "${{ matrix.test-type }}" = "unit" ]; then
+            pytest core/tests/ -m "unit or not integration" --cov=core --cov-report=xml --cov-report=term-missing
+          elif [ "${{ matrix.test-type }}" = "integration" ]; then
+            pytest core/tests/ -m "integration" --cov=core --cov-report=xml --cov-report=term-missing
+          else
+            pytest core/tests/ -m "security" --cov=core --cov-report=xml --cov-report=term-missing
+          fi
+      
+      - name: Upload coverage to Codecov
+        if: matrix.test-type == 'unit'
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+      
+      - name: Build static assets
+        run: |
+          echo "=== Building CSS and JS ==="
+          python manage.py collectstatic --noinput
+          npm run build
+      
+      - name: Performance budget check
+        run: |
+          echo "=== Performance Budget Check ==="
+          node build-scripts/performance-budget.js
+      
+      - name: Accessibility tests
+        run: |
+          echo "=== Accessibility Testing ==="
+          npm run accessibility:audit || true
+
+  # Build and prepare for deployment
+  build:
+    name: Build & Prepare Deployment
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: []
+    
+    outputs:
+      deployment-id: ${{ steps.deployment.outputs.deployment_id }}
+      version: ${{ steps.version.outputs.version }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          npm ci
+      
+      - name: Generate version
+        id: version
+        run: |
+          VERSION=$(date +%Y%m%d%H%M%S)-$(git rev-parse --short HEAD)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Generated version: $VERSION"
+      
+      - name: Create deployment
+        id: deployment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              description: 'Deploying version ${{ steps.version.outputs.version }}',
+              auto_merge: false,
+              required_contexts: []
+            });
+            core.setOutput('deployment_id', deployment.data.id);
+            return deployment.data.id;
+      
+      - name: Build production assets
+        run: |
+          echo "=== Building Production Assets ==="
+          npm run build:production
+          python manage.py collectstatic --noinput
+      
+      - name: Create deployment package
+        run: |
+          echo "=== Creating Deployment Package ==="
+          mkdir -p deployment-artifacts
+          cp -r staticfiles/ deployment-artifacts/
+          cp vercel.json deployment-artifacts/
+          cp -r api/ deployment-artifacts/
+          cp requirements.txt deployment-artifacts/
+      
+      - name: Upload deployment artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-package-${{ steps.version.outputs.version }}
+          path: deployment-artifacts/
+          retention-days: 7
+
+  # Database migration job
+  migrate:
+    name: Database Migration
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Set up environment
+        run: |
+          cat > .env << EOF
+          DJANGO_DEBUG=False
+          DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          TURSO_DATABASE_URL=${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN=${{ secrets.TURSO_AUTH_TOKEN }}
+          EOF
+      
+      - name: Check for pending migrations
+        id: check_migrations
+        run: |
+          python manage.py makemigrations --check --dry-run || echo "migrations_needed=true" >> $GITHUB_OUTPUT
+      
+      - name: Create database backup
+        if: steps.check_migrations.outputs.migrations_needed == 'true'
+        run: |
+          echo "=== Creating Database Backup ==="
+          python manage.py dumpdata --natural-foreign --natural-primary > backup-$(date +%Y%m%d%H%M%S).json || true
+      
+      - name: Run database migrations
+        run: |
+          echo "=== Running Database Migrations ==="
+          python manage.py migrate --noinput
+      
+      - name: Verify migration success
+        run: |
+          echo "=== Verifying Migration Success ==="
+          python manage.py check --deploy
+          python -c "
+          import django
+          django.setup()
+          from django.db import connection
+          cursor = connection.cursor()
+          cursor.execute('SELECT 1')
+          print('Database connection successful')
+          "
+
+  # Deploy to Vercel
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: [build, migrate]
+    environment:
+      name: production
+      url: https://saborconflowdance.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Download deployment artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: deployment-package-${{ needs.build.outputs.version }}
+          path: deployment-artifacts/
+      
+      - name: Deploy to Vercel
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+      
+      - name: Update deployment status - success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ needs.build.outputs.deployment-id }},
+              state: 'success',
+              environment_url: '${{ steps.deploy.outputs.preview-url }}',
+              description: 'Deployment successful'
+            });
+      
+      - name: Update deployment status - failure
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: ${{ needs.build.outputs.deployment-id }},
+              state: 'failure',
+              description: 'Deployment failed'
+            });
+      
+      - name: Run post-deployment tests
+        run: |
+          echo "=== Post-Deployment Health Checks ==="
+          sleep 30  # Wait for deployment to propagate
+          
+          # Health check endpoint
+          curl -f "${{ steps.deploy.outputs.preview-url }}/api/health/" || exit 1
+          
+          # Test critical pages
+          curl -f "${{ steps.deploy.outputs.preview-url }}/" || exit 1
+          curl -f "${{ steps.deploy.outputs.preview-url }}/contact/" || exit 1
+      
+      - name: Performance monitoring
+        run: |
+          echo "=== Performance Monitoring ==="
+          npm install -g lighthouse
+          lighthouse "${{ steps.deploy.outputs.preview-url }}" --only=performance --output=json --output-path=performance-results.json || true
+          
+          # Check Core Web Vitals
+          node -e "
+          const results = require('./performance-results.json');
+          const lcp = results.audits['largest-contentful-paint'].numericValue;
+          const fid = results.audits['max-potential-fid'].numericValue;
+          const cls = results.audits['cumulative-layout-shift'].numericValue;
+          
+          console.log('Core Web Vitals:');
+          console.log('LCP:', lcp, 'ms (target: <2500ms)');
+          console.log('FID:', fid, 'ms (target: <100ms)');
+          console.log('CLS:', cls, '(target: <0.1)');
+          
+          if (lcp > 2500 || fid > 100 || cls > 0.1) {
+            console.log('WARNING: Core Web Vitals thresholds exceeded');
+          }
+          " || true
+
+  # Rollback mechanism
+  rollback:
+    name: Rollback Deployment
+    runs-on: ubuntu-latest
+    if: failure() && github.ref == 'refs/heads/main'
+    needs: [deploy]
+    when: manual
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Get previous deployment
+        id: previous
+        run: |
+          PREVIOUS_SHA=$(git rev-parse HEAD~1)
+          echo "sha=$PREVIOUS_SHA" >> $GITHUB_OUTPUT
+          echo "Rolling back to commit: $PREVIOUS_SHA"
+      
+      - name: Deploy previous version
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          github-comment: false
+      
+      - name: Notify rollback
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🚨 **Deployment Rollback Initiated**\n\nRolled back to commit: ${{ steps.previous.outputs.sha }}\n\nPlease investigate the deployment failure and fix before attempting to redeploy.'
+            });
+
+  # Cleanup job
+  cleanup:
+    name: Cleanup Artifacts
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [deploy]
+    
+    steps:
+      - name: Delete old deployment artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - 7);
+            
+            for (const artifact of artifacts.data.artifacts) {
+              const createdAt = new Date(artifact.created_at);
+              if (createdAt < cutoffDate) {
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id
+                });
+                console.log(`Deleted old artifact: ${artifact.name}`);
+              }
+            }
