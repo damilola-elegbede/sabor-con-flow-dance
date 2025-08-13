@@ -1,34 +1,16 @@
 {
   "version": 2,
   "buildCommand": "./vercel-build",
-  "builds": [
-    {
-      "src": "api/index.py",
-      "use": "@vercel/python",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "runtime": "python3.12"
-      }
-    },
-    {
-      "src": "api/**/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "static/**/*",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "staticfiles/**/*",
-      "use": "@vercel/static"
-    }
-  ],
   "functions": {
     "api/**/*.py": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "runtime": "python3.12",
+      "memory": 128
     },
     "api/**/*.js": {
-      "maxDuration": 30
+      "maxDuration": 30,
+      "runtime": "nodejs18.x",
+      "memory": 128
     }
   },
   "rewrites": [
