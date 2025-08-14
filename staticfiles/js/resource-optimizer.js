@@ -425,15 +425,23 @@ class ResourceOptimizer {
         link.href = url;
         
         // Determine asset type
-        if (url.match(/\.css$/)) {
+        if (url.match(/\.css$/) || url.includes('fonts.googleapis.com/css')) {
             link.as = 'style';
         } else if (url.match(/\.js$/)) {
             link.as = 'script';
-        } else if (url.match(/\.(png|jpg|jpeg|webp|gif)$/)) {
+        } else if (url.match(/\.(png|jpg|jpeg|webp|gif|svg)$/)) {
             link.as = 'image';
-        } else if (url.match(/\.(woff|woff2)$/)) {
+        } else if (url.match(/\.(woff|woff2|ttf|otf)$/)) {
             link.as = 'font';
             link.crossOrigin = 'anonymous';
+        } else if (url.match(/\.(mp4|webm|ogg)$/)) {
+            link.as = 'video';
+        } else if (url.match(/\.(mp3|wav|ogg)$/)) {
+            link.as = 'audio';
+        } else {
+            // For unknown types, try to determine from context
+            console.warn('Unknown asset type for preloading:', url);
+            return; // Skip preloading unknown types to avoid errors
         }
 
         document.head.appendChild(link);
@@ -597,7 +605,7 @@ class ResourceOptimizer {
     }
 
     preloadCriticalResources() {
-        // Preload critical fonts
+        // Preload critical fonts (note: Google Fonts URLs should be preloaded as style, not font)
         this.preloadStaticAsset('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap');
         this.preloadStaticAsset('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 

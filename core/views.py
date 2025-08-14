@@ -1566,3 +1566,32 @@ def health_check(request):
         status_code = 200
     
     return JsonResponse(health_status, status=status_code)
+
+
+def php_redirect(request):
+    """
+    Handle requests for common PHP files that don't exist in Django.
+    This prevents 400/404 errors from browser autocomplete, extensions, or bots.
+    """
+    requested_path = request.path
+    
+    # Log the attempt for monitoring
+    logger.info(f"PHP file requested: {requested_path} from IP: {request.META.get('REMOTE_ADDR', 'unknown')}")
+    
+    # Map common PHP files to appropriate Django views
+    php_redirects = {
+        '/profile.php': '/',  # Redirect to home page
+        '/index.php': '/',    # Redirect to home page  
+        '/admin.php': '/admin/',  # Redirect to Django admin
+        '/login.php': '/admin/',  # Redirect to Django admin login
+    }
+    
+    redirect_url = php_redirects.get(requested_path, '/')
+    
+    # Return a 301 permanent redirect with a helpful message
+    response = redirect(redirect_url, permanent=True)
+    
+    # Add a custom header to indicate this was a PHP compatibility redirect
+    response['X-PHP-Redirect'] = 'This site uses Django, not PHP'
+    
+    return response

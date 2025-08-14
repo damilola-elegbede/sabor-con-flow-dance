@@ -336,6 +336,79 @@ class AccessibilityManager {
         this.setupContentChangeAnnouncements();
     }
 
+    setupFormValidationAnnouncements() {
+        // Listen for form validation events and announce them to screen readers
+        document.addEventListener('invalid', (event) => {
+            const input = event.target;
+            if (input.validationMessage) {
+                this.announceToScreenReader(
+                    `Validation error: ${input.validationMessage}`, 
+                    'assertive'
+                );
+            }
+        }, true);
+
+        // Listen for successful form submissions
+        document.addEventListener('submit', (event) => {
+            const form = event.target;
+            if (form.checkValidity()) {
+                this.announceToScreenReader('Form submitted successfully', 'polite');
+            }
+        });
+
+        // Listen for input changes that clear validation errors
+        document.addEventListener('input', (event) => {
+            const input = event.target;
+            if (input.getAttribute('aria-invalid') === 'true' && input.validity.valid) {
+                this.announceToScreenReader(
+                    `${input.getAttribute('aria-label') || 'Field'} is now valid`, 
+                    'polite'
+                );
+            }
+        });
+    }
+
+    setupContentChangeAnnouncements() {
+        // Monitor for content changes that should be announced
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                // Announce when new content is added to live regions
+                if (mutation.type === 'childList' && mutation.target.getAttribute('aria-live')) {
+                    // Content will be automatically announced by screen readers
+                    return;
+                }
+
+                // Announce when important content changes
+                if (mutation.target.matches('[data-announce-changes]')) {
+                    const announcement = mutation.target.getAttribute('data-announcement') || 
+                                      'Content has been updated';
+                    this.announceToScreenReader(announcement, 'polite');
+                }
+
+                // Announce when alerts or error messages appear
+                if (mutation.addedNodes.length > 0) {
+                    mutation.addedNodes.forEach((node) => {
+                        if (node.nodeType === Node.ELEMENT_NODE) {
+                            if (node.matches('[role="alert"], .alert, .error-message')) {
+                                const message = node.textContent.trim();
+                                if (message) {
+                                    this.announceToScreenReader(message, 'assertive');
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ['aria-live', 'role']
+        });
+    }
+
     ensureLiveRegions() {
         // Polite announcements
         if (!document.getElementById('aria-live-polite')) {

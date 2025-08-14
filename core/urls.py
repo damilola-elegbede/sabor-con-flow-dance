@@ -61,4 +61,10 @@ urlpatterns = [
     path('admin/monitoring/', monitoring.monitoring_dashboard, name='monitoring_dashboard'),
     path('admin/monitoring/clear-cache/', monitoring.clear_monitoring_cache, name='clear_monitoring_cache'),
     path('admin/monitoring/test-alerts/', monitoring.test_alerts, name='test_alerts'),
+    
+    # PHP compatibility redirects for common bot/browser requests
+    path('profile.php', views.php_redirect, name='php_redirect'),
+    path('index.php', views.php_redirect, name='php_redirect_index'),
+    path('admin.php', views.php_redirect, name='php_redirect_admin'),
+    path('login.php', views.php_redirect, name='php_redirect_login'),
 ] 

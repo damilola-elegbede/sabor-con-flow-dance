@@ -182,9 +182,9 @@
     <link rel="preload" href="{% static 'css/hero.css' %}" as="style" importance="high">
     
     <!-- Preload medium-priority CSS -->
-    <link rel="preload" href="{% static 'css/styles.css' %}" as="style" importance="medium">
-    <link rel="preload" href="{% static 'css/forms.css' %}" as="style" importance="medium">
-    <link rel="preload" href="{% static 'css/image-optimization.css' %}" as="style" importance="medium">
+    <link rel="preload" href="{% static 'css/styles.css' %}" as="style" importance="low">
+    <link rel="preload" href="{% static 'css/forms.css' %}" as="style" importance="low">
+    <link rel="preload" href="{% static 'css/image-optimization.css' %}" as="style" importance="low">
     
     <!-- Async CSS Loading with Performance Optimization -->
     <script>
@@ -229,16 +229,16 @@
     <!-- Advanced Resource Hints for Performance -->
     <link rel="preload" href="{% static 'css/styles.css' %}" as="style" importance="high">
     <link rel="preload" href="{% static 'js/advanced-lazy-load.js' %}" as="script" importance="high">
-    <link rel="preload" href="{% static 'js/performance-analytics.js' %}" as="script" importance="medium">
+    <link rel="preload" href="{% static 'js/performance-analytics.js' %}" as="script" importance="low">
     
     <!-- Preload critical images with WebP support -->
     <link rel="preload" href="{% static 'images/sabor-con-flow-logo.webp' %}" as="image" type="image/webp" importance="high">
-    <link rel="preload" href="{% static 'images/sabor-con-flow-logo.png' %}" as="image" type="image/png" importance="medium">
+    <link rel="preload" href="{% static 'images/sabor-con-flow-logo.png' %}" as="image" type="image/png" importance="low">
     
     <!-- Preconnect to external performance-critical domains -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous" importance="high">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" importance="high">
-    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous" importance="medium">
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin="anonymous">
     
     <!-- Page-specific preloading -->
     {% block preload %}
