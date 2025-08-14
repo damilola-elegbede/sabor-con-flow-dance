@@ -34,7 +34,7 @@ class ServiceWorkerManager {
         try {
             console.log('Registering Service Worker...');
             
-            this.swRegistration = await navigator.serviceWorker.register('/static/js/service-worker.js', {
+            this.swRegistration = await navigator.serviceWorker.register('/static/service-worker.js', {
                 scope: '/',
                 updateViaCache: 'none'
             });

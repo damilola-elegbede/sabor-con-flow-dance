@@ -8,7 +8,7 @@ Complete implementation of service worker for offline functionality and performa
 
 ### Core Service Worker Files
 
-1. **`/static/js/service-worker.js`** (Main Service Worker)
+1. **`/static/service-worker.js`** (Main Service Worker)
    - **Purpose**: Core service worker with offline functionality and caching strategies
    - **Features**:
      - Cache-first strategy for static assets (CSS, JS, images, fonts)
