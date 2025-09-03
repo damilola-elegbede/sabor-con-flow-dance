@@ -6,8 +6,8 @@
     cursor: pointer;
     padding: 10px;
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 15px;
+    right: 20px;
     z-index: 1000;
     transition: transform 0.3s ease;
 }
@@ -37,18 +37,20 @@
     display: block;
     position: fixed;
     top: 0;
-    left: -250px;
-    width: 250px;
+    right: -175px;
+    width: 175px;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.95);
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 80px 20px 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-    transition: left 0.3s ease;
+    transition: right 0.3s ease;
     z-index: 999;
 }
 
 .nav.active {
-    left: 0;
+    right: 0;
 }
 
 .nav a {
@@ -111,7 +113,7 @@ body {
 
 .main-content {
     flex-grow: 1;
-    padding-top: 60px;
+    padding-top: 25px;
 }
 
 .header {
@@ -121,6 +123,112 @@ body {
     left: 0;
     right: 0;
     z-index: 998;
+    padding: 15px 20px;
+}
+
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header-logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    z-index: 999;
+}
+
+.header-logo img {
+    height: 35px;
+    width: auto;
+    object-fit: contain;
+}
+
+.header-tagline {
+    flex: 1;
+    text-align: center;
+    color: rgb(191, 170, 101);
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+}
+
+/* Hero Section for Non-Home Pages */
+.hero-section {
+    position: relative;
+    width: 100%;
+    height: 315px;
+    margin-top: 85px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center bottom;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.2), rgba(0,0,0,0.5));
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header {
+        padding: 15px;
+    }
+    
+    .header-container {
+        padding: 0 10px;
+    }
+    
+    .header-logo img {
+        height: 30px;
+    }
+    
+    .header-tagline {
+        font-size: 13px;
+        display: none; /* Hide on mobile for space */
+    }
+    
+    .menu-toggle {
+        top: 15px;
+        right: 15px;
+    }
+    
+    .menu-toggle span {
+        width: 22px;
+        height: 2px;
+    }
+    
+    .hero-section {
+        height: auto;
+        margin-top: 70px;
+    }
+    
+    .hero-image {
+        max-height: 250px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .header-tagline {
+        font-size: 14px;
+    }
 }
 
 .footer {
@@ -165,6 +273,68 @@ body {
 
 .social-link:hover svg {
     transform: scale(1.2);
+}
+
+/* Video Showcase Styles */
+.video-showcase {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    height: calc(100vh - 85px); /* Full height minus header */
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.video-container {
+    flex: 0 1 50%;
+    max-width: 500px;
+    max-height: 75vh;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.showcase-video {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+/* Dance Photos Row */
+.dance-photos {
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    gap: 20px;
+    padding: 10px;
+    margin-top: 8px;
+    flex-wrap: wrap;
+}
+
+.photo-container {
+    flex: 0 1 40%;
+    max-width: 440px;
+    height: auto;
+    max-height: 700px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    display: flex;
+}
+
+.dance-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
 }
 
 .logo-container {
@@ -285,6 +455,30 @@ body {
 }
 
 @media (max-width: 768px) {
+    .video-showcase {
+        flex-direction: column;
+        height: calc(100vh - 85px);
+        padding: 15px;
+        gap: 15px;
+    }
+    
+    .video-container {
+        flex: 0 1 45%;
+        max-width: 100%;
+        max-height: 50vh;
+    }
+    
+    .dance-photos {
+        flex-direction: column;
+        margin-top: 6px;
+        align-items: center;
+    }
+    
+    .photo-container {
+        flex: 0 1 100%;
+        max-width: 90%;
+    }
+    
     .logo-container {
         margin-top: 10vh;
     }

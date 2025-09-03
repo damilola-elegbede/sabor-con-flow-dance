@@ -15,6 +15,7 @@ build/
 __pycache__/
 *.pyc
 .env
+.env.local
 
 # IDE files
 .idea/
@@ -23,3 +24,10 @@ __pycache__/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Large MOV files - use optimized MP4 versions instead
+*.mov
+public/images/*.mov
+static/images/*.mov
+staticfiles/images/*.mov
+staticfiles/images/*.mp4

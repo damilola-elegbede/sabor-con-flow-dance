@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.conf import settings
 
 def home(request):
     # Static upcoming events data
@@ -30,7 +31,9 @@ def home(request):
     ]
     
     return render(request, 'home.html', {
-        'upcoming_events': upcoming_events
+        'upcoming_events': upcoming_events,
+        'hero_video_path': settings.HERO_VIDEO_PATH,
+        'second_video_path': settings.SECOND_VIDEO_PATH,
     })
 
 def events(request):

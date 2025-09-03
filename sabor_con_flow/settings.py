@@ -23,6 +23,11 @@ dotenv_path = BASE_DIR / '.env'
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
+# Load .env.local for local development (overrides .env)
+env_local_path = BASE_DIR / '.env.local'
+if os.path.exists(env_local_path):
+    load_dotenv(env_local_path, override=True)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -116,6 +121,11 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = 'DENY'
+
+# Video URLs - Using external hosting to avoid Vercel function size limits
+# Videos are hosted on GitHub raw content CDN
+HERO_VIDEO_PATH = 'https://github.com/damilola-elegbede/sabor-con-flow-dance/raw/feature/homepage-redesign-and-about-page/static/images/hero-dance-video.mp4'
+SECOND_VIDEO_PATH = 'https://github.com/damilola-elegbede/sabor-con-flow-dance/raw/feature/homepage-redesign-and-about-page/static/images/second-dance-video.mp4'
 
 # Logging
 LOGGING = {
