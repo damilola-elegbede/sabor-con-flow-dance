@@ -30,3 +30,4 @@ Thumbs.db
 public/images/*.mov
 static/images/*.mov
 staticfiles/images/*.mov
+staticfiles/images/*.mp4
