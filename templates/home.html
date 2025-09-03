@@ -8,7 +8,7 @@
     <div class="video-container">
         <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-1.jpeg' %}">
             {% if hero_video_url %}
-                <source src="{{ hero_video_url }}" type="video/quicktime">
+                <source src="{{ hero_video_url }}" type="video/mp4">
             {% endif %}
             Your browser does not support the video tag.
         </video>
@@ -16,7 +16,7 @@
     <div class="video-container">
         <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-3.jpeg' %}">
             {% if second_video_url %}
-                <source src="{{ second_video_url }}" type="video/quicktime">
+                <source src="{{ second_video_url }}" type="video/mp4">
             {% endif %}
             Your browser does not support the video tag.
         </video>

@@ -122,9 +122,9 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = 'DENY'
 
-# Video URLs Configuration - Now using local static files
-HERO_VIDEO_URL = '/static/images/hero-dance-video.mov'
-SECOND_VIDEO_URL = '/static/images/second-dance-video.mov'
+# Video URLs Configuration - Now using local static files (MP4 for better browser compatibility)
+HERO_VIDEO_URL = '/static/images/hero-dance-video.mp4'
+SECOND_VIDEO_URL = '/static/images/second-dance-video.mp4'
 
 # Logging
 LOGGING = {
