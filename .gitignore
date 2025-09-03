@@ -24,7 +24,6 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Large video files - too big for GitHub, serve from external source
-*.mov
-static/images/*.mov
-staticfiles/images/*.mov
+# Large video files - hero video too big for GitHub
+static/images/hero-dance-video.mov
+staticfiles/images/hero-dance-video.mov
