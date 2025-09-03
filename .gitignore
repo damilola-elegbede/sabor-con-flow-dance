@@ -25,7 +25,4 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Large video files - too big for GitHub, serve from external source
-*.mov
-static/images/*.mov
-staticfiles/images/*.mov
+# Video files now optimized for GitHub
