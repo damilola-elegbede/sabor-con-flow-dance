@@ -32,8 +32,8 @@ def home(request):
     
     return render(request, 'home.html', {
         'upcoming_events': upcoming_events,
-        'hero_video_url': settings.HERO_VIDEO_URL,
-        'second_video_url': settings.SECOND_VIDEO_URL,
+        'hero_video_path': settings.HERO_VIDEO_PATH,
+        'second_video_path': settings.SECOND_VIDEO_PATH,
     })
 
 def events(request):

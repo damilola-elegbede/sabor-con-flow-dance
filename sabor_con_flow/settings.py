@@ -122,9 +122,10 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = 'DENY'
 
-# Video URLs Configuration - Now using local static files (MP4 for better browser compatibility)
-HERO_VIDEO_URL = '/static/images/hero-dance-video.mp4'
-SECOND_VIDEO_URL = '/static/images/second-dance-video.mp4'
+# Video sources (relative to STATIC_URL) - use {% static %} in templates for hashed URLs
+# These are relative paths to enable ManifestStaticFilesStorage hashing in production
+HERO_VIDEO_PATH = 'images/hero-dance-video.mp4'
+SECOND_VIDEO_PATH = 'images/second-dance-video.mp4'
 
 # Logging
 LOGGING = {

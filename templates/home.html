@@ -6,17 +6,17 @@
 {% block content %}
 <div class="video-showcase">
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-1.jpeg' %}">
-            {% if hero_video_url %}
-                <source src="{{ hero_video_url }}" type="video/mp4">
+        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/dance-1.jpeg' %}">
+            {% if hero_video_path %}
+                <source src="{% static hero_video_path %}" type="video/mp4">
             {% endif %}
             Your browser does not support the video tag.
         </video>
     </div>
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-3.jpeg' %}">
-            {% if second_video_url %}
-                <source src="{{ second_video_url }}" type="video/mp4">
+        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/dance-3.jpeg' %}">
+            {% if second_video_path %}
+                <source src="{% static second_video_path %}" type="video/mp4">
             {% endif %}
             Your browser does not support the video tag.
         </video>
