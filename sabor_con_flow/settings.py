@@ -122,9 +122,9 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = 'DENY'
 
-# Video URLs Configuration
-HERO_VIDEO_URL = os.environ.get('HERO_VIDEO_URL', '')
-SECOND_VIDEO_URL = os.environ.get('SECOND_VIDEO_URL', '')
+# Video URLs Configuration - Now using local static files
+HERO_VIDEO_URL = '/static/images/hero-dance-video.mov'
+SECOND_VIDEO_URL = '/static/images/second-dance-video.mov'
 
 # Logging
 LOGGING = {
