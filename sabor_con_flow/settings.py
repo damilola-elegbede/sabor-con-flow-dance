@@ -23,6 +23,11 @@ dotenv_path = BASE_DIR / '.env'
 if os.path.exists(dotenv_path):
     load_dotenv(dotenv_path)
 
+# Load .env.local for local development (overrides .env)
+env_local_path = BASE_DIR / '.env.local'
+if os.path.exists(env_local_path):
+    load_dotenv(env_local_path, override=True)
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -116,6 +121,10 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = 'DENY'
+
+# Video URLs Configuration
+HERO_VIDEO_URL = os.environ.get('HERO_VIDEO_URL', '')
+SECOND_VIDEO_URL = os.environ.get('SECOND_VIDEO_URL', '')
 
 # Logging
 LOGGING = {

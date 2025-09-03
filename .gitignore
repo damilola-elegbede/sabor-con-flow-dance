@@ -15,6 +15,7 @@ build/
 __pycache__/
 *.pyc
 .env
+.env.local
 
 # IDE files
 .idea/

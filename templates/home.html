@@ -7,13 +7,17 @@
 <div class="video-showcase">
     <div class="video-container">
         <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-1.jpeg' %}">
-            <source src="{% static 'images/hero-dance-video.mov' %}" type="video/quicktime">
+            {% if hero_video_url %}
+                <source src="{{ hero_video_url }}" type="video/quicktime">
+            {% endif %}
             Your browser does not support the video tag.
         </video>
     </div>
     <div class="video-container">
         <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-3.jpeg' %}">
-            <source src="{% static 'images/second-dance-video.mov' %}" type="video/quicktime">
+            {% if second_video_url %}
+                <source src="{{ second_video_url }}" type="video/quicktime">
+            {% endif %}
             Your browser does not support the video tag.
         </video>
     </div>
