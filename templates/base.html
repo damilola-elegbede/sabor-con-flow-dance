@@ -7,9 +7,9 @@
     <title>{% block title %}Sabor Con Flow{% endblock %}</title>
     <!-- Favicon configuration -->
     <link rel="icon" type="image/png" href="{% static 'images/favicon/favicon.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sabor-con-flow-logo.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/sabor-con-flow-logo.png' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/sabor-con-flow-logo.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sabor-con-flow-logo-2.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/sabor-con-flow-logo-2.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/sabor-con-flow-logo-2.png' %}">
     <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
     <meta name="theme-color" content="#000000">
     <!-- End favicon configuration -->
@@ -24,11 +24,19 @@
 </head>
 <body>
     <header class="header">
-        <button class="menu-toggle" aria-label="Toggle navigation">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
+        <div class="header-container">
+            <a href="{% url 'core:home' %}" class="header-logo">
+                <img src="{% static 'images/sabor-con-flow-logo-2.png' %}" alt="Sabor Con Flow" />
+            </a>
+            <div class="header-tagline">
+                Sabor in every step, flow in every move 💫
+            </div>
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
         <nav class="nav">
             <a href="{% url 'core:home' %}"><span>Home</span></a>
             <a href="{% url 'core:events' %}"><span>Events</span></a>
@@ -38,18 +46,14 @@
         </nav>
     </header>
 
-    <main class="main-content">
-        {% if messages %}
-        <div class="container mt-3">
-            {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
+    {% if request.resolver_match.url_name != 'home' %}
+    <div class="hero-section">
+        <img src="{% static 'images/pasos-basicos-animated.gif' %}" alt="Pasos Básicos Animation" class="hero-image">
+        <div class="hero-overlay"></div>
+    </div>
+    {% endif %}
 
+    <main class="main-content">
         {% block content %}{% endblock %}
     </main>
 

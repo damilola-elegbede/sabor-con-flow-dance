@@ -23,3 +23,8 @@ __pycache__/
 # OS-specific files
 .DS_Store
 Thumbs.db
+
+# Large video files
+*.mov
+static/images/*.mov
+staticfiles/images/*.mov

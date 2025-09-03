@@ -4,9 +4,32 @@
 {% block title %}Home - Sabor Con Flow{% endblock %}
 
 {% block content %}
-<div class="container">
-    <div class="logo-container">
-        <img src="{% static 'images/sabor-con-flow-logo.png' %}" alt="Sabor Con Flow Logo" class="main-logo">
+<div class="video-showcase">
+    <div class="video-container">
+        <video class="showcase-video" autoplay muted loop playsinline>
+            <source src="{% static 'images/hero-dance-video.mov' %}" type="video/mp4">
+            <source src="{% static 'images/hero-dance-video.mov' %}" type="video/quicktime">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <div class="video-container">
+        <video class="showcase-video" autoplay muted loop playsinline>
+            <source src="{% static 'images/second-dance-video.mov' %}" type="video/mp4">
+            <source src="{% static 'images/second-dance-video.mov' %}" type="video/quicktime">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+</div>
+
+<div class="dance-photos">
+    <div class="photo-container" style="aspect-ratio: 0.61;">
+        <img src="{% static 'images/dance-1.jpeg' %}" alt="Technical Precision Cuban Dance" class="dance-photo">
+    </div>
+    <div class="photo-container" style="aspect-ratio: 0.61;">
+        <img src="{% static 'images/dance-3.jpeg' %}" alt="Music Integration Cuban Dance" class="dance-photo">
+    </div>
+    <div class="photo-container" style="aspect-ratio: 0.61;">
+        <img src="{% static 'images/dance-4.jpeg' %}" alt="Cuban Dance Training Boulder" class="dance-photo">
     </div>
 </div>
 {% endblock %} 
