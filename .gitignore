@@ -25,4 +25,8 @@ __pycache__/
 .DS_Store
 Thumbs.db
 
-# Video files now optimized for GitHub
+# Large MOV files - use optimized MP4 versions instead
+*.mov
+public/images/*.mov
+static/images/*.mov
+staticfiles/images/*.mov
