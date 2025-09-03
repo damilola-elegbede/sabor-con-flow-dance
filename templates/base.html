@@ -31,13 +31,13 @@
             <div class="header-tagline">
                 Sabor in every step, flow in every move 💫
             </div>
-            <button class="menu-toggle" aria-label="Toggle navigation">
+            <button class="menu-toggle" aria-label="Toggle navigation" aria-controls="site-nav" aria-expanded="false">
                 <span></span>
                 <span></span>
                 <span></span>
             </button>
         </div>
-        <nav class="nav">
+        <nav id="site-nav" class="nav" aria-hidden="true">
             <a href="{% url 'core:home' %}"><span>Home</span></a>
             <a href="{% url 'core:events' %}"><span>Events</span></a>
             <a href="{% url 'core:pricing' %}"><span>Pricing</span></a>
@@ -95,18 +95,33 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const menuToggle = document.querySelector('.menu-toggle');
-            const nav = document.querySelector('.nav');
+            const nav = document.getElementById('site-nav');
             
             menuToggle.addEventListener('click', function() {
-                nav.classList.toggle('active');
-                menuToggle.classList.toggle('active');
+                const isOpen = nav.classList.toggle('active');
+                menuToggle.classList.toggle('active', isOpen);
+                menuToggle.setAttribute('aria-expanded', String(isOpen));
+                nav.setAttribute('aria-hidden', String(!isOpen));
             });
 
             // Close menu when clicking outside
             document.addEventListener('click', function(event) {
                 if (!nav.contains(event.target) && !menuToggle.contains(event.target)) {
                     nav.classList.remove('active');
+                    nav.setAttribute('aria-hidden', 'true');
                     menuToggle.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close on Escape
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && nav.classList.contains('active')) {
+                    nav.classList.remove('active');
+                    nav.setAttribute('aria-hidden', 'true');
+                    menuToggle.classList.remove('active');
+                    menuToggle.setAttribute('aria-expanded', 'false');
+                    menuToggle.focus();
                 }
             });
         });

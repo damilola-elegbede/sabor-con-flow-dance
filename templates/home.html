@@ -6,16 +6,16 @@
 {% block content %}
 <div class="video-showcase">
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline>
-            <source src="{% static 'images/hero-dance-video.mov' %}" type="video/mp4">
-            <source src="{% static 'images/hero-dance-video.mov' %}" type="video/quicktime">
+        <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-1.jpeg' %}">
+            <source src="{% static 'images/hero-dance-video.webm' %}" type="video/webm">
+            <source src="{% static 'images/hero-dance-video.mp4' %}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline>
-            <source src="{% static 'images/second-dance-video.mov' %}" type="video/mp4">
-            <source src="{% static 'images/second-dance-video.mov' %}" type="video/quicktime">
+        <video class="showcase-video" autoplay muted loop playsinline poster="{% static 'images/dance-3.jpeg' %}">
+            <source src="{% static 'images/second-dance-video.webm' %}" type="video/webm">
+            <source src="{% static 'images/second-dance-video.mp4' %}" type="video/mp4">
             Your browser does not support the video tag.
         </video>
     </div>
