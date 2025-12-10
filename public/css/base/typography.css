@@ -1,0 +1,152 @@
+/**
+ * Typography Styles
+ * Sabor Con Flow Dance Studio
+ *
+ * Establishes typographic scale and text styling utilities.
+ * Dependencies: variables.css, reset.css
+ */
+
+/* ============================================
+   Heading Styles
+   ============================================ */
+
+.page-title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+}
+
+.page-subtitle {
+  font-size: 1.3rem;
+  color: var(--color-accent-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+.section-title {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+/* ============================================
+   Tagline Styles
+   ============================================ */
+
+.tagline-container {
+  margin-top: 1rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.tagline {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 1.5rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+/* ============================================
+   Animation Section Typography
+   ============================================ */
+
+.animation-title {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+}
+
+.animation-subtitle {
+  color: var(--color-text-primary);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  font-style: italic;
+}
+
+/* ============================================
+   Instructor Typography
+   ============================================ */
+
+.instructor-title {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 2.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.instructor-bio p {
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+/* ============================================
+   Pricing Typography
+   ============================================ */
+
+.pricing-heading {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.pricing-description {
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.pricing-note {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  opacity: 0.9;
+  text-align: center;
+}
+
+/* ============================================
+   Contact Typography
+   ============================================ */
+
+.contact-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--color-accent);
+}
+
+/* ============================================
+   Link Styles
+   ============================================ */
+
+.instagram-link {
+  color: var(--color-accent);
+  text-decoration: none;
+  font-style: italic;
+  transition: color var(--transition-duration) ease;
+}
+
+.instagram-link:hover {
+  color: var(--color-accent-muted);
+  text-decoration: underline;
+}
+
+.contact-link {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}

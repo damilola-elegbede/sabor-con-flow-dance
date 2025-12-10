@@ -1,0 +1,235 @@
+/**
+ * Gallery Styles
+ * Sabor Con Flow Dance Studio
+ *
+ * Provides video galleries, image galleries, and animation sections.
+ * Dependencies: variables.css
+ */
+
+/* ============================================
+   Dual Video Container
+   ============================================ */
+
+.dual-video-container {
+  display: flex;
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 3rem auto;
+  padding: 0 2rem;
+  align-items: flex-start;
+}
+
+.video-item {
+  position: relative;
+  flex: 1;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-duration) ease,
+              box-shadow var(--transition-duration) ease;
+}
+
+.video-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-glow);
+}
+
+.side-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.gif-video {
+  height: auto;
+  object-fit: cover;
+}
+
+/* ============================================
+   Video Overlay
+   ============================================ */
+
+.video-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--gradient-overlay);
+  color: var(--color-text-primary);
+  padding: 1.5rem;
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--transition-duration) ease;
+}
+
+.video-item:hover .video-overlay {
+  opacity: 1;
+}
+
+.video-overlay h3 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 1.4rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.video-overlay p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* ============================================
+   Dance Gallery
+   ============================================ */
+
+.dance-gallery {
+  margin: 4rem auto;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition-duration) ease,
+              box-shadow var(--transition-duration) ease;
+  height: auto;
+}
+
+.gallery-item:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-glow);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-duration) ease;
+}
+
+.gallery-item:hover .gallery-image {
+  transform: scale(1.05);
+}
+
+/* ============================================
+   Gallery Overlay
+   ============================================ */
+
+.gallery-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--gradient-overlay);
+  color: var(--color-text-primary);
+  padding: 2rem 1.5rem 1.5rem;
+  transform: translateY(100%);
+  transition: transform var(--transition-duration) ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+  transform: translateY(0);
+}
+
+.gallery-overlay h3 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 1.3rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.gallery-overlay p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+/* ============================================
+   Pasos Basicos Animation Section
+   ============================================ */
+
+.pasos-animation-section {
+  text-align: center;
+  margin: 4rem auto;
+  max-width: 800px;
+  padding: 2rem;
+}
+
+.animation-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.pasos-animation {
+  max-width: 100%;
+  width: auto;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-duration) ease,
+              box-shadow var(--transition-duration) ease;
+}
+
+.pasos-animation:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-glow);
+}
+
+/* ============================================
+   Instructor Photo
+   ============================================ */
+
+.instructor-photo {
+  flex: 0 0 300px;
+}
+
+.profile-image {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  transition: transform var(--transition-duration) ease;
+}
+
+.profile-image:hover {
+  transform: scale(1.02);
+}
+
+/* ============================================
+   Gallery Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+  .dual-video-container {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .side-video,
+  .gif-video {
+    height: 250px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .instructor-photo {
+    flex: none;
+    max-width: 300px;
+    margin: 0 auto;
+  }
+}

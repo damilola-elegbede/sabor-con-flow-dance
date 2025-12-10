@@ -1,0 +1,343 @@
+/**
+ * Card Components
+ * Sabor Con Flow Dance Studio
+ *
+ * Provides card-based UI components for events, pricing, and content sections.
+ * Dependencies: variables.css, grid.css
+ */
+
+/* ============================================
+   CTA Section
+   ============================================ */
+
+.cta-section {
+  text-align: center;
+  margin: 4rem auto;
+  max-width: 600px;
+  padding: 3rem 2rem;
+  background: var(--gradient-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-accent-transparent);
+}
+
+.cta-section h2 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  margin-bottom: 1rem;
+}
+
+.cta-section p {
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* ============================================
+   Event Cards
+   ============================================ */
+
+.event-card {
+  background-color: var(--color-background);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+  border-top: 4px solid var(--color-accent);
+  display: flex;
+  flex-direction: column;
+  color: var(--color-accent);
+}
+
+.event-title {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-bold);
+  margin-bottom: 0.5rem;
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+}
+
+.event-date,
+.event-time,
+.event-location {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-accent);
+}
+
+.event-location a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.event-location a:hover {
+  text-decoration: underline;
+}
+
+.event-icon {
+  width: 18px;
+  height: 18px;
+  margin-right: 0.5rem;
+  display: inline-block;
+}
+
+.event-description {
+  margin: 1rem 0;
+  flex-grow: 1;
+  color: var(--color-text-primary);
+}
+
+.event-description p a {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.event-description p a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   Event Pricing
+   ============================================ */
+
+.event-pricing {
+  background-color: var(--color-accent-bg);
+  padding: 1rem;
+  border-radius: var(--radius-sm);
+  margin-top: 1rem;
+}
+
+.event-pricing h3 {
+  color: var(--color-accent);
+  margin-top: 0;
+  font-size: 1.1rem;
+  font-family: var(--font-family-heading);
+}
+
+.event-pricing ul {
+  margin: 0.5rem 0 0;
+  padding-left: 1.5rem;
+  color: var(--color-accent);
+}
+
+/* ============================================
+   Pricing Tables
+   ============================================ */
+
+.pricing-table {
+  width: 100%;
+  max-width: 600px;
+  margin: 2rem auto;
+  border-collapse: collapse;
+  background-color: var(--color-background);
+}
+
+.pricing-table th {
+  background-color: var(--color-accent-bg);
+  font-weight: bold;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  padding: 1rem;
+}
+
+.pricing-table td {
+  padding: 1rem;
+  text-align: left;
+  border: 1px solid var(--color-accent);
+  color: var(--color-text-primary);
+}
+
+.pricing-table tr:hover {
+  background-color: var(--color-accent-hover);
+}
+
+/* ============================================
+   Contact Components
+   ============================================ */
+
+.contact-section {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  background-color: var(--color-background);
+  text-align: center;
+}
+
+.contact-item {
+  margin-bottom: 1.5rem;
+  color: var(--color-text-primary);
+  text-align: center;
+}
+
+.contact-item p {
+  margin: 0;
+  line-height: 1.5;
+}
+
+.contact-item .contact-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  justify-content: center;
+}
+
+.contact-icon {
+  color: var(--color-accent);
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ============================================
+   Mission Cards
+   ============================================ */
+
+.mission-item {
+  background: var(--color-accent-bg);
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-accent-transparent);
+  text-align: center;
+}
+
+.mission-item h3 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.mission-item p {
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============================================
+   Class Preview Cards
+   ============================================ */
+
+.class-preview {
+  background: var(--color-surface);
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--color-accent);
+  transition: transform var(--transition-duration) ease;
+}
+
+.class-preview:hover {
+  transform: translateY(-3px);
+}
+
+.class-preview h3 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+}
+
+.class-preview p {
+  color: var(--color-text-primary);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ============================================
+   About CTA
+   ============================================ */
+
+.about-cta {
+  text-align: center;
+  background: var(--gradient-card);
+  padding: 3rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-accent-transparent);
+}
+
+.about-cta h2 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.about-cta p {
+  color: var(--color-text-primary);
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* ============================================
+   Private Lessons Info
+   ============================================ */
+
+.private-lessons-info {
+  margin: 2rem 0;
+  text-align: left;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.benefits-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+}
+
+.benefits-list li {
+  padding: 0.5rem 0;
+  position: relative;
+  padding-left: 2rem;
+  color: var(--color-text-primary);
+}
+
+.benefits-list li::before {
+  content: "\2713"; /* Checkmark */
+  position: absolute;
+  left: 0;
+  color: var(--color-accent);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+/* ============================================
+   Influences List
+   ============================================ */
+
+.influences-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.influences-list li {
+  color: var(--color-text-primary);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  padding-left: 2rem;
+  position: relative;
+}
+
+.influences-list li::before {
+  content: "\1F3B5"; /* Music note emoji */
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+/* ============================================
+   Card Responsive Adjustments
+   ============================================ */
+
+@media (max-width: 768px) {
+  .pricing-table {
+    width: 100%;
+    font-size: 0.9rem;
+  }
+
+  .pricing-table th,
+  .pricing-table td {
+    padding: 0.75rem;
+  }
+}
