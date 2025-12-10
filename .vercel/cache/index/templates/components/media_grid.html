@@ -1,0 +1,99 @@
+{% load static %}
+
+{% for item in media_items %}
+<div class="media-item" 
+     data-type="{{ item.media_type }}"
+     data-category="{{ item.category }}"
+     data-title="{{ item.title }}">
+    
+    {% if item.media_type == 'video' %}
+        <!-- Video Player Component -->
+        {% include 'components/video_player.html' with video_url=item.media_url video_title=item.title video_description=item.description video_date=item.event_date video_id=item.id video_thumbnail=item.get_thumbnail_url show_info=False %}
+    {% else %}
+        <!-- Image Thumbnail for Photo Items -->
+        <div class="media-thumbnail" 
+             data-src="{{ item.get_display_url }}"
+             onclick="openLightbox('photo', '{{ item.get_display_url }}', '{{ item.title|escapejs }}', '{{ item.description|escapejs }}')">
+            {% if item.get_thumbnail_url %}
+                <img class="lazy-load" 
+                     data-src="{{ item.get_thumbnail_url }}" 
+                     src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300'%3E%3Crect width='400' height='300' fill='%23f0f0f0'/%3E%3C/svg%3E"
+                     alt="{{ item.title }}"
+                     loading="lazy">
+            {% else %}
+                <!-- Placeholder for missing thumbnail -->
+                <div class="loading-placeholder" style="width: 100%; height: 100%; position: absolute;"></div>
+            {% endif %}
+        </div>
+    {% endif %}
+    
+    <!-- Media Info -->
+    <div class="media-info">
+        <h3 class="media-title">{{ item.title }}</h3>
+        <div class="media-meta">
+            <span class="media-category">{{ item.get_category_display }}</span>
+            {% if item.event_date %}
+            <span class="media-date">{{ item.event_date|date:"M d, Y" }}</span>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<style>
+    /* Lazy loading styles */
+    .lazy-load {
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+    
+    .lazy-load.loaded {
+        opacity: 1;
+    }
+    
+    /* Loading animation for placeholders */
+    .loading-placeholder {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+</style>
+
+<script>
+    // Initialize lazy loading for newly loaded images
+    document.addEventListener('DOMContentLoaded', function() {
+        const lazyImages = document.querySelectorAll('.lazy-load:not(.loaded)');
+        
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        img.src = img.dataset.src;
+                        img.classList.add('loaded');
+                        img.onload = function() {
+                            img.classList.add('loaded');
+                        };
+                        observer.unobserve(img);
+                    }
+                });
+            }, {
+                rootMargin: '50px 0px',
+                threshold: 0.01
+            });
+            
+            lazyImages.forEach(img => imageObserver.observe(img));
+        } else {
+            // Fallback for browsers that don't support IntersectionObserver
+            lazyImages.forEach(img => {
+                img.src = img.dataset.src;
+                img.classList.add('loaded');
+            });
+        }
+    });
+</script>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Button Test - Sabor Con Flow</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="static/css/whatsapp.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #C7B375 0%, #000000 100%);
+            color: white;
+            min-height: 200vh; /* Make page scrollable for testing */
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+        h1 { color: #C7B375; text-align: center; }
+        h2 { color: #C7B375; margin-bottom: 20px; }
+        .instruction {
+            background: rgba(199, 179, 117, 0.2);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #C7B375;
+        }
+        .scroll-content {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            text-align: center;
+        }
+        .controls {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px;
+            border-radius: 10px;
+            z-index: 1001;
+        }
+        .control-btn {
+            background: #C7B375;
+            color: #000;
+            border: none;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .control-btn:hover {
+            background: #BFAA65;
+        }
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Test Controls -->
+    <div class="controls">
+        <h3 style="margin: 0 0 10px 0; color: #C7B375;">WhatsApp Test Controls</h3>
+        <button class="control-btn" onclick="WhatsAppChat.show()">Show Button</button>
+        <button class="control-btn" onclick="WhatsAppChat.hide()">Hide Button</button>
+        <button class="control-btn" onclick="WhatsAppChat.toggle()">Toggle</button>
+        <button class="control-btn" onclick="updatePhone()">Update Phone</button>
+        <button class="control-btn" onclick="updateMessage()">Update Message</button>
+    </div>
+
+    <div class="test-container">
+        <h1>WhatsApp Chat Button Test Page</h1>
+        
+        <div class="test-section">
+            <h2>🧪 Test Instructions</h2>
+            <div class="instruction">
+                <strong>1. Scroll Behavior Test:</strong>
+                Scroll down and up to test the show/hide behavior. The button should hide when scrolling up and show when scrolling down.
+            </div>
+            <div class="instruction">
+                <strong>2. Mobile Responsiveness:</strong>
+                Open this page on a mobile device or use browser dev tools to test mobile view. Button position should adjust appropriately.
+            </div>
+            <div class="instruction">
+                <strong>3. Accessibility Test:</strong>
+                Use Tab key to navigate to the WhatsApp button. It should be focusable and have proper ARIA labels.
+            </div>
+            <div class="instruction">
+                <strong>4. Animation Test:</strong>
+                Hover over the button to see tooltip and pulse animations. Reduce motion preferences should disable animations.
+            </div>
+            <div class="instruction">
+                <strong>5. Click Test:</strong>
+                Click the button to verify it opens WhatsApp with the pre-filled message.
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>📱 Expected Behavior</h2>
+            <ul>
+                <li>Button appears after 1 second delay</li>
+                <li>Shows when scrolling down, hides when scrolling up</li>
+                <li>Pulse animation draws attention</li>
+                <li>Tooltip appears on hover (desktop)</li>
+                <li>Proper focus states for accessibility</li>
+                <li>Opens WhatsApp with pre-filled message</li>
+                <li>Responsive positioning on mobile</li>
+            </ul>
+        </div>
+
+        <div class="test-section">
+            <h2>🎨 Brand Colors</h2>
+            <p>The button uses Sabor con Flow brand colors:</p>
+            <ul>
+                <li><strong>Gold (#C7B375):</strong> Border and tooltip accent</li>
+                <li><strong>Black (#000000):</strong> Tooltip background</li>
+                <li><strong>WhatsApp Green (#25D366):</strong> Button background</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Scroll test content -->
+    <div class="scroll-content">
+        <div>
+            <h2>Scroll Section 1</h2>
+            <p>Scroll down to continue testing...</p>
+        </div>
+    </div>
+
+    <div class="scroll-content">
+        <div>
+            <h2>Scroll Section 2</h2>
+            <p>Now scroll back up to test hide behavior...</p>
+        </div>
+    </div>
+
+    <div class="scroll-content">
+        <div>
+            <h2>Scroll Section 3</h2>
+            <p>Test complete! The WhatsApp button should be working perfectly.</p>
+        </div>
+    </div>
+
+    <!-- WhatsApp Button Component -->
+    <div class="whatsapp-float" id="whatsapp-float" aria-label="Chat with us on WhatsApp">
+        <a 
+            href="https://wa.me/5551234567?text=Hi!%20I'm%20interested%20in%20Sabor%20con%20Flow%20dance%20classes." 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="whatsapp-button"
+            aria-label="Contact us via WhatsApp - Opens in new window"
+            title="Chat with us on WhatsApp"
+        >
+            <div class="whatsapp-icon">
+                <i class="fab fa-whatsapp" aria-hidden="true"></i>
+            </div>
+            <div class="whatsapp-tooltip">
+                <span>Chat with us!</span>
+                <div class="tooltip-arrow"></div>
+            </div>
+            <div class="pulse-ring"></div>
+            <div class="pulse-ring-delayed"></div>
+        </a>
+    </div>
+    <span class="sr-only">WhatsApp contact button - Click to start a conversation about dance classes</span>
+
+    <!-- JavaScript -->
+    <script src="static/js/whatsapp-chat.js"></script>
+    
+    <script>
+        // Test utility functions
+        function updatePhone() {
+            const newPhone = prompt('Enter new phone number (without +):', '5559876543');
+            if (newPhone) {
+                WhatsAppChat.updatePhone(newPhone);
+                alert('Phone number updated to: ' + newPhone);
+            }
+        }
+
+        function updateMessage() {
+            const newMessage = prompt('Enter new default message:', 'Hello! I want to learn to dance!');
+            if (newMessage) {
+                WhatsAppChat.updateMessage(newMessage);
+                alert('Message updated successfully!');
+            }
+        }
+
+        // Log WhatsApp API status
+        console.log('WhatsApp Chat API loaded:', typeof WhatsAppChat !== 'undefined');
+        console.log('Button visible:', WhatsAppChat?.isVisible());
+        
+        // Test analytics integration (mock)
+        window.gtag = function(event, name, data) {
+            console.log('Analytics Event:', event, name, data);
+        };
+    </script>
+</body>
+</html>

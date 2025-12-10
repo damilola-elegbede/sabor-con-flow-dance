@@ -1,0 +1,67 @@
+{% comment %}
+Spotify Playlist Card Component - SPEC_05 Group C Task 8
+Reusable component for displaying Spotify playlist embeds with error handling and responsive design
+{% endcomment %}
+
+<div class="playlist-card" data-playlist-id="{{ playlist.spotify_playlist_id }}" style="--theme-color: {{ playlist.theme_color }}">
+    <div class="playlist-card-header">
+        <div class="playlist-class-type">{{ playlist.get_class_type_display }}</div>
+        <h3 class="playlist-title">{{ playlist.title }}</h3>
+        <p class="playlist-description">{{ playlist.description }}</p>
+        
+        <div class="playlist-meta">
+            {% if playlist.tracks_count > 0 %}
+            <div class="playlist-meta-item">
+                <i class="fas fa-music"></i>
+                <span>{{ playlist.tracks_count }} track{{ playlist.tracks_count|pluralize }}</span>
+            </div>
+            {% endif %}
+            
+            {% if playlist.duration_minutes > 0 %}
+            <div class="playlist-meta-item">
+                <i class="fas fa-clock"></i>
+                <span>{{ playlist.format_duration }}</span>
+            </div>
+            {% endif %}
+            
+            <div class="playlist-meta-item">
+                <i class="fas fa-calendar"></i>
+                <span>Updated {{ playlist.last_updated|date:"M j" }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="playlist-embed-container" 
+         data-embed-url="{{ playlist.get_compact_embed_url }}"
+         data-embed-id="{{ playlist.spotify_playlist_id }}"
+         data-playlist-title="{{ playlist.title }}">
+        
+        <div class="playlist-loading">
+            <i class="fas fa-spinner fa-spin"></i>
+            Loading playlist...
+        </div>
+        
+        <div class="playlist-error" style="display: none;">
+            <p><i class="fas fa-exclamation-triangle"></i> Unable to load playlist</p>
+            <p>Please try opening directly in Spotify</p>
+        </div>
+    </div>
+    
+    <div class="playlist-actions">
+        <a href="{{ playlist.get_playlist_url }}" 
+           class="playlist-open-spotify" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           data-playlist-id="{{ playlist.spotify_playlist_id }}">
+            <i class="fab fa-spotify"></i>
+            Open in Spotify
+        </a>
+        
+        <button class="playlist-share" 
+                title="Share this playlist"
+                aria-label="Share {{ playlist.title }} playlist">
+            <i class="fas fa-share-alt"></i>
+            Share
+        </button>
+    </div>
+</div>

@@ -1,0 +1,396 @@
+<!-- Privacy Policy Modal Component - SPEC_05 Group A Task 3 -->
+<div id="privacy-policy-modal" class="privacy-modal" style="display: none;" role="dialog" aria-labelledby="privacy-title" aria-modal="true">
+    <div class="privacy-modal-overlay" onclick="closePrivacyModal()"></div>
+    <div class="privacy-modal-content">
+        <div class="privacy-modal-header">
+            <h2 id="privacy-title">Privacy Policy & Cookie Information</h2>
+            <button class="privacy-modal-close" onclick="closePrivacyModal()" aria-label="Close privacy policy">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        
+        <div class="privacy-modal-body">
+            <section class="privacy-section">
+                <h3>🍪 Cookie Usage</h3>
+                <p>We use cookies and similar tracking technologies to enhance your experience on our website and understand how you interact with our content.</p>
+                
+                <h4>Types of Cookies We Use:</h4>
+                <div class="cookie-types">
+                    <div class="cookie-type">
+                        <strong>Essential Cookies</strong>
+                        <p>Required for the website to function properly. These cannot be disabled.</p>
+                        <ul>
+                            <li>Session management</li>
+                            <li>Security features</li>
+                            <li>Basic website functionality</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="cookie-type">
+                        <strong>Analytics Cookies (Optional)</strong>
+                        <p>Help us understand how visitors interact with our website.</p>
+                        <ul>
+                            <li>Google Analytics 4 for website analytics</li>
+                            <li>Page views and navigation patterns</li>
+                            <li>Video engagement metrics</li>
+                            <li>Form interaction data</li>
+                            <li>Scroll depth and time on page</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="cookie-type">
+                        <strong>Performance Cookies (Optional)</strong>
+                        <p>Monitor website performance and user experience.</p>
+                        <ul>
+                            <li>Page load times</li>
+                            <li>Core Web Vitals metrics</li>
+                            <li>Error tracking</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section class="privacy-section">
+                <h3>📊 Data We Collect</h3>
+                <h4>Automatically Collected Information:</h4>
+                <ul>
+                    <li><strong>Usage Data:</strong> Pages visited, time spent, click patterns</li>
+                    <li><strong>Technical Data:</strong> Browser type, device information, IP address (anonymized)</li>
+                    <li><strong>Performance Data:</strong> Page load speeds, error reports</li>
+                    <li><strong>Interaction Data:</strong> Video plays, form submissions, booking activities</li>
+                </ul>
+                
+                <h4>Information You Provide:</h4>
+                <ul>
+                    <li><strong>Contact Forms:</strong> Name, email, message content</li>
+                    <li><strong>Testimonials:</strong> Name, email, review content, optional photos</li>
+                    <li><strong>Booking Information:</strong> Through Calendly integration</li>
+                    <li><strong>Newsletter:</strong> Email address (if subscribed)</li>
+                </ul>
+            </section>
+
+            <section class="privacy-section">
+                <h3>🛡️ How We Protect Your Data</h3>
+                <ul>
+                    <li><strong>IP Anonymization:</strong> Your IP address is anonymized in analytics</li>
+                    <li><strong>Secure Transmission:</strong> All data is transmitted over HTTPS</li>
+                    <li><strong>Limited Storage:</strong> Analytics data is automatically deleted after 26 months</li>
+                    <li><strong>No Cross-Site Tracking:</strong> We don't track you across other websites</li>
+                    <li><strong>Consent Required:</strong> Analytics only run with your explicit consent</li>
+                </ul>
+            </section>
+
+            <section class="privacy-section">
+                <h3>🎯 How We Use Your Data</h3>
+                <h4>Analytics Data:</h4>
+                <ul>
+                    <li>Understand which dance classes are most popular</li>
+                    <li>Improve website navigation and user experience</li>
+                    <li>Optimize class schedules based on interest</li>
+                    <li>Track booking conversion rates</li>
+                    <li>Identify technical issues and performance problems</li>
+                </ul>
+                
+                <h4>Contact Information:</h4>
+                <ul>
+                    <li>Respond to your inquiries</li>
+                    <li>Send class updates (if requested)</li>
+                    <li>Provide customer support</li>
+                </ul>
+            </section>
+
+            <section class="privacy-section">
+                <h3>🔗 Third-Party Services</h3>
+                <div class="third-party-services">
+                    <div class="service">
+                        <strong>Google Analytics 4</strong>
+                        <p>Website analytics and user behavior tracking</p>
+                        <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>
+                    </div>
+                    
+                    <div class="service">
+                        <strong>Calendly</strong>
+                        <p>Online booking and scheduling system</p>
+                        <a href="https://calendly.com/privacy" target="_blank" rel="noopener">Calendly Privacy Policy</a>
+                    </div>
+                    
+                    <div class="service">
+                        <strong>Font Providers</strong>
+                        <p>Google Fonts and Font Awesome for typography</p>
+                        <a href="https://developers.google.com/fonts/faq/privacy" target="_blank" rel="noopener">Google Fonts Privacy</a>
+                    </div>
+                </div>
+            </section>
+
+            <section class="privacy-section">
+                <h3>⚖️ Your Rights</h3>
+                <p>You have the right to:</p>
+                <ul>
+                    <li><strong>Consent Withdrawal:</strong> Disable analytics cookies at any time</li>
+                    <li><strong>Data Access:</strong> Request information about data we have collected</li>
+                    <li><strong>Data Deletion:</strong> Request deletion of your personal data</li>
+                    <li><strong>Data Portability:</strong> Receive your data in a portable format</li>
+                    <li><strong>Correction:</strong> Update or correct your personal information</li>
+                </ul>
+                
+                <div class="privacy-controls">
+                    <h4>Manage Your Privacy Settings:</h4>
+                    <button onclick="showAnalyticsSettings()" class="btn btn-outline">
+                        <i class="fas fa-cog"></i> Analytics Settings
+                    </button>
+                    <button onclick="revokeAnalyticsConsent()" class="btn btn-outline">
+                        <i class="fas fa-ban"></i> Disable All Analytics
+                    </button>
+                </div>
+            </section>
+
+            <section class="privacy-section">
+                <h3>📞 Contact Us</h3>
+                <p>If you have questions about this privacy policy or want to exercise your rights:</p>
+                <div class="contact-info">
+                    <p><strong>Email:</strong> privacy@saborconflowdance.com</p>
+                    <p><strong>Phone:</strong> (555) 123-4567</p>
+                    <p><strong>Address:</strong> Avalon Ballroom, Boulder, CO</p>
+                </div>
+                
+                <p class="last-updated">
+                    <small><strong>Last Updated:</strong> {% now "F j, Y" %}</small>
+                </p>
+            </section>
+        </div>
+        
+        <div class="privacy-modal-footer">
+            <button onclick="closePrivacyModal()" class="btn btn-primary">
+                <i class="fas fa-check"></i> I Understand
+            </button>
+        </div>
+    </div>
+</div>
+
+<style>
+.privacy-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.privacy-modal-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+}
+
+.privacy-modal-content {
+    position: relative;
+    max-width: 800px;
+    margin: 2rem auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.3s ease-out;
+}
+
+.privacy-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem 1rem;
+    border-bottom: 2px solid var(--color-gold, #C7B375);
+}
+
+.privacy-modal-header h2 {
+    margin: 0;
+    color: var(--color-black, #000);
+    font-family: var(--font-heading, 'Playfair Display');
+}
+
+.privacy-modal-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-gray-medium, #666);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.privacy-modal-close:hover {
+    background: var(--color-gray-lighter, #f5f5f5);
+    color: var(--color-black, #000);
+}
+
+.privacy-modal-body {
+    padding: 2rem;
+    max-height: 70vh;
+    overflow-y: auto;
+}
+
+.privacy-section {
+    margin-bottom: 2rem;
+}
+
+.privacy-section h3 {
+    color: var(--color-gold, #C7B375);
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.privacy-section h4 {
+    color: var(--color-black, #000);
+    margin: 1rem 0 0.5rem;
+    font-size: 1rem;
+}
+
+.privacy-section ul {
+    margin: 0.5rem 0 1rem 1rem;
+    color: var(--color-gray-dark, #333);
+}
+
+.privacy-section li {
+    margin-bottom: 0.25rem;
+}
+
+.cookie-types, .third-party-services {
+    display: grid;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.cookie-type, .service {
+    padding: 1rem;
+    border: 1px solid var(--color-gray-lighter, #f5f5f5);
+    border-radius: 8px;
+    background: rgba(199, 179, 117, 0.05);
+}
+
+.cookie-type strong, .service strong {
+    color: var(--color-gold, #C7B375);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.privacy-controls {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    background: var(--color-gray-lighter, #f5f5f5);
+    border-radius: 8px;
+}
+
+.privacy-controls h4 {
+    margin-bottom: 1rem;
+}
+
+.privacy-controls .btn {
+    margin-right: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.contact-info {
+    background: var(--color-gray-lighter, #f5f5f5);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1rem 0;
+}
+
+.last-updated {
+    text-align: center;
+    margin-top: 2rem;
+    font-style: italic;
+    color: var(--color-gray-medium, #666);
+}
+
+.privacy-modal-footer {
+    padding: 1rem 2rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--color-gray-lighter, #f5f5f5);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .privacy-modal-content {
+        margin: 1rem;
+        max-width: none;
+    }
+    
+    .privacy-modal-header,
+    .privacy-modal-body,
+    .privacy-modal-footer {
+        padding: 1.5rem 1rem;
+    }
+    
+    .privacy-modal-body {
+        max-height: 60vh;
+    }
+    
+    .cookie-types, .third-party-services {
+        grid-template-columns: 1fr;
+    }
+    
+    .privacy-controls .btn {
+        display: block;
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+}
+</style>
+
+<script>
+function closePrivacyModal() {
+    const modal = document.getElementById('privacy-policy-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+function showAnalyticsSettings() {
+    if (window.saborAnalytics) {
+        const status = window.saborAnalytics.getConsentStatus();
+        alert(`Analytics Status:\nConsent Given: ${status.given}\nInitialized: ${status.initialized}\nHas Made Choice: ${status.hasChoice}`);
+    } else {
+        alert('Analytics system not loaded.');
+    }
+}
+
+function revokeAnalyticsConsent() {
+    if (window.saborAnalytics) {
+        window.saborAnalytics.revokeConsent();
+        alert('Analytics consent has been revoked. Analytics tracking is now disabled.');
+        closePrivacyModal();
+    } else {
+        alert('Analytics system not loaded.');
+    }
+}
+
+// Close modal when clicking outside
+document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('privacy-modal-overlay')) {
+        closePrivacyModal();
+    }
+});
+
+// Close modal with Escape key
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape') {
+        closePrivacyModal();
+    }
+});
+</script>

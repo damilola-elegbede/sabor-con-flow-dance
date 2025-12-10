@@ -46,28 +46,56 @@ sabor-con-flow-dance/
 │   ├── urls.py            # URL routing
 │   └── models.py          # Placeholder file (no models used)
 │   └── forms.py           # Placeholder file (no forms used)
-├── public/                 # Public static assets
-│   └── css/
-│       └── base/
-│           └── variables.css  # CSS design tokens
-├── static/                 # Static assets (CSS, JS, images)
+├── static/                 # Static assets
+│   └── css/               # Modular CSS architecture
+│       ├── base/          # Foundation styles
+│       │   ├── variables.css   # CSS design tokens
+│       │   ├── reset.css       # Box model reset, accessibility
+│       │   └── typography.css  # Text styles, utilities
+│       ├── components/    # UI components
+│       │   ├── buttons.css     # Button styles
+│       │   ├── cards.css       # Card-based UI
+│       │   ├── gallery.css     # Media components
+│       │   └── navigation.css  # Nav, header, footer
+│       ├── layouts/       # Page structures
+│       │   ├── grid.css        # Grid systems
+│       │   └── sections.css    # Page sections
+│       └── main.css       # Import orchestrator
 ├── staticfiles/            # Collected static files
 ├── templates/              # Base templates
 ├── vercel.json            # Vercel deployment configuration
 └── requirements.txt       # Python dependencies
 ```
 
-## CSS Design System
+## CSS Architecture
 
-The project uses CSS custom properties (design tokens) for consistent styling:
+The project uses a modular CSS architecture with CSS custom properties (design tokens) for consistent styling.
+
+### Directory Structure
+
+- **base/**: Foundation styles loaded first (variables, reset, typography)
+- **layouts/**: Page structure and grid systems
+- **components/**: Reusable UI components (buttons, cards, navigation, gallery)
+- **main.css**: Import orchestrator that loads all modules in correct order
+
+### Design Tokens
+
+Design tokens in `static/css/base/variables.css` include:
 
 - **Colors**: Brand palette (gold, black, white) with semantic aliases
 - **Typography**: Font families (Inter for body, Playfair Display for headings), sizes, weights, and line heights
-- **Spacing**: 4px base unit scale (0-24 increments)
+- **Spacing**: 4px base unit scale (xs through 3xl)
 - **Shadows**: Elevation and hover state shadows
 - **Transitions**: Standardized durations and easing functions
+- **Z-Index**: Layering scale for dropdowns, modals, etc.
 
-Design tokens are defined in `public/css/base/variables.css`.
+### Import Order
+
+The `main.css` file imports modules in dependency order:
+
+1. Base layer (variables → reset → typography)
+2. Layout layer (grid → sections)
+3. Component layer (buttons → navigation → cards → gallery)
 
 ## Accessibility Features
 

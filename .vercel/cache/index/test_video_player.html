@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Player Component Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background: #f5f5f5;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1, h2 {
+            color: #333;
+        }
+        
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Video Player Component Test</h1>
+    
+    <div class="test-section">
+        <h2>YouTube Video Example</h2>
+        <div class="video-grid">
+            <!-- Include the video player component -->
+            {% include 'components/video_player.html' with video_url='https://www.youtube.com/watch?v=dQw4w9WgXcQ' video_title='Sample YouTube Video' video_description='This is a test video showing the video player component functionality' video_id='youtube_test' %}
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Vimeo Video Example</h2>
+        <div class="video-grid">
+            <!-- Include the video player component -->
+            {% include 'components/video_player.html' with video_url='https://vimeo.com/34741214' video_title='Sample Vimeo Video' video_description='This demonstrates Vimeo video embedding with the component' video_id='vimeo_test' %}
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Video with Fallback Thumbnail</h2>
+        <div class="video-grid">
+            <!-- Include the video player component without thumbnail -->
+            {% include 'components/video_player.html' with video_url='https://www.youtube.com/watch?v=invalid_video_id' video_title='Video with Fallback' video_description='This shows what happens when a video thumbnail cannot be loaded' video_id='fallback_test' %}
+        </div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Features Demonstrated</h2>
+        <ul>
+            <li><strong>Responsive 16:9 Aspect Ratio:</strong> Videos maintain proper proportions on all screen sizes</li>
+            <li><strong>Lazy Loading:</strong> Video thumbnails are loaded only when they come into view</li>
+            <li><strong>YouTube & Vimeo Support:</strong> Automatically detects and embeds videos from both platforms</li>
+            <li><strong>Accessible Controls:</strong> Keyboard navigation support (Tab to focus, Enter/Space to play)</li>
+            <li><strong>Loading States:</strong> Shows loading spinner while video loads</li>
+            <li><strong>Error Handling:</strong> Graceful fallback when videos fail to load</li>
+            <li><strong>Auto-generated Thumbnails:</strong> Fetches thumbnails from YouTube automatically</li>
+            <li><strong>Placeholder Graphics:</strong> Beautiful fallback when thumbnails aren't available</li>
+            <li><strong>Performance Optimized:</strong> Videos only load when user clicks play</li>
+            <li><strong>Mobile Friendly:</strong> Touch-optimized controls and responsive design</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>Integration with Gallery</h2>
+        <p>The video player component integrates seamlessly with the existing gallery system:</p>
+        <ul>
+            <li>Maintains consistent styling with image thumbnails</li>
+            <li>Works with existing filter and search functionality</li>
+            <li>Supports the lightbox modal for fullscreen viewing</li>
+            <li>Preserves lazy loading performance benefits</li>
+            <li>Follows WCAG accessibility guidelines</li>
+        </ul>
+    </div>
+</body>
+</html>

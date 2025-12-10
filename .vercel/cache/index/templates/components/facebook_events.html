@@ -1,0 +1,361 @@
+<!-- Facebook Events Component - SPEC_05 Group B Task 6 -->
+{% load static %}
+
+<section class="special-events-section">
+    <div class="container">
+        <div class="section-header">
+            <h2>
+                <i class="fab fa-facebook-f"></i>
+                Special Events
+            </h2>
+            <p class="section-subtitle">Don't miss our upcoming special events and workshops</p>
+        </div>
+        
+        {% if facebook_events %}
+        <div class="facebook-events-grid">
+            {% for event in facebook_events %}
+            <div class="facebook-event-card">
+                {% if event.cover_photo %}
+                <div class="event-image">
+                    <img src="{{ event.cover_photo }}" 
+                         alt="{{ event.name }}" 
+                         loading="lazy"
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="image-placeholder" style="display: none;">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                {% else %}
+                <div class="event-image">
+                    <div class="image-placeholder">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <div class="event-content">
+                    <div class="event-header">
+                        <h3 class="event-title">{{ event.name }}</h3>
+                        {% if event.formatted_date and event.formatted_time %}
+                        <div class="event-datetime">
+                            <div class="event-date">
+                                <i class="fas fa-calendar"></i>
+                                <span>{{ event.formatted_date }}</span>
+                            </div>
+                            <div class="event-time">
+                                <i class="fas fa-clock"></i>
+                                <span>{{ event.formatted_time }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if event.description %}
+                    <div class="event-description">
+                        <p>{{ event.description }}</p>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="event-actions">
+                        <a href="{{ event.facebook_url }}" 
+                           class="btn btn-facebook" 
+                           target="_blank" 
+                           rel="noopener noreferrer"
+                           onclick="trackFacebookEventClick('{{ event.id }}', '{{ event.name }}')">
+                            <i class="fab fa-facebook-f"></i>
+                            Learn More on Facebook
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="view-all-events">
+            <a href="https://www.facebook.com/saborconflowdance/events" 
+               class="btn btn-outline-facebook" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                <i class="fab fa-facebook-f"></i>
+                View All Events on Facebook
+            </a>
+        </div>
+        {% else %}
+        <div class="no-events-message">
+            <div class="no-events-content">
+                <i class="fas fa-calendar-times"></i>
+                <h3>No Special Events Scheduled</h3>
+                <p>Follow us on Facebook to stay updated on upcoming events and workshops.</p>
+                <a href="https://www.facebook.com/saborconflowdance" 
+                   class="btn btn-facebook" 
+                   target="_blank" 
+                   rel="noopener noreferrer">
+                    <i class="fab fa-facebook-f"></i>
+                    Follow Us on Facebook
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<style>
+/* Facebook Events Section Styles */
+.special-events-section {
+    padding: 60px 0;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.section-header h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #1877f2;
+    margin-bottom: 10px;
+}
+
+.section-header h2 i {
+    margin-right: 15px;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: #6c757d;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.facebook-events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.facebook-event-card {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: all 0.3s ease;
+    border: 1px solid #e9ecef;
+}
+
+.facebook-event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.event-image {
+    position: relative;
+    height: 200px;
+    overflow: hidden;
+}
+
+.event-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.facebook-event-card:hover .event-image img {
+    transform: scale(1.05);
+}
+
+.image-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: linear-gradient(135deg, #1877f2 0%, #42a5f5 100%);
+    color: white;
+}
+
+.image-placeholder i {
+    font-size: 3rem;
+    opacity: 0.7;
+}
+
+.event-content {
+    padding: 25px;
+}
+
+.event-header {
+    margin-bottom: 15px;
+}
+
+.event-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #212529;
+    margin-bottom: 12px;
+    line-height: 1.3;
+}
+
+.event-datetime {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    font-size: 0.9rem;
+    color: #6c757d;
+}
+
+.event-date, .event-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.event-date i, .event-time i {
+    color: #1877f2;
+    width: 14px;
+}
+
+.event-description {
+    margin-bottom: 20px;
+}
+
+.event-description p {
+    color: #495057;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.event-actions {
+    display: flex;
+    justify-content: center;
+}
+
+.btn-facebook {
+    background: #1877f2;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-facebook:hover {
+    background: #166fe5;
+    color: white;
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-outline-facebook {
+    background: transparent;
+    color: #1877f2;
+    border: 2px solid #1877f2;
+    padding: 12px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-outline-facebook:hover {
+    background: #1877f2;
+    color: white;
+    text-decoration: none;
+}
+
+.view-all-events {
+    text-align: center;
+}
+
+.no-events-message {
+    text-align: center;
+    padding: 60px 20px;
+}
+
+.no-events-content i {
+    font-size: 4rem;
+    color: #dee2e6;
+    margin-bottom: 20px;
+}
+
+.no-events-content h3 {
+    font-size: 1.5rem;
+    color: #6c757d;
+    margin-bottom: 10px;
+}
+
+.no-events-content p {
+    color: #adb5bd;
+    margin-bottom: 25px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .facebook-events-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .section-header h2 {
+        font-size: 2rem;
+    }
+    
+    .event-content {
+        padding: 20px;
+    }
+    
+    .event-datetime {
+        flex-direction: column;
+        gap: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .special-events-section {
+        padding: 40px 0;
+    }
+    
+    .facebook-events-grid {
+        grid-template-columns: 1fr;
+        margin: 0 10px;
+    }
+    
+    .event-content {
+        padding: 15px;
+    }
+    
+    .event-title {
+        font-size: 1.2rem;
+    }
+}
+</style>
+
+<script>
+// Analytics tracking for Facebook event clicks
+function trackFacebookEventClick(eventId, eventName) {
+    // Google Analytics 4 event tracking
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'facebook_event_click', {
+            'event_category': 'Social Engagement',
+            'event_label': eventName,
+            'facebook_event_id': eventId,
+            'value': 1
+        });
+    }
+    
+    // Console log for debugging
+    console.log('Facebook event clicked:', eventName, eventId);
+}
+</script>

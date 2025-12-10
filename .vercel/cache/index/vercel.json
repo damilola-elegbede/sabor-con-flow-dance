@@ -1,0 +1,108 @@
+{
+  "version": 2,
+  "buildCommand": "./vercel-build",
+  "builds": [
+    {
+      "src": "api/index.py",
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.12"
+      }
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/static/css/(.*)",
+      "destination": "/staticfiles/css/$1"
+    },
+    {
+      "source": "/static/js/(.*)",
+      "destination": "/staticfiles/js/$1"
+    },
+    {
+      "source": "/static/images/(.*)",
+      "destination": "/staticfiles/images/$1"
+    },
+    {
+      "source": "/static/videos/(.*)",
+      "destination": "/staticfiles/videos/$1"
+    },
+    {
+      "source": "/static/(.*)",
+      "destination": "/staticfiles/$1"
+    },
+    {
+      "source": "/robots.txt",
+      "destination": "/staticfiles/robots.txt"
+    },
+    {
+      "source": "/sitemap.xml",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/favicon.(ico|png|jpg|jpeg|gif|svg)",
+      "destination": "/static/images/favicon/favicon.png"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(contact|booking|admin)/(.*)",
+      "destination": "/api/index.py"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/api/index.py"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/([^?]*)(\\?.*fbclid=.*)",
+      "destination": "https://www.saborconflowdance.com/$1",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/static/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/staticfiles/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control", 
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
+      ]
+    }
+  ],
+  "env": {
+    "PYTHONPATH": ".",
+    "DJANGO_DEBUG": "False"
+  }
+} 

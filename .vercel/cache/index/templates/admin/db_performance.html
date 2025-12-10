@@ -1,0 +1,449 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Database Performance Monitor{% endblock %}
+
+{% block extra_head %}
+<style>
+    .performance-dashboard {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .metric-card {
+        background: #fff;
+        border-radius: 8px;
+        padding: 20px;
+        margin: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        border-left: 4px solid #C7B375;
+    }
+    
+    .metric-card.warning {
+        border-left-color: #f39c12;
+    }
+    
+    .metric-card.critical {
+        border-left-color: #e74c3c;
+    }
+    
+    .metric-card.success {
+        border-left-color: #27ae60;
+    }
+    
+    .metric-value {
+        font-size: 2em;
+        font-weight: bold;
+        color: #2c3e50;
+    }
+    
+    .metric-label {
+        color: #7f8c8d;
+        font-size: 0.9em;
+        margin-top: 5px;
+    }
+    
+    .query-log {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 4px;
+        padding: 15px;
+        margin: 10px 0;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+    
+    .query-item {
+        margin: 10px 0;
+        padding: 10px;
+        background: #fff;
+        border-radius: 4px;
+        border-left: 3px solid #C7B375;
+    }
+    
+    .query-item.slow {
+        border-left-color: #f39c12;
+    }
+    
+    .query-item.critical {
+        border-left-color: #e74c3c;
+    }
+    
+    .query-time {
+        font-weight: bold;
+        color: #e74c3c;
+    }
+    
+    .query-sql {
+        font-family: 'Courier New', monospace;
+        background: #f1f2f6;
+        padding: 5px;
+        border-radius: 3px;
+        margin: 5px 0;
+        word-break: break-all;
+    }
+    
+    .recommendations {
+        background: #e8f4fd;
+        border: 1px solid #bee5eb;
+        border-radius: 4px;
+        padding: 15px;
+        margin: 20px 0;
+    }
+    
+    .recommendations h4 {
+        color: #0c5460;
+        margin-top: 0;
+    }
+    
+    .recommendation-item {
+        margin: 8px 0;
+        padding-left: 20px;
+        position: relative;
+    }
+    
+    .recommendation-item:before {
+        content: "→";
+        position: absolute;
+        left: 0;
+        color: #0c5460;
+        font-weight: bold;
+    }
+    
+    .btn-optimize {
+        background: #C7B375;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        margin: 5px;
+    }
+    
+    .btn-optimize:hover {
+        background: #b8a066;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin: 20px 0;
+    }
+    
+    .progress-bar {
+        width: 100%;
+        height: 20px;
+        background: #ecf0f1;
+        border-radius: 10px;
+        overflow: hidden;
+        margin: 10px 0;
+    }
+    
+    .progress-fill {
+        height: 100%;
+        background: #C7B375;
+        border-radius: 10px;
+        transition: width 0.3s ease;
+    }
+    
+    .progress-fill.warning {
+        background: #f39c12;
+    }
+    
+    .progress-fill.critical {
+        background: #e74c3c;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="performance-dashboard">
+    <h1>Database Performance Monitor</h1>
+    <p class="text-muted">Real-time database performance metrics and optimization recommendations</p>
+    
+    <!-- Performance Overview -->
+    <div class="stats-grid">
+        <div class="metric-card" id="avg-query-time">
+            <div class="metric-value">--</div>
+            <div class="metric-label">Average Query Time (ms)</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div class="metric-card" id="query-count">
+            <div class="metric-value">--</div>
+            <div class="metric-label">Queries per Request</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+        
+        <div class="metric-card" id="slow-queries">
+            <div class="metric-value">--</div>
+            <div class="metric-label">Slow Queries (&gt;100ms)</div>
+        </div>
+        
+        <div class="metric-card" id="cache-hit-rate">
+            <div class="metric-value">--</div>
+            <div class="metric-label">Cache Hit Rate</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div style="text-align: center; margin: 20px 0;">
+        <button class="btn-optimize" onclick="runOptimization()">Optimize Database</button>
+        <button class="btn-optimize" onclick="clearCache()">Clear Cache</button>
+        <button class="btn-optimize" onclick="warmCache()">Warm Cache</button>
+        <button class="btn-optimize" onclick="refreshStats()">Refresh Stats</button>
+    </div>
+    
+    <!-- Performance Recommendations -->
+    <div class="recommendations" id="recommendations" style="display: none;">
+        <h4>🚀 Performance Recommendations</h4>
+        <div id="recommendations-list"></div>
+    </div>
+    
+    <!-- Recent Slow Queries -->
+    <div style="margin: 30px 0;">
+        <h3>Recent Slow Queries</h3>
+        <div class="query-log" id="slow-queries-log">
+            <p class="text-muted">Loading query data...</p>
+        </div>
+    </div>
+    
+    <!-- Query Performance Trends -->
+    <div style="margin: 30px 0;">
+        <h3>Performance Trends</h3>
+        <div class="metric-card">
+            <canvas id="performance-chart" width="400" height="200"></canvas>
+        </div>
+    </div>
+    
+    <!-- Database Information -->
+    <div style="margin: 30px 0;">
+        <h3>Database Information</h3>
+        <div class="metric-card">
+            <div id="db-info">
+                <p><strong>Backend:</strong> <span id="db-backend">--</span></p>
+                <p><strong>Cache Backend:</strong> <span id="cache-backend">--</span></p>
+                <p><strong>Redis Available:</strong> <span id="redis-available">--</span></p>
+                <p><strong>Performance Monitoring:</strong> <span id="monitoring-enabled">--</span></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Performance monitoring JavaScript
+    let performanceData = [];
+    let refreshInterval;
+    
+    // Initialize dashboard
+    document.addEventListener('DOMContentLoaded', function() {
+        refreshStats();
+        startAutoRefresh();
+    });
+    
+    function startAutoRefresh() {
+        refreshInterval = setInterval(refreshStats, 30000); // Refresh every 30 seconds
+    }
+    
+    function stopAutoRefresh() {
+        if (refreshInterval) {
+            clearInterval(refreshInterval);
+        }
+    }
+    
+    async function refreshStats() {
+        try {
+            const response = await fetch('/admin/db-performance-stats/');
+            const data = await response.json();
+            
+            updateMetrics(data);
+            updateSlowQueries(data.slow_queries || []);
+            updateRecommendations(data.recommendations || []);
+            updateDatabaseInfo(data.database_info || {});
+            
+        } catch (error) {
+            console.error('Failed to fetch performance stats:', error);
+        }
+    }
+    
+    function updateMetrics(data) {
+        // Average query time
+        const avgTime = data.average_time || 0;
+        document.querySelector('#avg-query-time .metric-value').textContent = avgTime.toFixed(2);
+        updateProgressBar('#avg-query-time', avgTime, 100, 500);
+        
+        // Query count
+        const queryCount = data.average_query_count || 0;
+        document.querySelector('#query-count .metric-value').textContent = queryCount.toFixed(1);
+        updateProgressBar('#query-count', queryCount, 20, 50);
+        
+        // Slow queries
+        const slowQueries = data.slow_requests || 0;
+        document.querySelector('#slow-queries .metric-value').textContent = slowQueries;
+        
+        // Cache hit rate (placeholder)
+        const hitRate = data.cache_hit_rate || 85;
+        document.querySelector('#cache-hit-rate .metric-value').textContent = hitRate + '%';
+        updateProgressBar('#cache-hit-rate', hitRate, 70, 50, true);
+    }
+    
+    function updateProgressBar(selector, value, warningThreshold, criticalThreshold, reverse = false) {
+        const progressBar = document.querySelector(selector + ' .progress-fill');
+        const card = document.querySelector(selector);
+        
+        let percentage, className;
+        
+        if (reverse) {
+            // For cache hit rate - higher is better
+            percentage = Math.min(value, 100);
+            if (value >= warningThreshold) {
+                className = 'success';
+            } else if (value >= criticalThreshold) {
+                className = 'warning';
+            } else {
+                className = 'critical';
+            }
+        } else {
+            // For query time/count - lower is better
+            percentage = Math.min((value / criticalThreshold) * 100, 100);
+            if (value <= warningThreshold) {
+                className = 'success';
+            } else if (value <= criticalThreshold) {
+                className = 'warning';
+            } else {
+                className = 'critical';
+            }
+        }
+        
+        progressBar.style.width = percentage + '%';
+        progressBar.className = 'progress-fill ' + className;
+        card.className = 'metric-card ' + className;
+    }
+    
+    function updateSlowQueries(queries) {
+        const logContainer = document.getElementById('slow-queries-log');
+        
+        if (queries.length === 0) {
+            logContainer.innerHTML = '<p class="text-muted">No slow queries detected</p>';
+            return;
+        }
+        
+        const html = queries.map(query => `
+            <div class="query-item ${query.time > 500 ? 'critical' : 'slow'}">
+                <div class="query-time">${query.time.toFixed(2)}ms</div>
+                <div class="query-sql">${query.sql}</div>
+            </div>
+        `).join('');
+        
+        logContainer.innerHTML = html;
+    }
+    
+    function updateRecommendations(recommendations) {
+        const container = document.getElementById('recommendations');
+        const list = document.getElementById('recommendations-list');
+        
+        if (recommendations.length === 0) {
+            container.style.display = 'none';
+            return;
+        }
+        
+        const html = recommendations.map(rec => `
+            <div class="recommendation-item">${rec}</div>
+        `).join('');
+        
+        list.innerHTML = html;
+        container.style.display = 'block';
+    }
+    
+    function updateDatabaseInfo(info) {
+        document.getElementById('db-backend').textContent = info.backend || 'Unknown';
+        document.getElementById('cache-backend').textContent = info.cache_backend || 'Unknown';
+        document.getElementById('redis-available').textContent = info.redis_available ? 'Yes' : 'No';
+        document.getElementById('monitoring-enabled').textContent = info.monitoring_enabled ? 'Yes' : 'No';
+    }
+    
+    async function runOptimization() {
+        try {
+            const response = await fetch('/admin/optimize-database/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            const result = await response.json();
+            alert(result.message || 'Optimization completed');
+            refreshStats();
+            
+        } catch (error) {
+            console.error('Optimization failed:', error);
+            alert('Optimization failed');
+        }
+    }
+    
+    async function clearCache() {
+        try {
+            const response = await fetch('/admin/clear-cache/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            const result = await response.json();
+            alert(result.message || 'Cache cleared');
+            refreshStats();
+            
+        } catch (error) {
+            console.error('Cache clear failed:', error);
+            alert('Cache clear failed');
+        }
+    }
+    
+    async function warmCache() {
+        try {
+            const response = await fetch('/admin/warm-cache/', {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/json',
+                },
+            });
+            
+            const result = await response.json();
+            alert(result.message || 'Cache warmed');
+            refreshStats();
+            
+        } catch (error) {
+            console.error('Cache warming failed:', error);
+            alert('Cache warming failed');
+        }
+    }
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
+{% endblock %}

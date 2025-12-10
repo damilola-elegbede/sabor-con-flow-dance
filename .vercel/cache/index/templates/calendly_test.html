@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Calendly Widget Test - Sabor con Flow Dance{% endblock %}
+
+{% block content %}
+<div class="container" style="padding: 2rem 0;">
+    <h1 class="page-title">Calendly Widget Test Page</h1>
+    <p style="text-align: center; margin-bottom: 3rem; color: #666;">
+        This page demonstrates all three Calendly widget types for testing purposes.
+    </p>
+    
+    <!-- Test Section 1: Popup Widget -->
+    <div style="margin-bottom: 4rem; padding: 2rem; border: 2px solid #C7B375; border-radius: 8px;">
+        <h2 style="color: #C7B375; margin-bottom: 1rem;">1. Popup Widget Test</h2>
+        <p style="margin-bottom: 1.5rem;">Click the button below to open Calendly in a popup modal:</p>
+        {% include 'components/calendly_widget.html' with type='popup' text='Test Popup Widget' %}
+        
+        <div style="margin-top: 1rem; padding: 1rem; background: #f5f5f5; border-radius: 4px;">
+            <strong>Test URL with prefill:</strong><br>
+            <code>/calendly-test/?name=Test%20User&email=test@example.com&lesson_type=Private%20Lesson</code>
+        </div>
+    </div>
+    
+    <!-- Test Section 2: Inline Widget -->
+    <div style="margin-bottom: 4rem; padding: 2rem; border: 2px solid #C7B375; border-radius: 8px;">
+        <h2 style="color: #C7B375; margin-bottom: 1rem;">2. Inline Widget Test</h2>
+        <p style="margin-bottom: 1.5rem;">Full calendar embedded inline with custom height:</p>
+        {% include 'components/calendly_widget.html' with type='inline' height=600 %}
+    </div>
+    
+    <!-- Test Section 3: Badge Widget -->
+    <div style="margin-bottom: 4rem; padding: 2rem; border: 2px solid #C7B375; border-radius: 8px;">
+        <h2 style="color: #C7B375; margin-bottom: 1rem;">3. Badge Widget Test</h2>
+        <p style="margin-bottom: 1.5rem;">
+            Floating badge widget appears in the bottom-right corner of the page (should appear when this widget loads).
+        </p>
+        {% include 'components/calendly_widget.html' with type='badge' text='Test Badge Widget' %}
+        
+        <div style="padding: 1rem; background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px;">
+            <strong>Note:</strong> The badge widget creates a floating button that should appear in the bottom-right corner of your browser window.
+        </div>
+    </div>
+    
+    <!-- Test Section 4: Custom Configuration -->
+    <div style="margin-bottom: 4rem; padding: 2rem; border: 2px solid #C7B375; border-radius: 8px;">
+        <h2 style="color: #C7B375; margin-bottom: 1rem;">4. Custom Configuration Test</h2>
+        <p style="margin-bottom: 1.5rem;">Popup with custom branding and prefill data:</p>
+        {% include 'components/calendly_widget.html' with 
+           type='popup' 
+           text='Custom Branded Widget'
+           background_color='#1a1a1a'
+           text_color='#C7B375'
+           primary_color='#BFAA65'
+           prefill='{"name":"Test User","email":"test@saborconflow.com","customAnswers":{"a1":"Private Lesson Test"}}'
+        %}
+    </div>
+    
+    <!-- Analytics Test Section -->
+    <div style="margin-bottom: 4rem; padding: 2rem; border: 2px solid #28a745; border-radius: 8px;">
+        <h2 style="color: #28a745; margin-bottom: 1rem;">5. Analytics & Debug Test</h2>
+        <p style="margin-bottom: 1.5rem;">Use browser console to test analytics and debugging:</p>
+        
+        <div style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+            <button onclick="testAnalytics()" class="btn btn-outline" style="background: #28a745; color: white;">
+                Test Analytics
+            </button>
+            <button onclick="testPopupAPI()" class="btn btn-outline" style="background: #17a2b8; color: white;">
+                Test API Popup
+            </button>
+            <button onclick="enableDebugMode()" class="btn btn-outline" style="background: #ffc107; color: black;">
+                Enable Debug Mode
+            </button>
+            <button onclick="showErrors()" class="btn btn-outline" style="background: #dc3545; color: white;">
+                Show Error Log
+            </button>
+        </div>
+    </div>
+    
+    <!-- Instructions -->
+    <div style="padding: 2rem; background: #e7f3ff; border: 1px solid #b8daff; border-radius: 8px;">
+        <h3 style="color: #004085; margin-bottom: 1rem;">Testing Instructions</h3>
+        <ol style="color: #004085; line-height: 1.6;">
+            <li><strong>Open Browser Console:</strong> Press F12 or right-click → Inspect → Console</li>
+            <li><strong>Test Popup Widget:</strong> Click the popup buttons and verify they open Calendly</li>
+            <li><strong>Test Inline Widget:</strong> Verify the calendar loads and is interactive</li>
+            <li><strong>Test Badge Widget:</strong> Look for floating button in bottom-right corner</li>
+            <li><strong>Test Prefill:</strong> Add URL parameters like <code>?name=John&email=john@test.com</code></li>
+            <li><strong>Test Analytics:</strong> Click the "Test Analytics" button and check console output</li>
+            <li><strong>Test Mobile:</strong> Resize browser window or test on mobile device</li>
+            <li><strong>Test Error Handling:</strong> Disable JavaScript and verify fallback content</li>
+        </ol>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Calendly Integration JavaScript -->
+<script src="{% static 'js/calendly.js' %}" defer></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🧪 Calendly Test Page Loaded');
+    console.log('Available commands: testAnalytics(), testPopupAPI(), enableDebugMode(), showErrors()');
+    
+    // Listen for all Calendly events
+    document.addEventListener('calendly:booking_completed', function(event) {
+        console.log('✅ Test: Booking completed!', event.detail);
+        alert('Test Success: Booking completed! Check console for details.');
+    });
+    
+    document.addEventListener('calendly:profile_viewed', function(event) {
+        console.log('👀 Test: Profile viewed', event.detail);
+    });
+    
+    document.addEventListener('calendly:datetime_selected', function(event) {
+        console.log('📅 Test: Date/time selected', event.detail);
+    });
+    
+    document.addEventListener('calendly:error', function(event) {
+        console.log('❌ Test: Error occurred', event.detail);
+    });
+});
+
+// Test functions for manual testing
+function testAnalytics() {
+    if (window.calendlyAPI) {
+        const analytics = window.calendlyAPI.getAnalytics();
+        console.log('📊 Analytics Data:', analytics);
+        alert('Analytics test complete. Check console for details.');
+    } else {
+        console.error('❌ Calendly API not available');
+        alert('Error: Calendly API not available');
+    }
+}
+
+function testPopupAPI() {
+    if (window.calendlyAPI) {
+        window.calendlyAPI.openPopup('https://calendly.com/saborconflowdance', {
+            prefill: {
+                name: 'API Test User',
+                email: 'apitest@example.com'
+            }
+        }).then(() => {
+            console.log('✅ API popup opened successfully');
+        }).catch(error => {
+            console.error('❌ API popup failed:', error);
+            alert('API popup test failed. Check console for details.');
+        });
+    } else {
+        console.error('❌ Calendly API not available');
+        alert('Error: Calendly API not available');
+    }
+}
+
+function enableDebugMode() {
+    localStorage.setItem('calendly_debug', 'true');
+    console.log('🐛 Debug mode enabled. Reload page to see debug logs.');
+    alert('Debug mode enabled. Reload page to see debug logs in console.');
+}
+
+function showErrors() {
+    if (window.calendlyAPI) {
+        const analytics = window.calendlyAPI.getAnalytics();
+        if (analytics.errors && analytics.errors.length > 0) {
+            console.log('🚨 Error Log:', analytics.errors);
+            alert(`Found ${analytics.errors.length} errors. Check console for details.`);
+        } else {
+            console.log('✅ No errors found');
+            alert('No errors found in the error log.');
+        }
+    } else {
+        console.error('❌ Calendly API not available');
+        alert('Error: Calendly API not available');
+    }
+}
+
+// Automatic prefill test from URL parameters
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.has('name') || urlParams.has('email')) {
+    console.log('🔧 Prefill test parameters detected:', Object.fromEntries(urlParams));
+}
+</script>
+{% endblock %}

@@ -1,0 +1,46 @@
+#!/bin/bash
+set -e
+
+echo "Starting Vercel build process..."
+
+echo "Installing Python dependencies..."
+pip install -r requirements.txt
+
+echo "Running Django system checks..."
+python manage.py check --deploy
+
+echo "Running database migrations..."
+python manage.py makemigrations --noinput
+python manage.py migrate --noinput
+
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
+
+echo "Testing critical endpoints..."
+python -c "
+import os
+import sys
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'sabor_con_flow.settings')
+import django
+django.setup()
+
+# Test URL imports
+try:
+    from sabor_con_flow.urls import urlpatterns
+    print('✓ URL configuration loaded successfully')
+except Exception as e:
+    print(f'✗ URL configuration failed: {e}')
+    sys.exit(1)
+
+# Test monitoring endpoints
+try:
+    from core.monitoring import health_check, health_check_simple
+    print('✓ Monitoring endpoints loaded successfully')
+except Exception as e:
+    print(f'✗ Monitoring endpoints failed: {e}')
+    sys.exit(1)
+
+print('✓ All critical components tested successfully')
+"
+
+echo "Build completed successfully! 🚀" 

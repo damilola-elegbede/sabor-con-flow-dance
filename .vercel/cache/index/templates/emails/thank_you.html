@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Testimonial - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #C7B375;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #C7B375;
+            margin: 0;
+            font-size: 28px;
+        }
+        .header p {
+            color: #6c757d;
+            margin: 10px 0 0 0;
+            font-size: 16px;
+        }
+        .thank-you-message {
+            text-align: center;
+            background: linear-gradient(135deg, #fff3cd, #f8f9fa);
+            border-radius: 8px;
+            padding: 30px 20px;
+            margin-bottom: 30px;
+        }
+        .thank-you-message h2 {
+            color: #C7B375;
+            margin: 0 0 15px 0;
+            font-size: 24px;
+        }
+        .thank-you-message p {
+            font-size: 18px;
+            color: #495057;
+            margin: 0;
+        }
+        .submission-summary {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .summary-title {
+            color: #495057;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .detail-label {
+            font-weight: bold;
+            min-width: 120px;
+            color: #495057;
+        }
+        .detail-value {
+            flex: 1;
+            color: #212529;
+        }
+        .rating {
+            color: #C7B375;
+            font-size: 18px;
+        }
+        .next-steps {
+            background-color: #e8f4fd;
+            border: 1px solid #bee5eb;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        .next-steps h3 {
+            color: #0c5460;
+            margin: 0 0 15px 0;
+            font-size: 18px;
+        }
+        .next-steps ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #0c5460;
+        }
+        .next-steps li {
+            margin-bottom: 8px;
+        }
+        .actions {
+            text-align: center;
+            margin: 30px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #C7B375;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #b8a566;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+        .social-section {
+            text-align: center;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        .social-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+        }
+        .social-section p {
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #C7B375;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .detail-row {
+                flex-direction: column;
+            }
+            .detail-label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            .btn {
+                display: block;
+                margin: 10px 0;
+            }
+            .thank-you-message {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>¡Gracias, {{ student_name }}! 💃</h1>
+            <p>Thank you for sharing your dance journey with us</p>
+        </div>
+
+        <div class="thank-you-message">
+            <h2>Your testimonial means the world to us!</h2>
+            <p>We're thrilled that you've had such a positive experience with {{ site_name }}. Your feedback helps us continue to improve and inspires other dancers to join our community.</p>
+        </div>
+
+        <div class="submission-summary">
+            <div class="summary-title">📝 Your Submission Summary</div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Class Type:</div>
+                <div class="detail-value">{{ class_type_display }}</div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Your Rating:</div>
+                <div class="detail-value">
+                    <span class="rating">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= testimonial.rating %}★{% else %}☆{% endif %}
+                        {% endfor %}
+                    </span>
+                    ({{ testimonial.rating }}/5 stars)
+                </div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Submitted:</div>
+                <div class="detail-value">{{ submission_date }}</div>
+            </div>
+        </div>
+
+        <div class="next-steps">
+            <h3>What happens next?</h3>
+            <ul>
+                <li><strong>Review Process:</strong> Our team will review your testimonial within 1-2 business days</li>
+                <li><strong>Publication:</strong> Once approved, your testimonial will be published on our website</li>
+                <li><strong>Notification:</strong> We'll send you an email confirmation when your testimonial goes live</li>
+                <li><strong>Sharing:</strong> Feel free to share your published testimonial with friends and family!</li>
+            </ul>
+        </div>
+
+        <div class="actions">
+            <a href="{{ testimonials_url }}" class="btn">View All Testimonials</a>
+            <a href="{{ site_url }}" class="btn btn-secondary">Visit Our Website</a>
+        </div>
+
+        <div class="social-section">
+            <h3>🌟 Keep Dancing With Us!</h3>
+            <p>Follow us on social media for the latest updates, dance tips, and community highlights.</p>
+            <p>Don't forget to tag us in your dance videos and photos!</p>
+        </div>
+
+        <div class="footer">
+            <p>Thank you for being part of the {{ site_name }} family!</p>
+            <p>If you have any questions, feel free to contact us at <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+            <p><strong>Website:</strong> <a href="{{ site_url }}">{{ site_url }}</a></p>
+        </div>
+    </div>
+</body>
+</html>

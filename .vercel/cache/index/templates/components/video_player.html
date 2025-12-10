@@ -1,0 +1,593 @@
+{% load static %}
+
+<!-- Video Player Component -->
+<!-- Usage: {% include 'components/video_player.html' with video_url=item.media_url video_title=item.title video_description=item.description %} -->
+
+<div class="video-player-container" data-video-url="{{ video_url }}" aria-label="Video Player: {{ video_title }}">
+    <!-- Video Player Wrapper with 16:9 Aspect Ratio -->
+    <div class="video-wrapper" role="region" aria-label="Video content">
+        <!-- Thumbnail/Placeholder -->
+        <div class="video-thumbnail" id="thumbnail-{{ video_id|default:'default' }}">
+            {% if video_thumbnail %}
+                <img src="{{ video_thumbnail }}" 
+                     alt="Thumbnail for {{ video_title }}" 
+                     class="lazy-load video-thumb-img"
+                     loading="lazy">
+            {% else %}
+                <!-- Auto-generated thumbnail based on video provider -->
+                <img class="lazy-load video-thumb-img" 
+                     data-src=""
+                     alt="Thumbnail for {{ video_title }}"
+                     loading="lazy"
+                     style="display: none;">
+                <!-- Fallback thumbnail -->
+                <div class="video-placeholder">
+                    <div class="video-placeholder-icon">
+                        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                            <path d="M12 2C13.1 2 14 2.9 14 4V5.5L20 2V22L14 18.5V20C14 21.1 13.1 22 12 22H4C2.9 22 2 21.1 2 20V4C2 2.9 2.9 2 4 2H12Z" fill="currentColor"/>
+                        </svg>
+                    </div>
+                    <div class="video-placeholder-text">Video</div>
+                </div>
+            {% endif %}
+            
+            <!-- Play Button Overlay -->
+            <div class="video-play-overlay" role="button" 
+                 tabindex="0" 
+                 aria-label="Play video: {{ video_title }}"
+                 onclick="loadVideo('{{ video_id|default:'default' }}', '{{ video_url }}', '{{ video_title|escapejs }}')"
+                 onkeydown="handleVideoKeydown(event, '{{ video_id|default:'default' }}', '{{ video_url }}', '{{ video_title|escapejs }}')">
+                <div class="video-play-button" aria-hidden="true">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 5v14l11-7z"/>
+                    </svg>
+                </div>
+            </div>
+            
+            <!-- Video Duration (if available) -->
+            {% if video_duration %}
+            <div class="video-duration" aria-label="Duration: {{ video_duration }}">
+                {{ video_duration }}
+            </div>
+            {% endif %}
+        </div>
+        
+        <!-- Embed Container (Initially Hidden) -->
+        <div class="video-embed-container" id="embed-{{ video_id|default:'default' }}" style="display: none;" role="application" aria-label="Video player iframe">
+            <!-- Video iframe will be inserted here -->
+        </div>
+        
+        <!-- Loading State -->
+        <div class="video-loading" id="loading-{{ video_id|default:'default' }}" style="display: none;" role="status" aria-label="Loading video">
+            <div class="loading-spinner" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="31.416" stroke-dashoffset="31.416">
+                        <animate attributeName="stroke-dasharray" dur="2s" values="0 31.416;15.708 15.708;0 31.416" repeatCount="indefinite"/>
+                        <animate attributeName="stroke-dashoffset" dur="2s" values="0;-15.708;-31.416" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+            <span class="sr-only">Loading video content</span>
+        </div>
+        
+        <!-- Error State -->
+        <div class="video-error" id="error-{{ video_id|default:'default' }}" style="display: none;" role="alert">
+            <div class="video-error-icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2C6.48 2 2 6.48 2 12S6.48 22 12 22 22 17.52 22 12 17.52 2 12 2ZM13 17H11V15H13V17ZM13 13H11V7H13V13Z"/>
+                </svg>
+            </div>
+            <div class="video-error-text">
+                <p>Unable to load video</p>
+                <button class="video-retry-btn" onclick="retryVideoLoad('{{ video_id|default:'default' }}', '{{ video_url }}', '{{ video_title|escapejs }}')">
+                    Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Video Info (Optional) -->
+    {% if show_info|default:True %}
+    <div class="video-info">
+        {% if video_title %}
+        <h4 class="video-title">{{ video_title }}</h4>
+        {% endif %}
+        
+        {% if video_description %}
+        <p class="video-description">{{ video_description }}</p>
+        {% endif %}
+        
+        {% if video_date %}
+        <div class="video-meta">
+            <time datetime="{{ video_date|date:'c' }}" class="video-date">
+                {{ video_date|date:"M d, Y" }}
+            </time>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+/* Video Player Container */
+.video-player-container {
+    position: relative;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* Video Wrapper - 16:9 Aspect Ratio */
+.video-wrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    height: 0;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #000;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Video Thumbnail */
+.video-thumbnail {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.video-thumbnail:hover {
+    transform: scale(1.02);
+}
+
+.video-thumb-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+}
+
+/* Video Placeholder */
+.video-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    text-align: center;
+}
+
+.video-placeholder-icon {
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+.video-placeholder-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    opacity: 0.9;
+}
+
+/* Play Button Overlay */
+.video-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+.video-play-overlay:hover,
+.video-play-overlay:focus {
+    background: rgba(0,0,0,0.4);
+}
+
+.video-play-overlay:focus {
+    box-shadow: inset 0 0 0 3px rgba(212, 175, 55, 0.5);
+    border-radius: 12px;
+}
+
+.video-play-button {
+    width: 80px;
+    height: 80px;
+    background: rgba(255,255,255,0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #D4AF37;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.video-play-overlay:hover .video-play-button,
+.video-play-overlay:focus .video-play-button {
+    transform: scale(1.1);
+    background: white;
+}
+
+/* Video Duration Badge */
+.video-duration {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 500;
+}
+
+/* Embed Container */
+.video-embed-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.video-embed-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+}
+
+/* Loading State */
+.video-loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    border-radius: 12px;
+}
+
+.loading-spinner {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Error State */
+.video-error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    border-radius: 12px;
+}
+
+.video-error-icon {
+    margin-bottom: 1rem;
+    opacity: 0.7;
+}
+
+.video-retry-btn {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: #D4AF37;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.video-retry-btn:hover {
+    background: #B8941F;
+}
+
+/* Video Info */
+.video-info {
+    padding: 1rem 0.5rem 0;
+}
+
+.video-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.3;
+}
+
+.video-description {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.4;
+    margin: 0 0 0.5rem 0;
+}
+
+.video-meta {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.video-date {
+    font-style: italic;
+}
+
+/* Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .video-play-button {
+        width: 64px;
+        height: 64px;
+    }
+    
+    .video-play-button svg {
+        width: 24px;
+        height: 24px;
+    }
+    
+    .video-title {
+        font-size: 1rem;
+    }
+    
+    .video-description {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .video-play-button {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .video-play-button svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .video-play-overlay {
+        background: rgba(0,0,0,0.7);
+    }
+    
+    .video-play-button {
+        background: white;
+        border: 2px solid #000;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .video-thumbnail,
+    .video-play-button,
+    .video-play-overlay {
+        transition: none;
+    }
+    
+    .loading-spinner {
+        animation: none;
+    }
+}
+</style>
+
+<script>
+// Video Player JavaScript Functions
+(function() {
+    'use strict';
+    
+    // Extract video ID and provider from URL
+    function parseVideoUrl(url) {
+        const providers = {
+            youtube: {
+                regex: /(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([a-zA-Z0-9_-]+)/,
+                embedUrl: 'https://www.youtube.com/embed/',
+                thumbnailUrl: 'https://img.youtube.com/vi/',
+                params: '?autoplay=1&rel=0&modestbranding=1'
+            },
+            vimeo: {
+                regex: /(?:vimeo\.com\/)([0-9]+)/,
+                embedUrl: 'https://player.vimeo.com/video/',
+                thumbnailUrl: 'https://vimeo.com/api/v2/video/',
+                params: '?autoplay=1&title=0&byline=0&portrait=0'
+            }
+        };
+        
+        for (const [provider, config] of Object.entries(providers)) {
+            const match = url.match(config.regex);
+            if (match) {
+                return {
+                    provider: provider,
+                    id: match[1],
+                    embedUrl: config.embedUrl + match[1] + config.params,
+                    thumbnailUrl: provider === 'youtube' 
+                        ? config.thumbnailUrl + match[1] + '/maxresdefault.jpg'
+                        : null // Vimeo thumbnails require API call
+                };
+            }
+        }
+        
+        return null;
+    }
+    
+    // Load video thumbnail
+    function loadVideoThumbnail(videoId, videoUrl) {
+        const videoInfo = parseVideoUrl(videoUrl);
+        if (!videoInfo || !videoInfo.thumbnailUrl) return;
+        
+        const thumbImg = document.querySelector(`#thumbnail-${videoId} .video-thumb-img`);
+        if (thumbImg && videoInfo.provider === 'youtube') {
+            thumbImg.dataset.src = videoInfo.thumbnailUrl;
+            thumbImg.style.display = 'block';
+            
+            // Lazy load the thumbnail
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            img.src = img.dataset.src;
+                            img.onload = () => img.classList.add('loaded');
+                            img.onerror = () => {
+                                img.style.display = 'none';
+                                img.parentElement.querySelector('.video-placeholder').style.display = 'flex';
+                            };
+                            observer.unobserve(img);
+                        }
+                    });
+                });
+                observer.observe(thumbImg);
+            } else {
+                thumbImg.src = thumbImg.dataset.src;
+            }
+        }
+    }
+    
+    // Load and play video
+    window.loadVideo = function(videoId, videoUrl, videoTitle) {
+        const videoInfo = parseVideoUrl(videoUrl);
+        if (!videoInfo) {
+            showVideoError(videoId, 'Unsupported video format');
+            return;
+        }
+        
+        showVideoLoading(videoId);
+        
+        // Create iframe
+        const iframe = document.createElement('iframe');
+        iframe.src = videoInfo.embedUrl;
+        iframe.width = '100%';
+        iframe.height = '100%';
+        iframe.frameBorder = '0';
+        iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+        iframe.allowFullscreen = true;
+        iframe.title = videoTitle || 'Video Player';
+        
+        // Handle iframe load
+        iframe.onload = function() {
+            hideVideoLoading(videoId);
+            showVideoEmbed(videoId);
+        };
+        
+        iframe.onerror = function() {
+            hideVideoLoading(videoId);
+            showVideoError(videoId, 'Failed to load video');
+        };
+        
+        // Insert iframe
+        const embedContainer = document.getElementById(`embed-${videoId}`);
+        if (embedContainer) {
+            embedContainer.innerHTML = '';
+            embedContainer.appendChild(iframe);
+        }
+        
+        // Hide thumbnail after a short delay to allow iframe to load
+        setTimeout(() => {
+            const thumbnail = document.getElementById(`thumbnail-${videoId}`);
+            if (thumbnail) {
+                thumbnail.style.display = 'none';
+            }
+        }, 500);
+    };
+    
+    // Retry video load
+    window.retryVideoLoad = function(videoId, videoUrl, videoTitle) {
+        hideVideoError(videoId);
+        loadVideo(videoId, videoUrl, videoTitle);
+    };
+    
+    // Handle keyboard events for video play
+    window.handleVideoKeydown = function(event, videoId, videoUrl, videoTitle) {
+        if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            loadVideo(videoId, videoUrl, videoTitle);
+        }
+    };
+    
+    // Utility functions for showing/hiding states
+    function showVideoLoading(videoId) {
+        const loading = document.getElementById(`loading-${videoId}`);
+        if (loading) loading.style.display = 'flex';
+    }
+    
+    function hideVideoLoading(videoId) {
+        const loading = document.getElementById(`loading-${videoId}`);
+        if (loading) loading.style.display = 'none';
+    }
+    
+    function showVideoEmbed(videoId) {
+        const embed = document.getElementById(`embed-${videoId}`);
+        if (embed) embed.style.display = 'block';
+    }
+    
+    function showVideoError(videoId, message) {
+        const error = document.getElementById(`error-${videoId}`);
+        if (error) {
+            error.querySelector('.video-error-text p').textContent = message;
+            error.style.display = 'flex';
+        }
+    }
+    
+    function hideVideoError(videoId) {
+        const error = document.getElementById(`error-${videoId}`);
+        if (error) error.style.display = 'none';
+    }
+    
+    // Initialize video thumbnails on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const videoContainers = document.querySelectorAll('.video-player-container');
+        videoContainers.forEach(container => {
+            const videoUrl = container.dataset.videoUrl;
+            const videoId = container.querySelector('[id^="thumbnail-"]').id.replace('thumbnail-', '');
+            if (videoUrl && videoId) {
+                loadVideoThumbnail(videoId, videoUrl);
+            }
+        });
+    });
+})();
+</script>

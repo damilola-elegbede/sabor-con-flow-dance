@@ -1,0 +1,624 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Share Your Dance Journey - Sabor Con Flow Dance{% endblock %}
+
+{% block meta_description %}Share your dance experience at Sabor Con Flow Dance. Submit your testimonial and rate your Cuban salsa classes.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .testimonial-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: var(--spacing-2xl) var(--spacing-md);
+        background-color: var(--color-white);
+        border-radius: 12px;
+        box-shadow: var(--shadow-lg);
+    }
+    
+    .form-header {
+        text-align: center;
+        margin-bottom: var(--spacing-2xl);
+        padding-bottom: var(--spacing-xl);
+        border-bottom: 2px solid var(--color-gold-light);
+    }
+    
+    .form-header h1 {
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-md);
+        font-family: var(--font-heading);
+    }
+    
+    .form-header p {
+        color: var(--color-gray-medium);
+        font-size: 1.1rem;
+        line-height: 1.6;
+    }
+    
+    .form-group {
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .form-label {
+        display: block;
+        font-weight: 600;
+        color: var(--color-gray-dark);
+        margin-bottom: var(--spacing-sm);
+        font-size: 1rem;
+    }
+    
+    .form-control {
+        width: 100%;
+        padding: var(--spacing-md);
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: var(--font-body);
+        transition: border-color var(--transition-base), box-shadow var(--transition-base);
+        background-color: #fff;
+    }
+    
+    .form-control:focus {
+        outline: none;
+        border-color: var(--color-gold);
+        box-shadow: 0 0 0 3px rgba(199, 179, 117, 0.1);
+    }
+    
+    .form-control.is-invalid {
+        border-color: #dc3545;
+    }
+    
+    .form-help {
+        font-size: 0.875rem;
+        color: var(--color-gray-medium);
+        margin-top: var(--spacing-xs);
+    }
+    
+    .form-error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: var(--spacing-xs);
+    }
+    
+    /* Star Rating Styles */
+    .rating-container {
+        margin: var(--spacing-md) 0;
+    }
+    
+    .rating-display {
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .star-display {
+        font-size: 2rem;
+        color: #ddd;
+        transition: color var(--transition-fast);
+        cursor: pointer;
+    }
+    
+    .star-display.active {
+        color: var(--color-gold);
+    }
+    
+    .rating-options {
+        display: none;
+    }
+    
+    .rating-text {
+        font-weight: 600;
+        color: var(--color-gray-dark);
+        margin-left: var(--spacing-md);
+    }
+    
+    /* Character Counter */
+    .character-counter {
+        text-align: right;
+        font-size: 0.875rem;
+        color: var(--color-gray-medium);
+        margin-top: var(--spacing-xs);
+    }
+    
+    .character-counter.warning {
+        color: #f39c12;
+    }
+    
+    .character-counter.error {
+        color: #dc3545;
+    }
+    
+    /* Photo Upload Styles */
+    .photo-upload-container {
+        border: 2px dashed #ddd;
+        border-radius: 8px;
+        padding: var(--spacing-xl);
+        text-align: center;
+        transition: border-color var(--transition-base);
+        background-color: #fafafa;
+    }
+    
+    .photo-upload-container:hover {
+        border-color: var(--color-gold);
+        background-color: rgba(199, 179, 117, 0.05);
+    }
+    
+    .photo-upload-container.dragover {
+        border-color: var(--color-gold);
+        background-color: rgba(199, 179, 117, 0.1);
+    }
+    
+    .upload-icon {
+        font-size: 3rem;
+        color: var(--color-gray-light);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .upload-text {
+        color: var(--color-gray-medium);
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .file-input {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+    
+    .upload-button {
+        display: inline-block;
+        padding: var(--spacing-md) var(--spacing-xl);
+        background-color: var(--color-gold-light);
+        color: var(--color-gray-dark);
+        border-radius: 6px;
+        cursor: pointer;
+        transition: background-color var(--transition-base);
+        font-weight: 500;
+    }
+    
+    .upload-button:hover {
+        background-color: var(--color-gold);
+    }
+    
+    .photo-preview {
+        margin-top: var(--spacing-lg);
+        display: none;
+    }
+    
+    .preview-image {
+        max-width: 200px;
+        max-height: 200px;
+        border-radius: 8px;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .remove-photo {
+        margin-top: var(--spacing-sm);
+        color: #dc3545;
+        cursor: pointer;
+        font-size: 0.875rem;
+    }
+    
+    .remove-photo:hover {
+        text-decoration: underline;
+    }
+    
+    /* Submit Button */
+    .submit-container {
+        text-align: center;
+        margin-top: var(--spacing-3xl);
+        padding-top: var(--spacing-xl);
+        border-top: 1px solid var(--color-gray-lighter);
+    }
+    
+    .btn-submit {
+        background: linear-gradient(135deg, var(--color-gold), var(--color-gold-secondary));
+        color: var(--color-black);
+        border: none;
+        padding: var(--spacing-lg) var(--spacing-3xl);
+        font-size: 1.1rem;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all var(--transition-base);
+        box-shadow: var(--shadow-md);
+    }
+    
+    .btn-submit:hover {
+        background: linear-gradient(135deg, var(--color-gold-dark), var(--color-gold));
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-lg);
+        color: var(--color-white);
+    }
+    
+    .btn-submit:disabled {
+        background: var(--color-gray-light);
+        color: var(--color-gray-medium);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Messages */
+    .messages {
+        margin-bottom: var(--spacing-xl);
+    }
+    
+    .alert {
+        padding: var(--spacing-md);
+        border-radius: 6px;
+        margin-bottom: var(--spacing-md);
+    }
+    
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    
+    .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .testimonial-form-container {
+            margin: var(--spacing-md);
+            padding: var(--spacing-xl) var(--spacing-md);
+        }
+        
+        .form-header h1 {
+            font-size: 2rem;
+        }
+        
+        .star-display {
+            font-size: 1.8rem;
+        }
+        
+        .btn-submit {
+            width: 100%;
+            padding: var(--spacing-lg) var(--spacing-xl);
+        }
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<div class="testimonial-form-container">
+    <!-- Form Header -->
+    <div class="form-header">
+        <h1><i class="fas fa-star text-gold"></i> Share Your Dance Journey</h1>
+        
+        {% if instructor_context or review_link.class_type or campaign_name %}
+        <div style="background-color: #f8f9fa; padding: 1rem; border-radius: 8px; margin: 1rem 0; border-left: 4px solid var(--color-gold);">
+            <p style="margin: 0; color: var(--color-gray-dark); font-weight: 500;">
+                <i class="fas fa-link" style="color: var(--color-gold); margin-right: 0.5rem;"></i>
+                Tell us about your experience
+                {% if instructor_context %} with {{ instructor_context }}{% endif %}
+                {% if review_link.class_type %} in {{ review_link.get_class_type_display }}{% endif %}!
+            </p>
+            {% if campaign_name %}
+            <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem; color: var(--color-gray-medium);">
+                <i class="fas fa-tag" style="color: var(--color-gold); margin-right: 0.5rem;"></i>
+                Campaign: {{ campaign_name }}
+            </p>
+            {% endif %}
+        </div>
+        {% endif %}
+        
+        <p>We'd love to hear about your experience with Sabor Con Flow Dance! Your testimonial helps other dancers discover the joy of Cuban salsa and supports our dance community.</p>
+    </div>
+    
+    <!-- Messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Testimonial Form -->
+    <form method="post" enctype="multipart/form-data" id="testimonialForm">
+        {% csrf_token %}
+        
+        <!-- Student Name -->
+        <div class="form-group">
+            <label for="{{ form.student_name.id_for_label }}" class="form-label">
+                <i class="fas fa-user" aria-hidden="true"></i> Your Name
+                <span class="required-indicator" aria-label="required">*</span>
+            </label>
+            <input type="text" 
+                   id="{{ form.student_name.id_for_label }}" 
+                   name="{{ form.student_name.name }}" 
+                   class="form-control" 
+                   placeholder="{{ form.student_name.field.widget.attrs.placeholder }}"
+                   required 
+                   aria-required="true"
+                   aria-describedby="{{ form.student_name.id_for_label }}-help {% if form.student_name.errors %}{{ form.student_name.id_for_label }}-error{% endif %}"
+                   {% if form.student_name.errors %}aria-invalid="true"{% endif %}
+                   maxlength="100">
+            {% if form.student_name.help_text %}
+            <div id="{{ form.student_name.id_for_label }}-help" class="form-help">{{ form.student_name.help_text }}</div>
+            {% endif %}
+            {% if form.student_name.errors %}
+            <div id="{{ form.student_name.id_for_label }}-error" class="form-error" role="alert">{{ form.student_name.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Email -->
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}" class="form-label">
+                <i class="fas fa-envelope"></i> Email Address
+            </label>
+            {{ form.email }}
+            {% if form.email.help_text %}
+            <div class="form-help">{{ form.email.help_text }}</div>
+            {% endif %}
+            {% if form.email.errors %}
+            <div class="form-error">{{ form.email.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Class Type -->
+        <div class="form-group">
+            <label for="{{ form.class_type.id_for_label }}" class="form-label">
+                <i class="fas fa-music"></i> Class or Service
+            </label>
+            {{ form.class_type }}
+            {% if form.class_type.help_text %}
+            <div class="form-help">{{ form.class_type.help_text }}</div>
+            {% endif %}
+            {% if form.class_type.errors %}
+            <div class="form-error">{{ form.class_type.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Rating -->
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-star"></i> Your Rating
+            </label>
+            <div class="rating-container">
+                <div class="rating-display" id="ratingDisplay">
+                    <span class="star-display" data-rating="1">★</span>
+                    <span class="star-display" data-rating="2">★</span>
+                    <span class="star-display" data-rating="3">★</span>
+                    <span class="star-display" data-rating="4">★</span>
+                    <span class="star-display" data-rating="5">★</span>
+                    <span class="rating-text" id="ratingText">Click to rate</span>
+                </div>
+                <div class="rating-options">
+                    {{ form.rating }}
+                </div>
+            </div>
+            {% if form.rating.help_text %}
+            <div class="form-help">{{ form.rating.help_text }}</div>
+            {% endif %}
+            {% if form.rating.errors %}
+            <div class="form-error">{{ form.rating.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Content -->
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}" class="form-label">
+                <i class="fas fa-comment"></i> Your Experience
+            </label>
+            {{ form.content }}
+            <div class="character-counter" id="characterCounter">0 / 500 characters (minimum 50)</div>
+            {% if form.content.help_text %}
+            <div class="form-help">{{ form.content.help_text }}</div>
+            {% endif %}
+            {% if form.content.errors %}
+            <div class="form-error">{{ form.content.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Photo Upload -->
+        <div class="form-group">
+            <label class="form-label">
+                <i class="fas fa-camera"></i> Photo (Optional)
+            </label>
+            <div class="photo-upload-container" id="photoUploadContainer">
+                <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                </div>
+                <div class="upload-text">
+                    <p>Upload a photo from your dance experience</p>
+                    <p><small>Drag and drop or click to select</small></p>
+                </div>
+                <label for="{{ form.photo.id_for_label }}" class="upload-button">
+                    Choose Photo
+                </label>
+                {{ form.photo }}
+                <div class="photo-preview" id="photoPreview">
+                    <img class="preview-image" id="previewImage" alt="Photo preview">
+                    <div class="remove-photo" id="removePhoto">
+                        <i class="fas fa-times"></i> Remove photo
+                    </div>
+                </div>
+            </div>
+            {% if form.photo.help_text %}
+            <div class="form-help">{{ form.photo.help_text }}</div>
+            {% endif %}
+            {% if form.photo.errors %}
+            <div class="form-error">{{ form.photo.errors.0 }}</div>
+            {% endif %}
+        </div>
+        
+        <!-- Submit Button -->
+        <div class="submit-container">
+            <button type="submit" class="btn-submit" id="submitButton">
+                <i class="fas fa-paper-plane"></i> Share My Experience
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock content %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Star Rating Functionality
+    const stars = document.querySelectorAll('.star-display');
+    const ratingText = document.getElementById('ratingText');
+    const ratingInputs = document.querySelectorAll('input[name="rating"]');
+    let currentRating = 0;
+    
+    const ratingTexts = {
+        1: '1 Star - Poor',
+        2: '2 Stars - Fair',
+        3: '3 Stars - Good',
+        4: '4 Stars - Very Good',
+        5: '5 Stars - Excellent'
+    };
+    
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = parseInt(this.dataset.rating);
+            setRating(rating);
+        });
+        
+        star.addEventListener('mouseenter', function() {
+            const rating = parseInt(this.dataset.rating);
+            highlightStars(rating);
+        });
+    });
+    
+    document.getElementById('ratingDisplay').addEventListener('mouseleave', function() {
+        highlightStars(currentRating);
+    });
+    
+    function setRating(rating) {
+        currentRating = rating;
+        highlightStars(rating);
+        ratingText.textContent = ratingTexts[rating];
+        
+        // Set the radio button
+        ratingInputs.forEach(input => {
+            input.checked = (parseInt(input.value) === rating);
+        });
+    }
+    
+    function highlightStars(rating) {
+        stars.forEach((star, index) => {
+            if (index < rating) {
+                star.classList.add('active');
+            } else {
+                star.classList.remove('active');
+            }
+        });
+    }
+    
+    // Character Counter
+    const contentTextarea = document.getElementById('{{ form.content.id_for_label }}');
+    const characterCounter = document.getElementById('characterCounter');
+    
+    function updateCharacterCounter() {
+        const length = contentTextarea.value.length;
+        const minLength = 50;
+        const maxLength = 500;
+        
+        characterCounter.textContent = `${length} / ${maxLength} characters`;
+        
+        if (length < minLength) {
+            characterCounter.textContent += ` (minimum ${minLength})`;
+            characterCounter.className = 'character-counter';
+        } else if (length > maxLength * 0.9) {
+            characterCounter.className = 'character-counter warning';
+        } else if (length > maxLength) {
+            characterCounter.className = 'character-counter error';
+        } else {
+            characterCounter.className = 'character-counter';
+        }
+    }
+    
+    contentTextarea.addEventListener('input', updateCharacterCounter);
+    updateCharacterCounter();
+    
+    // Photo Upload Functionality
+    const photoInput = document.getElementById('{{ form.photo.id_for_label }}');
+    const photoUploadContainer = document.getElementById('photoUploadContainer');
+    const photoPreview = document.getElementById('photoPreview');
+    const previewImage = document.getElementById('previewImage');
+    const removePhoto = document.getElementById('removePhoto');
+    
+    photoInput.addEventListener('change', handlePhotoSelect);
+    removePhoto.addEventListener('click', clearPhotoPreview);
+    
+    // Drag and drop functionality
+    photoUploadContainer.addEventListener('dragover', function(e) {
+        e.preventDefault();
+        this.classList.add('dragover');
+    });
+    
+    photoUploadContainer.addEventListener('dragleave', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+    });
+    
+    photoUploadContainer.addEventListener('drop', function(e) {
+        e.preventDefault();
+        this.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0 && files[0].type.startsWith('image/')) {
+            photoInput.files = files;
+            handlePhotoSelect();
+        }
+    });
+    
+    function handlePhotoSelect() {
+        const file = photoInput.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                previewImage.src = e.target.result;
+                photoPreview.style.display = 'block';
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+    
+    function clearPhotoPreview() {
+        photoInput.value = '';
+        photoPreview.style.display = 'none';
+        previewImage.src = '';
+    }
+    
+    // Form Validation
+    const form = document.getElementById('testimonialForm');
+    const submitButton = document.getElementById('submitButton');
+    
+    form.addEventListener('submit', function(e) {
+        // Check if minimum requirements are met
+        const name = document.getElementById('{{ form.student_name.id_for_label }}').value.trim();
+        const email = document.getElementById('{{ form.email.id_for_label }}').value.trim();
+        const classType = document.getElementById('{{ form.class_type.id_for_label }}').value;
+        const content = contentTextarea.value.trim();
+        
+        if (!name || !email || !classType || !currentRating || content.length < 50) {
+            e.preventDefault();
+            alert('Please fill in all required fields and ensure your testimonial is at least 50 characters long.');
+            return;
+        }
+        
+        // Disable submit button to prevent double submission
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+    });
+    
+    // Auto-resize textarea
+    contentTextarea.addEventListener('input', function() {
+        this.style.height = 'auto';
+        this.style.height = (this.scrollHeight) + 'px';
+    });
+});
+</script>
+{% endblock extra_js %}

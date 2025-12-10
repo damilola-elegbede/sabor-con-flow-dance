@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Maps Test - Sabor con Flow Dance</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #C7B375;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .test-info {
+            background: #1a1a1a;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            border: 1px solid #C7B375;
+        }
+        
+        .test-info h2 {
+            color: #C7B375;
+            margin-top: 0;
+        }
+        
+        .test-info p {
+            margin: 0.5rem 0;
+        }
+        
+        .api-key-input {
+            margin: 1rem 0;
+        }
+        
+        .api-key-input label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #C7B375;
+        }
+        
+        .api-key-input input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #C7B375;
+            border-radius: 4px;
+            background: #000;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+        
+        .load-map-btn {
+            background: linear-gradient(135deg, #C7B375 0%, #B5A165 100%);
+            color: #fff;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .load-map-btn:hover {
+            background: linear-gradient(135deg, #B5A165 0%, #A69155 100%);
+        }
+        
+        .load-map-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Include the map styles */
+        .sabor-map-section {
+            margin: 3rem 0;
+            padding: 0;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+            border-radius: 12px;
+            border: 1px solid #C7B375;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .sabor-map-header {
+            padding: 2rem 2rem 1rem;
+            text-align: center;
+            background: linear-gradient(135deg, #1a1a1a 0%, #000000 100%);
+        }
+
+        .sabor-map-header h2 {
+            color: #C7B375;
+            font-family: serif;
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .sabor-map-header p {
+            color: #FFFFFF;
+            font-size: 1.1rem;
+            margin-bottom: 0;
+            opacity: 0.9;
+        }
+
+        #sabor-google-map {
+            width: 100%;
+            height: 450px;
+            background-color: #1d2c4d;
+            position: relative;
+            transition: opacity 0.3s ease;
+        }
+
+        .map-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            flex-direction: column;
+            color: #C7B375;
+            font-size: 1.1rem;
+        }
+
+        .map-placeholder svg {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Google Maps Integration Test</h1>
+        
+        <div class="test-info">
+            <h2>Test Instructions</h2>
+            <p><strong>Purpose:</strong> Verify Google Maps integration for Sabor con Flow Dance contact page</p>
+            <p><strong>Location:</strong> Avalon Ballroom, Boulder, CO (40.0150, -105.2705)</p>
+            <p><strong>Features to Test:</strong></p>
+            <ul>
+                <li>Dark theme map styling matches site branding</li>
+                <li>Custom marker with gold color (#C7B375)</li>
+                <li>Info window with business details</li>
+                <li>Responsive design and mobile compatibility</li>
+                <li>Directions link functionality</li>
+                <li>Error handling for API failures</li>
+            </ul>
+            
+            <div class="api-key-input">
+                <label for="api-key">Google Maps API Key (required for testing):</label>
+                <input type="text" id="api-key" placeholder="Enter your Google Maps API key here">
+                <p style="font-size: 0.8rem; color: #ccc; margin-top: 0.5rem;">
+                    Get your API key from the <a href="https://console.cloud.google.com/google/maps-apis" target="_blank" style="color: #C7B375;">Google Cloud Console</a>
+                </p>
+            </div>
+            
+            <button class="load-map-btn" onclick="loadGoogleMaps()">Load Map for Testing</button>
+        </div>
+        
+        <div class="sabor-map-section" id="map-section" style="display: none;">
+            <div class="sabor-map-header">
+                <h2>Visit Our Studio</h2>
+                <p>Find us at Avalon Ballroom in the heart of Boulder</p>
+            </div>
+            <div id="sabor-google-map">
+                <div class="map-placeholder">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+                    </svg>
+                    <p>Map will load here when API key is provided</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global configuration for Google Maps (simulating Django template variables)
+        window.SABOR_MAP_CONFIG = {
+            studioLocation: {
+                lat: 40.0150,
+                lng: -105.2705
+            },
+            zoomLevel: 16,
+            businessInfo: {
+                name: 'Sabor con Flow Dance',
+                address: 'Avalon Ballroom<br>Boulder, CO',
+                phone: '(555) 123-4567',
+                email: 'saborconflowdance@gmail.com'
+            }
+        };
+
+        function loadGoogleMaps() {
+            const apiKey = document.getElementById('api-key').value.trim();
+            
+            if (!apiKey) {
+                alert('Please enter a Google Maps API key to test the integration.');
+                return;
+            }
+            
+            // Show the map section
+            document.getElementById('map-section').style.display = 'block';
+            
+            // Update the configuration with the API key
+            window.SABOR_MAP_CONFIG.apiKey = apiKey;
+            
+            // Disable the button to prevent double loading
+            const button = document.querySelector('.load-map-btn');
+            button.disabled = true;
+            button.textContent = 'Loading Map...';
+            
+            // Load the Google Maps JavaScript file first
+            loadScript('./static/js/google-maps.js')
+                .then(() => {
+                    console.log('Google Maps manager script loaded');
+                    
+                    // Then load the Google Maps API
+                    return loadScript(`https://maps.googleapis.com/maps/api/js?key=${apiKey}&callback=initSaborMap&libraries=&v=weekly&loading=async`);
+                })
+                .then(() => {
+                    console.log('Google Maps API loaded successfully');
+                    button.textContent = 'Map Loaded Successfully!';
+                })
+                .catch((error) => {
+                    console.error('Error loading Google Maps:', error);
+                    button.textContent = 'Error Loading Map';
+                    button.disabled = false;
+                    alert('Error loading Google Maps. Please check your API key and try again.');
+                });
+        }
+
+        function loadScript(src) {
+            return new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = src;
+                script.async = true;
+                script.defer = true;
+                
+                script.onload = () => resolve();
+                script.onerror = () => reject(new Error(`Failed to load script: ${src}`));
+                
+                document.head.appendChild(script);
+            });
+        }
+
+        // Global callback function for Google Maps API (will be called by the API)
+        window.initSaborMap = function() {
+            console.log('Initializing Sabor Map...');
+            window.saborMaps = new SaborMapsManager();
+        };
+
+        // Handle API load errors
+        window.handleMapError = function() {
+            console.error('Failed to load Google Maps API');
+            const mapContainer = document.getElementById('sabor-google-map');
+            if (mapContainer && window.saborMaps) {
+                window.saborMaps.showMapError();
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Testimonials Summary - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #C7B375;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #C7B375;
+            margin: 0;
+            font-size: 26px;
+        }
+        .header p {
+            color: #6c757d;
+            margin: 10px 0 0 0;
+            font-size: 16px;
+        }
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background-color: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.2s ease;
+        }
+        .stat-card:hover {
+            transform: translateY(-2px);
+            border-color: #C7B375;
+        }
+        .stat-number {
+            font-size: 32px;
+            font-weight: bold;
+            color: #C7B375;
+            margin-bottom: 5px;
+        }
+        .stat-label {
+            color: #6c757d;
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .breakdown-section {
+            margin-bottom: 30px;
+        }
+        .breakdown-title {
+            color: #495057;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .rating-breakdown {
+            display: flex;
+            justify-content: space-between;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .rating-item {
+            text-align: center;
+            flex: 1;
+        }
+        .rating-stars {
+            color: #C7B375;
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        .rating-count {
+            font-weight: bold;
+            color: #495057;
+        }
+        .class-breakdown {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+        .class-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .class-item:last-child {
+            border-bottom: none;
+        }
+        .class-name {
+            color: #495057;
+            font-weight: 500;
+        }
+        .class-count {
+            background-color: #C7B375;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .testimonials-list {
+            margin-bottom: 30px;
+        }
+        .testimonial-item {
+            background-color: #ffffff;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: box-shadow 0.2s ease;
+        }
+        .testimonial-item:hover {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        .testimonial-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .testimonial-name {
+            font-weight: bold;
+            color: #495057;
+        }
+        .testimonial-rating {
+            color: #C7B375;
+        }
+        .testimonial-content {
+            color: #212529;
+            margin-bottom: 10px;
+            font-style: italic;
+        }
+        .testimonial-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: #6c757d;
+        }
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .status-approved {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .status-rejected {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .actions {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #C7B375;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: background-color 0.3s ease;
+        }
+        .btn:hover {
+            background-color: #b8a566;
+        }
+        .no-testimonials {
+            text-align: center;
+            padding: 40px 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            color: #6c757d;
+        }
+        .no-testimonials h3 {
+            color: #495057;
+            margin-bottom: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        .footer a {
+            color: #C7B375;
+            text-decoration: none;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .summary-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .rating-breakdown {
+                flex-wrap: wrap;
+            }
+            .rating-item {
+                flex-basis: 50%;
+                margin-bottom: 10px;
+            }
+            .testimonial-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .testimonial-meta {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 Weekly Testimonials Summary</h1>
+            <p>{{ start_date }} - {{ end_date }}</p>
+            <p>{{ site_name }}</p>
+        </div>
+
+        {% if has_new_testimonials %}
+            <div class="summary-stats">
+                <div class="stat-card">
+                    <div class="stat-number">{{ stats.total_new }}</div>
+                    <div class="stat-label">New Submissions</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ stats.pending }}</div>
+                    <div class="stat-label">Pending Review</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ stats.approved }}</div>
+                    <div class="stat-label">Approved</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">{{ stats.with_photos }}</div>
+                    <div class="stat-label">With Photos</div>
+                </div>
+            </div>
+
+            <div class="breakdown-section">
+                <div class="breakdown-title">⭐ Rating Breakdown</div>
+                <div class="rating-breakdown">
+                    {% for rating, count in rating_breakdown.items %}
+                        <div class="rating-item">
+                            <div class="rating-stars">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= rating %}★{% else %}☆{% endif %}
+                                {% endfor %}
+                            </div>
+                            <div class="rating-count">{{ count }}</div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            {% if class_breakdown %}
+                <div class="breakdown-section">
+                    <div class="breakdown-title">🎭 Class Type Breakdown</div>
+                    <div class="class-breakdown">
+                        {% for item in class_breakdown %}
+                            <div class="class-item">
+                                <div class="class-name">{{ item.class_type|title }}</div>
+                                <div class="class-count">{{ item.count }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="breakdown-section">
+                <div class="breakdown-title">📝 Recent Testimonials</div>
+                <div class="testimonials-list">
+                    {% for testimonial in testimonials %}
+                        <div class="testimonial-item">
+                            <div class="testimonial-header">
+                                <div class="testimonial-name">{{ testimonial.student_name }}</div>
+                                <div class="testimonial-rating">
+                                    {% for i in "12345" %}
+                                        {% if forloop.counter <= testimonial.rating %}★{% else %}☆{% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            <div class="testimonial-content">
+                                {% if testimonial.content|length > 150 %}
+                                    {{ testimonial.content|slice:":150" }}...
+                                {% else %}
+                                    {{ testimonial.content }}
+                                {% endif %}
+                            </div>
+                            <div class="testimonial-meta">
+                                <div>
+                                    <strong>Class:</strong> {{ testimonial.get_class_type_display }} • 
+                                    <strong>Email:</strong> {{ testimonial.email }}
+                                </div>
+                                <div>
+                                    <span class="status-badge status-{{ testimonial.status }}">
+                                        {{ testimonial.get_status_display }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="actions">
+                <a href="{{ admin_url }}" class="btn">Review in Admin Panel</a>
+            </div>
+        {% else %}
+            <div class="no-testimonials">
+                <h3>No New Testimonials This Week</h3>
+                <p>There were no new testimonial submissions during this period.</p>
+                <p>Keep encouraging your students to share their experiences!</p>
+            </div>
+        {% endif %}
+
+        <div class="footer">
+            <p>Weekly summary generated automatically for {{ site_name }}</p>
+            <p><strong>Admin Panel:</strong> <a href="{{ admin_url }}">Manage Testimonials</a></p>
+            <p><strong>Website:</strong> <a href="{{ site_url }}">{{ site_url }}</a></p>
+        </div>
+    </div>
+</body>
+</html>

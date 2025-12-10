@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Our Instructors - Sabor Con Flow Dance{% endblock title %}
+
+{% block meta_description %}Meet our passionate dance instructors at Sabor Con Flow. Expert teachers specializing in Cuban salsa, casino, and Latin dance styles.{% endblock %}
+
+{% block meta_keywords %}dance instructors, salsa teachers, Cuban salsa, casino instructors, dance coaches, Boulder dance studio{% endblock %}
+
+{% block og_title %}Our Expert Dance Instructors - Sabor Con Flow{% endblock %}
+{% block og_description %}Discover our talented team of dance instructors who bring passion and expertise to every class at Sabor Con Flow Dance.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .instructors-hero {
+        background: linear-gradient(135deg, var(--color-black) 0%, var(--color-gray-dark) 100%);
+        color: var(--color-white);
+        padding: var(--spacing-3xl) 0 var(--spacing-2xl);
+        text-align: center;
+        margin-bottom: var(--spacing-3xl);
+    }
+    
+    .instructors-hero h1 {
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-lg);
+        font-size: clamp(2rem, 5vw, 3.5rem);
+    }
+    
+    .instructors-hero p {
+        font-size: 1.125rem;
+        color: var(--color-gray-light);
+        max-width: 600px;
+        margin: 0 auto;
+    }
+    
+    .instructors-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--spacing-2xl);
+        margin-bottom: var(--spacing-3xl);
+    }
+    
+    /* Responsive adjustments for mobile */
+    @media (max-width: 640px) {
+        .instructors-grid {
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--spacing-lg);
+        }
+    }
+    
+    @media (min-width: 768px) {
+        .instructors-grid {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    }
+    
+    .instructor-card {
+        background: var(--color-white);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: var(--shadow-lg);
+        transition: all var(--transition-base);
+        position: relative;
+        border: 1px solid var(--color-gray-lighter);
+    }
+    
+    .instructor-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .instructor-photo {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        background: var(--color-gray-lighter);
+    }
+    
+    .instructor-photo img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform var(--transition-slow);
+    }
+    
+    .instructor-card:hover .instructor-photo img {
+        transform: scale(1.05);
+    }
+    
+    .instructor-info {
+        padding: var(--spacing-xl);
+    }
+    
+    .instructor-name {
+        font-family: var(--font-heading);
+        font-size: 1.375rem;
+        font-weight: 600;
+        color: var(--color-black);
+        margin-bottom: var(--spacing-sm);
+        line-height: 1.2;
+    }
+    
+    .instructor-specialties {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--spacing-sm);
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .specialty-badge {
+        background: var(--color-gold);
+        color: var(--color-black);
+        padding: var(--spacing-xs) var(--spacing-sm);
+        border-radius: 20px;
+        font-size: 0.875rem;
+        font-weight: 500;
+        text-transform: capitalize;
+    }
+    
+    .instructor-bio-excerpt {
+        color: var(--color-gray-medium);
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: var(--spacing-lg);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+    
+    .instructor-actions {
+        display: flex;
+        justify-content: center;
+    }
+    
+    .btn-view-profile {
+        background: var(--color-gold);
+        color: var(--color-black);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: all var(--transition-base);
+        border: 2px solid var(--color-gold);
+    }
+    
+    .btn-view-profile:hover {
+        background: var(--color-gold-dark);
+        border-color: var(--color-gold-dark);
+        color: var(--color-white);
+        transform: translateY(-2px);
+    }
+    
+    /* Bio hover effect */
+    .instructor-card .bio-hover {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.9);
+        color: var(--color-white);
+        padding: var(--spacing-lg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: all var(--transition-base);
+        z-index: 10;
+    }
+    
+    .instructor-card:hover .bio-hover {
+        opacity: 1;
+        visibility: visible;
+    }
+    
+    .bio-hover h3 {
+        color: var(--color-gold);
+        margin-bottom: var(--spacing-md);
+        font-size: 1.25rem;
+    }
+    
+    .bio-hover p {
+        font-size: 0.9rem;
+        line-height: 1.4;
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    .bio-hover .btn {
+        align-self: center;
+        background: var(--color-gold);
+        color: var(--color-black);
+        padding: var(--spacing-sm) var(--spacing-lg);
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+    
+    /* Loading placeholder */
+    .instructor-placeholder {
+        background: var(--color-gray-lighter);
+        border-radius: 12px;
+        height: 400px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-gray-medium);
+    }
+    
+    /* No instructors message */
+    .no-instructors {
+        text-align: center;
+        padding: var(--spacing-3xl);
+        color: var(--color-gray-medium);
+    }
+    
+    .no-instructors h2 {
+        color: var(--color-gray-dark);
+        margin-bottom: var(--spacing-lg);
+    }
+</style>
+{% endblock extra_css %}
+
+{% block content %}
+<section class="instructors-hero">
+    <div class="container">
+        <h1>Meet Our Instructors</h1>
+        <p>Discover the passionate and talented instructors who bring Cuban salsa and Latin dance to life at Sabor Con Flow. Each instructor brings their unique style and expertise to create unforgettable dance experiences.</p>
+    </div>
+</section>
+
+<section class="instructors-section">
+    <div class="container">
+        {% if instructors %}
+            <div class="instructors-grid">
+                {% for instructor_data in instructors_with_specialties %}
+                    {% include 'components/instructor_card.html' with instructor=instructor_data.instructor specialties_list=instructor_data.specialties_list show_bio_hover=True %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-instructors">
+                <h2>Coming Soon</h2>
+                <p>We're currently adding our instructor profiles. Check back soon to meet our amazing team!</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock content %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Sabor Con Flow Dance Instructors",
+  "description": "Meet our expert dance instructors specializing in Cuban salsa, casino, and Latin dance styles",
+  "itemListElement": [
+    {% for instructor in instructors %}
+    {
+      "@type": "Person",
+      "@id": "{{ request.scheme }}://{{ request.get_host }}{% url 'core:instructor_detail' instructor.id %}",
+      "name": "{{ instructor.name }}",
+      "description": "{{ instructor.bio|truncatewords:30 }}",
+      "image": "{{ instructor.photo_url }}",
+      "jobTitle": "Dance Instructor",
+      "worksFor": {
+        "@type": "DanceGroup",
+        "name": "Sabor Con Flow Dance"
+      },
+      "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'core:instructor_detail' instructor.id %}"
+    }{% if not forloop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+{% endblock structured_data %}
