@@ -16,7 +16,7 @@
   align-items: center;
   gap: 20px;
   width: 100%;
-  height: calc(100vh - 85px); /* Full height minus header */
+  height: calc(100vh - var(--header-height)); /* Full height minus header */
   padding: 20px;
   box-sizing: border-box;
 }
@@ -97,7 +97,7 @@
   position: relative;
   width: 100%;
   height: 315px;
-  margin-top: 85px;
+  margin-top: var(--header-height);
   overflow: hidden;
   background-color: var(--color-background);
 }
@@ -126,7 +126,7 @@
 @media (max-width: 768px) {
   .video-showcase {
     flex-direction: column;
-    height: calc(100vh - 85px);
+    height: calc(100vh - var(--header-height));
     padding: 15px;
     gap: 15px;
   }
@@ -154,7 +154,7 @@
 
   .hero-section {
     height: auto;
-    margin-top: 70px;
+    margin-top: var(--header-height-mobile); /* Reduced header offset on mobile */
   }
 
   .hero-image {

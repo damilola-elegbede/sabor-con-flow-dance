@@ -61,14 +61,14 @@
   display: block;
   position: fixed;
   top: 0;
-  right: -175px;
-  width: 175px;
+  right: calc(-1 * var(--nav-width));
+  width: var(--nav-width);
   height: 100vh;
   background-color: var(--color-nav-bg);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(var(--nav-backdrop-blur));
+  -webkit-backdrop-filter: blur(var(--nav-backdrop-blur));
   padding: 80px 20px 20px;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-sm);
   transition: right var(--transition-base);
   z-index: var(--z-dropdown);
 }
@@ -236,8 +236,6 @@
 
 .social-link:hover {
   text-decoration: none !important;
-  border: none !important;
-  outline: none !important;
 }
 
 .social-link svg {

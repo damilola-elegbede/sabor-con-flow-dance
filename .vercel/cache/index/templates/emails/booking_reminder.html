@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Reminder - {{ site_name }}</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+        }
+        .header {
+            text-align: center;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #C7B375;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #C7B375;
+            margin: 0;
+            font-size: 24px;
+        }
+        .logo-section {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .logo-section .brand-name {
+            font-size: 28px;
+            font-weight: bold;
+            color: #C7B375;
+            margin: 10px 0;
+        }
+        .reminder-banner {
+            background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .reminder-banner h2 {
+            margin: 0 0 10px 0;
+            font-size: 22px;
+        }
+        .reminder-banner .time-left {
+            font-size: 18px;
+            font-weight: bold;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .class-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        .class-details h3 {
+            color: #C7B375;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .detail-row {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .detail-label {
+            font-weight: bold;
+            min-width: 120px;
+            color: #495057;
+        }
+        .detail-value {
+            flex: 1;
+            color: #212529;
+        }
+        .detail-value.highlight {
+            color: #C7B375;
+            font-weight: bold;
+            font-size: 16px;
+        }
+        .datetime-highlight {
+            background: linear-gradient(135deg, #C7B375 0%, #d4c085 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .datetime-highlight .date {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .datetime-highlight .time {
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .datetime-highlight .countdown {
+            font-size: 16px;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .location-section {
+            background-color: #e8f4fd;
+            border-left: 4px solid #0d6efd;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .location-section h4 {
+            color: #0d6efd;
+            margin-top: 0;
+        }
+        .map-link {
+            display: inline-block;
+            background-color: #0d6efd;
+            color: white;
+            padding: 12px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        .map-link:hover {
+            background-color: #0b5ed7;
+        }
+        .checklist {
+            background-color: #fff8e1;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .checklist h4 {
+            color: #C7B375;
+            margin-top: 0;
+        }
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 8px;
+            background-color: white;
+            border-radius: 5px;
+            border-left: 3px solid #C7B375;
+        }
+        .checklist-item .checkbox {
+            margin-right: 12px;
+            font-size: 18px;
+            color: #28a745;
+        }
+        .checklist-item .text {
+            flex: 1;
+        }
+        .checklist-item .text strong {
+            color: #C7B375;
+        }
+        .contact-emergency {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .contact-emergency h4 {
+            color: #721c24;
+            margin-top: 0;
+        }
+        .emergency-contact {
+            display: inline-block;
+            background-color: #dc3545;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .emergency-contact:hover {
+            background-color: #c82333;
+        }
+        .social-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        .social-section h4 {
+            color: #C7B375;
+            margin-top: 0;
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .social-link {
+            display: inline-block;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .social-link:hover {
+            transform: translateY(-2px);
+        }
+        .social-whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+        .excitement-section {
+            background: linear-gradient(135deg, #6f42c1 0%, #e83e8c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            margin: 25px 0;
+        }
+        .excitement-section h3 {
+            margin: 0 0 15px 0;
+        }
+        .excitement-section p {
+            margin: 0;
+            font-size: 16px;
+        }
+        .weather-note {
+            background-color: #e2e3e5;
+            border: 1px solid #d6d8db;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 20px 0;
+            color: #383d41;
+            font-size: 14px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #e9ecef;
+            color: #6c757d;
+            font-size: 14px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                padding: 15px;
+            }
+            .detail-row {
+                flex-direction: column;
+            }
+            .detail-label {
+                min-width: auto;
+                margin-bottom: 5px;
+            }
+            .social-links {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .social-link {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-section">
+            <div class="brand-name">{{ site_name }}</div>
+            <p style="color: #666; margin: 0;">Experience the Passion of Cuban Salsa</p>
+        </div>
+
+        <div class="header">
+            <h1>⏰ Class Reminder</h1>
+            <p style="color: #666; margin: 10px 0 0 0;">Don't forget about your upcoming class, {{ customer_name }}!</p>
+        </div>
+
+        <div class="reminder-banner">
+            <h2>🎉 Your Class is Tomorrow!</h2>
+            <p>Get ready to dance and have an amazing time!</p>
+            <div class="time-left">{{ time_until_booking }}</div>
+        </div>
+
+        <div class="class-details">
+            <h3>📅 Class Details</h3>
+            
+            <div class="detail-row">
+                <div class="detail-label">Class:</div>
+                <div class="detail-value highlight">{{ booking.class_name }}</div>
+            </div>
+            
+            {% if booking.instructor_name %}
+            <div class="detail-row">
+                <div class="detail-label">Instructor:</div>
+                <div class="detail-value highlight">{{ booking.instructor_name }}</div>
+            </div>
+            {% endif %}
+            
+            <div class="detail-row">
+                <div class="detail-label">Duration:</div>
+                <div class="detail-value">{{ booking.duration_minutes }} minutes</div>
+            </div>
+            
+            <div class="detail-row">
+                <div class="detail-label">Booking ID:</div>
+                <div class="detail-value">{{ booking.booking_id }}</div>
+            </div>
+        </div>
+
+        <div class="datetime-highlight">
+            <div class="date">📅 {{ booking_date }}</div>
+            <div class="time">🕐 {{ booking_time }}</div>
+            <div class="countdown">{{ time_until_booking }}</div>
+        </div>
+
+        <div class="location-section">
+            <h4>📍 Location & Arrival</h4>
+            <p><strong>{{ booking.location }}</strong></p>
+            <p><strong>⏰ Arrival Time:</strong> Please arrive 10-15 minutes early for check-in and to get settled.</p>
+            <p><strong>🚗 Parking:</strong> Free parking is available on-site.</p>
+            <a href="{{ maps_url }}" target="_blank" class="map-link">🗺️ Get Directions</a>
+        </div>
+
+        <div class="checklist">
+            <h4>✅ Pre-Class Checklist</h4>
+            
+            <div class="checklist-item">
+                <span class="checkbox">☑️</span>
+                <div class="text">
+                    <strong>Comfortable clothes:</strong> Wear something you can move freely in
+                </div>
+            </div>
+            
+            <div class="checklist-item">
+                <span class="checkbox">☑️</span>
+                <div class="text">
+                    <strong>Dance shoes:</strong> Leather/suede soles preferred, or clean sneakers
+                </div>
+            </div>
+            
+            <div class="checklist-item">
+                <span class="checkbox">☑️</span>
+                <div class="text">
+                    <strong>Water bottle:</strong> Stay hydrated during the class
+                </div>
+            </div>
+            
+            <div class="checklist-item">
+                <span class="checkbox">☑️</span>
+                <div class="text">
+                    <strong>Positive energy:</strong> Come ready to learn, laugh, and have fun!
+                </div>
+            </div>
+            
+            {% if booking.booking_type == 'private_lesson' %}
+            <div class="checklist-item">
+                <span class="checkbox">☑️</span>
+                <div class="text">
+                    <strong>Goals & questions:</strong> Think about what you'd like to focus on
+                </div>
+            </div>
+            {% endif %}
+            
+            <div class="checklist-item">
+                <span class="checkbox">☑️</span>
+                <div class="text">
+                    <strong>Payment ready:</strong> ${{ booking.price }} 
+                    {% if booking.payment_method %}({{ booking.payment_method }}){% else %}(cash or card accepted){% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="excitement-section">
+            <h3>🎯 What to Expect</h3>
+            {% if booking.booking_type == 'private_lesson' %}
+                <p>Your private lesson will be tailored specifically to your goals and skill level. Come ready to learn, ask questions, and enjoy personalized instruction!</p>
+            {% else %}
+                <p>You'll learn authentic Cuban salsa moves, meet fellow dancers, and experience the joy of moving to infectious rhythms. No partner needed - we rotate throughout class!</p>
+            {% endif %}
+        </div>
+
+        <div class="contact-emergency">
+            <h4>🚨 Running Late or Need to Cancel?</h4>
+            <p>Contact us immediately if you're running late or need to make changes:</p>
+            <a href="mailto:{{ contact_email }}" class="emergency-contact">📧 Email Us</a>
+            <a href="{{ whatsapp_url }}" target="_blank" class="emergency-contact">💬 WhatsApp</a>
+        </div>
+
+        <div class="social-section">
+            <h4>📱 Join Our Community</h4>
+            <p>Connect with fellow dancers and stay updated on events:</p>
+            
+            <div class="social-links">
+                <a href="{{ whatsapp_url }}" class="social-link social-whatsapp" target="_blank">
+                    💬 WhatsApp Community
+                </a>
+            </div>
+        </div>
+
+        <div class="weather-note">
+            <strong>🌤️ Weather Note:</strong> In case of severe weather conditions, we'll notify you of any class changes via email and WhatsApp. Classes are held indoors, so light weather won't affect us!
+        </div>
+
+        <div class="footer">
+            <p>We're excited to see you tomorrow, {{ customer_name }}!<br>
+            Get ready for an amazing dance experience! 💃🕺</p>
+            <p><strong>Questions?</strong> Reply to this email or message us on WhatsApp.</p>
+            <p style="font-size: 12px; color: #999; margin-top: 20px;">
+                Booking ID: {{ booking.booking_id }} | {{ booking_datetime }}
+            </p>
+        </div>
+    </div>
+</body>
+</html>

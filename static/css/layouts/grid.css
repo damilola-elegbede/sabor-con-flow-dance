@@ -27,12 +27,6 @@
   }
 }
 
-@media (max-width: 768px) {
-  .event-container {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
 @media (max-width: 600px) {
   .event-container {
     grid-template-columns: 1fr;

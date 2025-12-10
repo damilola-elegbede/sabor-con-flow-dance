@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Events & Classes - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Upcoming Cuban salsa events and classes at Sabor con Flow. Join our dance community for fun and learning in Boulder.{% endblock %}
+
+{% block meta_keywords %}Cuban salsa events Boulder, dance events Colorado, salsa workshops, Cuban dance classes, Boulder dance community{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'core:events' %}{% endblock %}
+
+{% block og_title %}Events & Classes - Sabor con Flow Dance{% endblock %}
+{% block og_description %}Upcoming Cuban salsa events and classes at Sabor con Flow. Join our dance community for fun and learning in Boulder.{% endblock %}
+
+{% block extra_css %}
+{# Add any page-specific CSS links here if needed, or ensure styles are in main.css #}
+{% endblock %}
+
+{% block content %}
+<div class="container main-content-events"> {# Added a wrapper class for potential specific styling #}
+    <h1 class="page-title">Our Classes</h1>
+    
+    <p style="text-align: center; margin-bottom: 2rem; color: #ffffff;">All classes can also be found on <a href="https://pasito.fun/u/daelegbe" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;">pasito.fun</a>.</p>
+    
+    <div class="event-container">
+        {% for event in events %}
+        <div class="event-card">
+            <h2 class="event-title">{{ event.title }}</h2>
+            <div class="event-date">
+                <span class="event-icon">📅</span>
+                <span>{{ event.date }}</span>
+            </div>
+            <div class="event-time">
+                <span class="event-icon">⏰</span>
+                <span>{{ event.time }}</span>
+            </div>
+            <div class="event-location">
+                <span class="event-icon">📍</span>
+                <span><a href="https://boulderdance.org/" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;">{{ event.location }}</a></span>
+            </div>
+            <div class="event-description">
+                <p>{{ event.description }}</p>
+            </div>
+            <div class="event-pricing">
+                <h3>Pricing</h3>
+                <ul>
+                    <li>Drop-in: ${{ event.price }}</li>
+                    <li>Monthly: ${{ event.monthly_price }}</li>
+                </ul>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %} 

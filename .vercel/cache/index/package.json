@@ -1,0 +1,66 @@
+{
+  "name": "sabor-con-flow-dance",
+  "version": "1.0.0",
+  "description": "JavaScript bundling and optimization for Sabor Con Flow Dance website",
+  "main": "src/js/main.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "watch": "webpack --mode=development --watch",
+    "dev": "webpack-dev-server --mode=development",
+    "analyze": "webpack-bundle-analyzer dist/stats.json",
+    "clean": "rm -rf dist/",
+    "lint": "eslint src/js/**/*.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "performance": "lighthouse http://localhost:8000 --output=html --output-path=./performance-report.html",
+    "build:production": "npm run clean && npm run build && npm run analyze",
+    "test:accessibility": "node accessibility-tests.js",
+    "test:contrast": "node contrast-tests.js",
+    "lighthouse:accessibility": "lighthouse http://localhost:8000 --only=accessibility --output=json --output-path=./reports/accessibility-lighthouse.json",
+    "axe:test": "node -e \"require('./static/js/accessibility-testing.js')\"",
+    "accessibility:audit": "npm run test:accessibility && npm run test:contrast",
+    "setup:testing": "npm install && mkdir -p reports"
+  },
+  "keywords": ["dance", "django", "webpack", "progressive-enhancement"],
+  "author": "Sabor Con Flow Dance",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.51.0",
+    "html-webpack-plugin": "^5.5.3",
+    "jest": "^29.7.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "optimize-css-assets-webpack-plugin": "^6.0.1",
+    "style-loader": "^3.3.3",
+    "terser-webpack-plugin": "^5.3.9",
+    "webpack": "^5.89.0",
+    "webpack-bundle-analyzer": "^4.9.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1",
+    "workbox-webpack-plugin": "^7.0.0"
+  },
+  "dependencies": {
+    "intersection-observer": "^0.12.2",
+    "web-vitals": "^3.5.0",
+    "axe-core": "^4.8.3",
+    "playwright": "^1.40.0",
+    "color-contrast-analyzer": "^2.1.0",
+    "lighthouse": "^11.4.0",
+    "chalk": "^4.1.2",
+    "fs-extra": "^11.2.0"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead",
+    "not ie 11"
+  ],
+  "jest": {
+    "testEnvironment": "jsdom",
+    "setupFilesAfterEnv": ["<rootDir>/src/js/test-setup.js"]
+  }
+}

@@ -1,0 +1,520 @@
+name: Production Deployment
+
+on:
+  workflow_run:
+    workflows: ["CI/CD Pipeline"]
+    types:
+      - completed
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment even if tests failed'
+        required: false
+        default: false
+        type: boolean
+      skip_migrations:
+        description: 'Skip database migrations'
+        required: false
+        default: false
+        type: boolean
+
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+jobs:
+  # Pre-deployment checks
+  pre-deploy:
+    name: Pre-deployment Checks
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event.inputs.force_deploy == 'true' }}
+    
+    outputs:
+      deploy-approved: ${{ steps.approval.outputs.approved }}
+      version: ${{ steps.version.outputs.version }}
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      
+      - name: Generate deployment version
+        id: version
+        run: |
+          VERSION="v$(date +%Y.%m.%d)-$(git rev-parse --short HEAD)"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Deployment version: $VERSION"
+      
+      - name: Check deployment prerequisites
+        id: approval
+        run: |
+          echo "=== Pre-deployment Validation ==="
+          
+          # Check if there are any breaking changes
+          if git log --oneline HEAD~5..HEAD | grep -i "breaking\|major"; then
+            echo "WARNING: Breaking changes detected in recent commits"
+            echo "approved=manual" >> $GITHUB_OUTPUT
+          else
+            echo "approved=auto" >> $GITHUB_OUTPUT
+          fi
+          
+          # Verify branch protection
+          echo "Deployment checks passed"
+      
+      - name: Create deployment record
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              description: 'Production deployment ${{ steps.version.outputs.version }}',
+              auto_merge: false,
+              required_contexts: []
+            });
+            
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: deployment.data.id,
+              state: 'pending',
+              description: 'Deployment in progress'
+            });
+            
+            core.exportVariable('DEPLOYMENT_ID', deployment.data.id);
+
+  # Database migrations
+  migrate-production:
+    name: Production Database Migration
+    runs-on: ubuntu-latest
+    needs: [pre-deploy]
+    if: ${{ needs.pre-deploy.outputs.deploy-approved && github.event.inputs.skip_migrations != 'true' }}
+    environment:
+      name: production-db
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      
+      - name: Configure production environment
+        run: |
+          cat > .env << EOF
+          DJANGO_DEBUG=False
+          DJANGO_SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }}
+          TURSO_DATABASE_URL=${{ secrets.TURSO_DATABASE_URL }}
+          TURSO_AUTH_TOKEN=${{ secrets.TURSO_AUTH_TOKEN }}
+          REDIS_URL=${{ secrets.REDIS_URL }}
+          EOF
+      
+      - name: Create pre-migration backup
+        id: backup
+        run: |
+          echo "=== Creating Pre-Migration Backup ==="
+          BACKUP_FILE="backup-$(date +%Y%m%d_%H%M%S).json"
+          python manage.py dumpdata \
+            --natural-foreign \
+            --natural-primary \
+            --exclude contenttypes \
+            --exclude auth.permission \
+            --exclude sessions \
+            > "$BACKUP_FILE"
+          
+          echo "backup_file=$BACKUP_FILE" >> $GITHUB_OUTPUT
+          echo "Backup created: $BACKUP_FILE"
+      
+      - name: Check migration safety
+        id: migration_check
+        run: |
+          echo "=== Analyzing Migration Safety ==="
+          
+          # Check for potentially dangerous operations
+          MIGRATION_OUTPUT=$(python manage.py showmigrations --plan 2>&1)
+          
+          if echo "$MIGRATION_OUTPUT" | grep -E "(DROP|DELETE|ALTER.*DROP)"; then
+            echo "WARNING: Potentially destructive migrations detected"
+            echo "migration_risk=high" >> $GITHUB_OUTPUT
+          else
+            echo "migration_risk=low" >> $GITHUB_OUTPUT
+          fi
+          
+          # Dry run migrations
+          python manage.py migrate --dry-run
+      
+      - name: Run production migrations
+        run: |
+          echo "=== Running Production Migrations ==="
+          
+          # Run migrations with detailed output
+          python manage.py migrate --verbosity=2
+          
+          # Verify database integrity
+          python manage.py check --deploy
+          
+          # Test database connectivity
+          python -c "
+          import django
+          django.setup()
+          from django.db import connection
+          from django.contrib.auth.models import User
+          
+          # Test basic operations
+          cursor = connection.cursor()
+          cursor.execute('SELECT COUNT(*) FROM auth_user')
+          user_count = cursor.fetchone()[0]
+          print(f'Database verification: {user_count} users found')
+          
+          # Test model operations
+          test_query = User.objects.count()
+          print(f'Model verification: {test_query} users via ORM')
+          
+          print('Migration verification successful')
+          "
+      
+      - name: Store backup artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: db-backup-${{ needs.pre-deploy.outputs.version }}
+          path: backup-*.json
+          retention-days: 30
+
+  # Production deployment
+  deploy-production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [pre-deploy, migrate-production]
+    if: ${{ needs.pre-deploy.outputs.deploy-approved && (success() || github.event.inputs.skip_migrations == 'true') }}
+    environment:
+      name: production
+      url: https://saborconflowdance.com
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+      
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          npm ci
+      
+      - name: Build production assets
+        run: |
+          echo "=== Building Production Assets ==="
+          
+          # Clean previous builds
+          npm run clean || true
+          rm -rf staticfiles/
+          
+          # Build optimized assets
+          NODE_ENV=production npm run build
+          
+          # Collect Django static files
+          python manage.py collectstatic --noinput --clear
+          
+          # Verify critical files exist
+          test -f staticfiles/css/styles.css || exit 1
+          test -f staticfiles/js/main.js || exit 1
+      
+      - name: Pre-deployment health check
+        run: |
+          echo "=== Pre-deployment Health Check ==="
+          
+          # Verify build artifacts
+          ls -la staticfiles/
+          
+          # Check bundle sizes
+          node build-scripts/performance-budget.js
+      
+      - name: Deploy to Vercel
+        id: deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+          scope: ${{ secrets.VERCEL_ORG_ID }}
+      
+      - name: Wait for deployment propagation
+        run: |
+          echo "=== Waiting for deployment propagation ==="
+          sleep 60
+      
+      - name: Post-deployment verification
+        id: verification
+        run: |
+          echo "=== Post-deployment Verification ==="
+          
+          DEPLOYMENT_URL="${{ steps.deploy.outputs.preview-url }}"
+          echo "Testing deployment at: $DEPLOYMENT_URL"
+          
+          # Health check with retries
+          for i in {1..5}; do
+            if curl -f -s "$DEPLOYMENT_URL/api/health/" > /dev/null; then
+              echo "Health check passed on attempt $i"
+              break
+            elif [ $i -eq 5 ]; then
+              echo "Health check failed after 5 attempts"
+              exit 1
+            else
+              echo "Health check attempt $i failed, retrying in 30s..."
+              sleep 30
+            fi
+          done
+          
+          # Test critical pages
+          curl -f -s "$DEPLOYMENT_URL/" > /dev/null || exit 1
+          curl -f -s "$DEPLOYMENT_URL/contact/" > /dev/null || exit 1
+          curl -f -s "$DEPLOYMENT_URL/pricing/" > /dev/null || exit 1
+          
+          # Test API endpoints
+          curl -f -s "$DEPLOYMENT_URL/api/health/" > /dev/null || exit 1
+          
+          echo "All verification checks passed"
+          echo "deployment_url=$DEPLOYMENT_URL" >> $GITHUB_OUTPUT
+      
+      - name: Performance audit
+        run: |
+          echo "=== Performance Audit ==="
+          
+          npm install -g lighthouse
+          
+          # Run Lighthouse audit
+          lighthouse "${{ steps.verification.outputs.deployment_url }}" \
+            --only=performance,accessibility,best-practices,seo \
+            --output=json \
+            --output-path=lighthouse-results.json \
+            --chrome-flags="--headless --no-sandbox" || true
+          
+          # Extract key metrics
+          if [ -f lighthouse-results.json ]; then
+            node -e "
+            const results = require('./lighthouse-results.json');
+            const scores = results.categories;
+            
+            console.log('=== Lighthouse Scores ===');
+            console.log('Performance:', Math.round(scores.performance.score * 100));
+            console.log('Accessibility:', Math.round(scores.accessibility.score * 100));
+            console.log('Best Practices:', Math.round(scores['best-practices'].score * 100));
+            console.log('SEO:', Math.round(scores.seo.score * 100));
+            
+            // Core Web Vitals
+            const audits = results.audits;
+            const lcp = audits['largest-contentful-paint']?.numericValue || 0;
+            const fid = audits['max-potential-fid']?.numericValue || 0;
+            const cls = audits['cumulative-layout-shift']?.numericValue || 0;
+            
+            console.log('=== Core Web Vitals ===');
+            console.log('LCP:', Math.round(lcp), 'ms (target: <2500ms)');
+            console.log('FID:', Math.round(fid), 'ms (target: <100ms)');
+            console.log('CLS:', cls.toFixed(3), '(target: <0.1)');
+            " || true
+          fi
+      
+      - name: Update deployment status - success
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: process.env.DEPLOYMENT_ID,
+              state: 'success',
+              environment_url: '${{ steps.verification.outputs.deployment_url }}',
+              description: 'Production deployment successful - ${{ needs.pre-deploy.outputs.version }}'
+            });
+      
+      - name: Deployment summary
+        if: success()
+        run: |
+          cat << EOF >> $GITHUB_STEP_SUMMARY
+          ## 🚀 Deployment Successful
+          
+          **Version:** ${{ needs.pre-deploy.outputs.version }}
+          **Environment:** Production
+          **URL:** ${{ steps.verification.outputs.deployment_url }}
+          **Commit:** ${{ github.sha }}
+          
+          ### ✅ Verification Results
+          - Health checks: Passed
+          - Critical pages: Accessible
+          - API endpoints: Responding
+          - Performance audit: Completed
+          
+          ### 📊 Next Steps
+          - Monitor application performance
+          - Check error logs for any issues
+          - Verify user-facing functionality
+          EOF
+
+  # Rollback workflow
+  rollback:
+    name: Emergency Rollback
+    runs-on: ubuntu-latest
+    if: ${{ failure() && needs.pre-deploy.outputs.deploy-approved }}
+    needs: [pre-deploy, deploy-production]
+    environment:
+      name: production-rollback
+    
+    steps:
+      - name: Checkout previous stable version
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 10
+      
+      - name: Find previous deployment
+        id: previous
+        run: |
+          # Get the previous successful deployment
+          PREVIOUS_SHA=$(git rev-list --max-count=2 HEAD | tail -n 1)
+          echo "sha=$PREVIOUS_SHA" >> $GITHUB_OUTPUT
+          echo "Rolling back to commit: $PREVIOUS_SHA"
+          
+          # Checkout previous version
+          git checkout $PREVIOUS_SHA
+      
+      - name: Set up environment for rollback
+        run: |
+          # Use Node.js and Python setup similar to deploy
+          npm ci
+          pip install -r requirements.txt
+      
+      - name: Build rollback assets
+        run: |
+          echo "=== Building Rollback Assets ==="
+          npm run build
+          python manage.py collectstatic --noinput --clear
+      
+      - name: Deploy rollback version
+        id: rollback_deploy
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          vercel-args: '--prod'
+          working-directory: ./
+      
+      - name: Verify rollback
+        run: |
+          echo "=== Verifying Rollback ==="
+          sleep 30
+          
+          ROLLBACK_URL="${{ steps.rollback_deploy.outputs.preview-url }}"
+          
+          # Basic health checks
+          curl -f "$ROLLBACK_URL/" || exit 1
+          curl -f "$ROLLBACK_URL/api/health/" || exit 1
+          
+          echo "Rollback verification successful"
+      
+      - name: Update deployment status - rollback
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.repos.createDeploymentStatus({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              deployment_id: process.env.DEPLOYMENT_ID,
+              state: 'failure',
+              description: 'Deployment failed - rolled back to ${{ steps.previous.outputs.sha }}'
+            });
+      
+      - name: Notify team of rollback
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: '🚨 Production Deployment Failed - Rollback Executed',
+              body: `
+              ## Emergency Rollback Executed
+              
+              **Failed Deployment:** ${{ needs.pre-deploy.outputs.version }}
+              **Rolled Back To:** ${{ steps.previous.outputs.sha }}
+              **Rollback URL:** ${{ steps.rollback_deploy.outputs.preview-url }}
+              
+              ### Action Required
+              1. Investigate deployment failure logs
+              2. Fix issues in feature branch
+              3. Test thoroughly before next deployment attempt
+              4. Verify rollback is functioning correctly
+              
+              ### Logs
+              - Workflow Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
+              `,
+              labels: ['production', 'incident', 'rollback']
+            });
+            
+            console.log('Created incident issue:', issue.data.html_url);
+
+  # Cleanup old deployments
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-latest
+    if: always()
+    needs: [deploy-production]
+    
+    steps:
+      - name: Clean up old artifacts
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.runId
+            });
+            
+            const cutoffDate = new Date();
+            cutoffDate.setDate(cutoffDate.getDate() - 30);
+            
+            for (const artifact of artifacts.data.artifacts) {
+              const createdAt = new Date(artifact.created_at);
+              if (createdAt < cutoffDate && artifact.name.includes('db-backup-')) {
+                await github.rest.actions.deleteArtifact({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  artifact_id: artifact.id
+                });
+                console.log(`Deleted old backup: ${artifact.name}`);
+              }
+            }

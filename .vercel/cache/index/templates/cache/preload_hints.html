@@ -1,0 +1,6 @@
+{% comment %}
+Resource preload hints for critical cached assets
+{% endcomment %}
+{% for resource in resources %}
+<link rel="preload" href="{{ resource.url }}" as="{{ resource.type }}"{% if resource.importance %} importance="{{ resource.importance }}"{% endif %}>
+{% endfor %}

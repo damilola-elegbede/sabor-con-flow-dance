@@ -1,0 +1,137 @@
+{% load static %}
+<!-- Lazy-loaded responsive image component with aspect ratio preservation -->
+<div class="lazy-image-container {{ css_class }}" 
+     style="aspect-ratio: {{ aspect_ratio }}; position: relative; overflow: hidden;">
+    
+    <!-- Blur placeholder -->
+    {% if placeholder_src %}
+    <img src="{{ placeholder_src }}" 
+         alt="{{ alt_text }}"
+         class="lazy-placeholder"
+         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: blur(10px); transform: scale(1.1); transition: opacity 0.3s ease;"
+         aria-hidden="true">
+    {% endif %}
+    
+    <!-- Main responsive image -->
+    <picture class="lazy-picture" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
+        <!-- WebP source -->
+        {% if webp_srcset %}
+        <source data-srcset="{{ webp_srcset }}" 
+                type="image/webp" 
+                sizes="(max-width: 320px) 320px, (max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px">
+        {% endif %}
+        
+        <!-- JPEG/PNG fallback -->
+        {% if jpeg_srcset %}
+        <source data-srcset="{{ jpeg_srcset }}" 
+                type="image/jpeg" 
+                sizes="(max-width: 320px) 320px, (max-width: 640px) 640px, (max-width: 1024px) 1024px, 1920px">
+        {% endif %}
+        
+        <!-- Main img element -->
+        <img data-src="{% static image_path %}"
+             alt="{{ alt_text }}"
+             class="lazy-img"
+             style="width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0.3s ease;"
+             loading="lazy"
+             decoding="async">
+    </picture>
+    
+    <!-- Loading indicator -->
+    <div class="lazy-loading-indicator" 
+         style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                color: #666; font-size: 14px; opacity: 0.7; pointer-events: none;">
+        <div class="loading-spinner" style="width: 20px; height: 20px; border: 2px solid #f3f3f3; 
+             border-top: 2px solid #3498db; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+    </div>
+</div>
+
+<style>
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.lazy-image-container {
+    background-color: #f5f5f5;
+    display: block;
+}
+
+.lazy-img.loaded {
+    opacity: 1 !important;
+}
+
+.lazy-placeholder.fade-out {
+    opacity: 0;
+}
+
+.lazy-loading-indicator.hidden {
+    opacity: 0;
+}
+
+/* Intersection Observer fallback */
+.no-js .lazy-img {
+    opacity: 1;
+}
+
+.no-js .lazy-loading-indicator {
+    display: none;
+}
+</style>
+
+<script>
+// Inline lazy loading script for this component
+(function() {
+    // Check if this script has already been added
+    if (window.lazyImageComponentLoaded) return;
+    window.lazyImageComponentLoaded = true;
+    
+    function loadLazyImage(img) {
+        const picture = img.closest('.lazy-picture');
+        const container = img.closest('.lazy-image-container');
+        const placeholder = container.querySelector('.lazy-placeholder');
+        const loadingIndicator = container.querySelector('.lazy-loading-indicator');
+        
+        // Load srcset for source elements
+        picture.querySelectorAll('source[data-srcset]').forEach(source => {
+            source.srcset = source.dataset.srcset;
+            source.removeAttribute('data-srcset');
+        });
+        
+        // Load main image
+        const dataSrc = img.dataset.src;
+        if (dataSrc) {
+            img.onload = function() {
+                img.classList.add('loaded');
+                if (placeholder) placeholder.classList.add('fade-out');
+                if (loadingIndicator) loadingIndicator.classList.add('hidden');
+            };
+            img.src = dataSrc;
+            img.removeAttribute('data-src');
+        }
+    }
+    
+    // Use Intersection Observer for modern browsers
+    if ('IntersectionObserver' in window) {
+        const imageObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    loadLazyImage(img);
+                    observer.unobserve(img);
+                }
+            });
+        }, {
+            rootMargin: '50px 0px',
+            threshold: 0.01
+        });
+        
+        document.querySelectorAll('.lazy-img').forEach(img => {
+            imageObserver.observe(img);
+        });
+    } else {
+        // Fallback for older browsers
+        document.querySelectorAll('.lazy-img').forEach(loadLazyImage);
+    }
+})();
+</script>

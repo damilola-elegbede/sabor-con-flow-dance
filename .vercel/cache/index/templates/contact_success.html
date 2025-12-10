@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Thank You - {{ site_name }}{% endblock %}
+
+{% block meta_description %}Thank you for contacting Sabor Con Flow Dance! We've received your message and will respond soon.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .success-container {
+        max-width: 600px;
+        margin: 2rem auto;
+        padding: 2rem;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    .success-icon {
+        font-size: 4rem;
+        color: #28a745;
+        margin-bottom: 1rem;
+    }
+    
+    .success-title {
+        color: #C7B375;
+        font-size: 2rem;
+        margin-bottom: 1rem;
+    }
+    
+    .response-info {
+        background: #e8f4fd;
+        border: 1px solid #bee5eb;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin: 2rem 0;
+    }
+    
+    .response-info h3 {
+        color: #0c5460;
+        margin-bottom: 1rem;
+    }
+    
+    .response-info ul {
+        text-align: left;
+        margin: 0;
+        padding-left: 1.5rem;
+    }
+    
+    .response-info li {
+        margin-bottom: 0.5rem;
+        color: #0c5460;
+    }
+    
+    .action-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+    }
+    
+    .btn {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+    }
+    
+    .btn-primary {
+        background: #C7B375;
+        color: white;
+    }
+    
+    .btn-primary:hover {
+        background: #b8a566;
+        color: white;
+    }
+    
+    .btn-outline {
+        background: transparent;
+        color: #C7B375;
+        border: 2px solid #C7B375;
+    }
+    
+    .btn-outline:hover {
+        background: #C7B375;
+        color: white;
+    }
+    
+    .social-connect {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .social-connect h4 {
+        color: #C7B375;
+        margin-bottom: 1rem;
+    }
+    
+    .social-links {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .social-link {
+        padding: 0.5rem 1rem;
+        background: #C7B375;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+    
+    .social-link:hover {
+        background: #b8a566;
+        color: white;
+    }
+    
+    .contact-alternatives {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .contact-alternatives h4 {
+        color: #856404;
+        margin-bottom: 1rem;
+    }
+    
+    .contact-alternatives p {
+        color: #856404;
+        margin: 0.5rem 0;
+    }
+    
+    @media (max-width: 768px) {
+        .success-container {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
+        
+        .action-buttons {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .btn {
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .social-links {
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .social-link {
+            width: 100%;
+            max-width: 200px;
+            text-align: center;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-icon">📧</div>
+    <h1 class="success-title">Message Received!</h1>
+    <p>Thank you for reaching out to Sabor Con Flow Dance. We're excited to help you start or continue your dance journey!</p>
+    
+    <div class="response-info">
+        <h3>⏰ What Happens Next?</h3>
+        <ul>
+            <li><strong>Confirmation email sent</strong> - Check your inbox for an immediate confirmation</li>
+            <li><strong>Personal response within 48 hours</strong> - We'll address your specific inquiry</li>
+            <li><strong>For urgent matters</strong> - Call us at (555) 123-4567 or message us on WhatsApp</li>
+            <li><strong>Private lesson inquiries</strong> - We'll prioritize your request and respond within 24 hours</li>
+        </ul>
+    </div>
+    
+    <div class="action-buttons">
+        <a href="{% url 'core:home' %}" class="btn btn-primary">🏠 Back to Home</a>
+        <a href="{% url 'core:schedule' %}" class="btn btn-outline">📅 View Schedule</a>
+        <a href="{% url 'core:pricing' %}" class="btn btn-outline">💰 See Pricing</a>
+    </div>
+    
+    <div class="social-connect">
+        <h4>Connect With Us While You Wait</h4>
+        <p>Follow our dance journey and get inspired by our community!</p>
+        <div class="social-links">
+            <a href="https://www.instagram.com/saborconflow.dance/" class="social-link" target="_blank" rel="noopener">
+                📸 Instagram
+            </a>
+            <a href="https://www.facebook.com/profile.php?id=61575502290591" class="social-link" target="_blank" rel="noopener">
+                📘 Facebook
+            </a>
+            <a href="https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x" class="social-link" target="_blank" rel="noopener">
+                💬 WhatsApp
+            </a>
+        </div>
+    </div>
+    
+    <div class="contact-alternatives">
+        <h4>Need Immediate Assistance?</h4>
+        <p><strong>Phone:</strong> <a href="tel:+15551234567">(555) 123-4567</a></p>
+        <p><strong>Email:</strong> <a href="mailto:info@saborconflowdance.com">info@saborconflowdance.com</a></p>
+        <p><strong>Location:</strong> Avalon Ballroom, Boulder, CO</p>
+        <p><strong>Classes:</strong> Every Sunday - Check our <a href="{% url 'core:schedule' %}">schedule</a> for times</p>
+    </div>
+</div>
+
+<!-- JSON-LD structured data for better SEO -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Sabor Con Flow Dance",
+    "url": "https://www.saborconflowdance.com",
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-555-123-4567",
+        "contactType": "Customer Service",
+        "email": "info@saborconflowdance.com",
+        "areaServed": "Boulder, CO",
+        "availableLanguage": "English"
+    },
+    "sameAs": [
+        "https://www.instagram.com/saborconflow.dance/",
+        "https://www.facebook.com/profile.php?id=61575502290591"
+    ],
+    "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Boulder",
+        "addressRegion": "CO",
+        "addressCountry": "US",
+        "name": "Avalon Ballroom"
+    }
+}
+</script>
+{% endblock %}
+{% endblock %>

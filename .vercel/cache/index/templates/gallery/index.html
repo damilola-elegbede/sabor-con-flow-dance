@@ -1,0 +1,524 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ page_title }} - Sabor Con Flow Dance Company{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Gallery Container */
+    .gallery-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+
+    /* Gallery Header */
+    .gallery-header {
+        text-align: center;
+        margin-bottom: 3rem;
+    }
+
+    .gallery-title {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 1rem;
+    }
+
+    .gallery-subtitle {
+        font-size: 1.1rem;
+        color: #666;
+        margin-bottom: 0.5rem;
+    }
+
+    .media-count {
+        font-size: 0.95rem;
+        color: #888;
+    }
+
+    /* Filter Section */
+    .filter-section {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .filter-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .filter-group {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .filter-label {
+        font-weight: 600;
+        color: #555;
+        margin-right: 0.5rem;
+    }
+
+    /* Filter Buttons */
+    .filter-btn {
+        padding: 0.5rem 1.25rem;
+        border: 2px solid #ddd;
+        background: white;
+        border-radius: 25px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+    }
+
+    .filter-btn:hover {
+        border-color: #D4AF37;
+        transform: translateY(-1px);
+    }
+
+    .filter-btn.active {
+        background: #D4AF37;
+        color: white;
+        border-color: #D4AF37;
+    }
+
+    /* Gallery Grid */
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 1.5rem;
+        margin-top: 2rem;
+    }
+
+    /* Media Item */
+    .media-item {
+        position: relative;
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        cursor: pointer;
+    }
+
+    .media-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+    }
+
+    /* Media Thumbnail for Images */
+    .media-thumbnail {
+        position: relative;
+        width: 100%;
+        padding-bottom: 75%; /* 4:3 Aspect Ratio for images */
+        overflow: hidden;
+        background: #f0f0f0;
+        cursor: pointer;
+    }
+
+    .media-thumbnail img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+
+    .media-item:hover .media-thumbnail img {
+        transform: scale(1.05);
+    }
+
+    /* Video Items - Override media-item styles for videos */
+    .media-item[data-type="video"] {
+        /* Remove hover transform for video items since video player handles its own hover */
+    }
+
+    .media-item[data-type="video"]:hover {
+        transform: none;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    /* Responsive adjustments for video items */
+    .media-item[data-type="video"] .video-player-container {
+        margin-bottom: 0;
+    }
+
+    /* Media Info */
+    .media-info {
+        padding: 1rem;
+    }
+
+    .media-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 0.5rem;
+        line-height: 1.3;
+    }
+
+    .media-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.85rem;
+        color: #666;
+    }
+
+    .media-category {
+        background: #f0f0f0;
+        padding: 0.25rem 0.75rem;
+        border-radius: 15px;
+        font-weight: 500;
+    }
+
+    .media-date {
+        color: #888;
+    }
+
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 4rem 2rem;
+        color: #666;
+    }
+
+    .empty-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+
+    .empty-title {
+        font-size: 1.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .empty-text {
+        font-size: 1rem;
+        color: #888;
+    }
+
+    /* Loading State */
+    .loading-placeholder {
+        background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+    }
+
+    @keyframes loading {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+        .gallery-title {
+            font-size: 2rem;
+        }
+
+        .gallery-grid {
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .filter-row {
+            flex-direction: column;
+        }
+
+        .filter-group {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 1rem;
+            font-size: 0.9rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .gallery-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    /* Instagram Filter Button */
+    .instagram-filter {
+        background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        color: white;
+        border: 2px solid transparent;
+    }
+
+    .instagram-filter:hover {
+        background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        color: white;
+        filter: brightness(1.1);
+    }
+
+    .instagram-filter.active {
+        background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        color: white;
+        filter: brightness(1.2);
+    }
+
+    .instagram-icon-small {
+        margin-right: 0.5rem;
+        vertical-align: middle;
+    }
+
+    /* Instagram Preview Section */
+    .instagram-preview-section {
+        margin-top: 4rem;
+        padding-top: 3rem;
+        border-top: 2px solid #f0f0f0;
+    }
+
+    .instagram-preview-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .instagram-preview-header h3 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #333;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .instagram-preview-header h3::before {
+        content: "";
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(135deg, #405de6, #5851db, #833ab4, #c13584, #e1306c, #fd1d1d);
+        mask: url("data:image/svg+xml;base64,PHN2ZyB2aWV3Qm94PSIwIDAgMjQgMjQiIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBmaWxsPSJjdXJyZW50Q29sb3IiIGQ9Ik0xMiAyLjE2M2MzLjIwNCAwIDMuNTg0LjAxMiA0Ljg1LjA3IDMuMjUyLjE0OCA0Ljc3MSAxLjY5MSA0LjkxOSA0LjkxOS4wNTggMS4yNjUuMDY5IDEuNjQ1LjA2OSA0Ljg0OSAwIDMuMjA1LS4wMTIgMy41ODQtLjA2OSA0Ljg0OS0uMTQ5IDMuMjI1LTEuNjY0IDQuNzcxLTQuOTE5IDQuOTE5LTEuMjY2LjA1OC0xLjY0NC4wNy00Ljg1LjA3LTMuMjA0IDAtMy41ODQtLjAxMi00Ljg0OS0uMDctMy4yNi0uMTQ5LTQuNzcxLTEuNjk5LTQuOTE5LTQuOTItLjA1OC0xLjI2NS0uMDctMS42NDQtLjA3LTQuODQ5IDAtMy4yMDQuMDEzLTMuNTgzLjA3LTQuODQ5LjE0OS0zLjIyNyAxLjY2NC00Ljc3MSA0LjkxOS00LjkxOSAxLjI2Ni0uMDU3IDEuNjQ1LS4wNjkgNC44NDktLjA2OXptMC0yLjE2M2MtMy4yNTkgMC0zLjY2Ny4wMTQtNC45NDcuMDcyLTQuMzU4LjItNi43OCAyLjYxOC02Ljk4IDYuOTgtLjA1OSAxLjI4MS0uMDczIDEuNjg5LS4wNzMgNC45NDggMCAzLjI1OS4wMTQgMy42NjguMDcyIDQuOTQ4LjIgNC4zNTggMi42MTggNi43OCA2Ljk4IDYuOTggMS4yODEuMDU4IDEuNjg5LjA3MiA0Ljk0OC4wNzIgMy4yNTkgMCAzLjY2OC0uMDE0IDQuOTQ4LS4wNzIgNC4zNTQtLjIgNi43ODItMi42MTggNi45NzktNi45OC4wNTktMS4yOC4wNzMtMS42ODkuMDczLTQuOTQ4IDAtMy4yNTktLjAxNC0zLjY2Ny0uMDcyLTQuOTQ3LS4xOTYtNC4zNTQtMi42MTctNi43OC02Ljk3OS02Ljk4LTEuMjgxLS4wNTktMS42OS0uMDczLTQuOTQ5LS4wNzN6bTAgNS44MzhjLTMuNDAzIDAtNi4xNjIgMi43NTktNi4xNjIgNi4xNjJzMi43NTkgNi4xNjMgNi4xNjIgNi4xNjMgNi4xNjItMi43NTkgNi4xNjItNi4xNjNjMC0zLjQwMy0yLjc1OS02LjE2Mi02LjE2Mi02LjE2MnptMCAxMC4xNjJjLTIuMjA5IDAtNC0xLjc5LTQtNCAwLTIuMjA5IDEuNzkxLTQgNC00czQgMS43OTEgNCA0YzAgMi4yMS0xLjc5MSA0LTQgNHptNi40MDYtMTEuODQ1Yy0uNzk2IDAtMS40NDEuNjQ1LTEuNDQxIDEuNDRzLjY0NSAxLjQ0IDEuNDQxIDEuNDRjLjc5NSAwIDEuNDM5LS42NDUgMS40MzktMS40NHMtLjY0NC0xLjQ0LTEuNDM5LTEuNDR6Ii8+PC9zdmc+") center/cover;
+        border-radius: 4px;
+    }
+
+    .view-all-link {
+        color: #D4AF37;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.95rem;
+        padding: 0.5rem 1rem;
+        border: 2px solid #D4AF37;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .view-all-link:hover {
+        background: #D4AF37;
+        color: white;
+        text-decoration: none;
+        transform: translateY(-1px);
+    }
+
+    .instagram-preview-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        max-width: 800px;
+    }
+
+    .instagram-preview-item {
+        position: relative;
+        aspect-ratio: 1;
+        border-radius: 8px;
+        overflow: hidden;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+    }
+
+    .instagram-preview-item:hover {
+        transform: scale(1.05);
+    }
+
+    .instagram-preview-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .instagram-preview-overlay {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: rgba(0, 0, 0, 0.7);
+        border-radius: 4px;
+        padding: 0.25rem;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .instagram-preview-item:hover .instagram-preview-overlay {
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
+        .instagram-preview-header {
+            flex-direction: column;
+            gap: 1rem;
+            text-align: center;
+        }
+        
+        .instagram-preview-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="gallery-container">
+    <!-- Gallery Header -->
+    <div class="gallery-header">
+        <h1 class="gallery-title">Media Gallery</h1>
+        <p class="gallery-subtitle">Explore moments from our dance classes and events</p>
+        <div class="media-count">
+            {{ total_count }} items 
+            {% if photo_count > 0 %}({{ photo_count }} photos{% endif %}
+            {% if video_count > 0 %}{% if photo_count > 0 %}, {% endif %}{{ video_count }} videos{% endif %}{% if photo_count > 0 or video_count > 0 %}){% endif %}
+        </div>
+    </div>
+
+    <!-- Filter Section -->
+    <div class="filter-section">
+        <div class="filter-row">
+            <!-- Media Type Filter -->
+            <div class="filter-group">
+                <span class="filter-label">Type:</span>
+                <button class="filter-btn {% if selected_type == 'all' %}active{% endif %}" 
+                        onclick="applyFilter('type', 'all')">All</button>
+                <button class="filter-btn {% if selected_type == 'image' %}active{% endif %}" 
+                        onclick="applyFilter('type', 'image')">Photos</button>
+                <button class="filter-btn {% if selected_type == 'video' %}active{% endif %}" 
+                        onclick="applyFilter('type', 'video')">Videos</button>
+                {% if instagram_count > 0 %}
+                <button class="filter-btn instagram-filter {% if selected_category == 'instagram' %}active{% endif %}" 
+                        onclick="applyFilter('category', 'instagram')">
+                    <svg class="instagram-icon-small" viewBox="0 0 24 24" width="16" height="16">
+                        <path fill="currentColor" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                    </svg>
+                    Instagram ({{ instagram_count }})
+                </button>
+                {% endif %}
+            </div>
+
+            <!-- Category Filter -->
+            {% if category_choices %}
+            <div class="filter-group">
+                <span class="filter-label">Category:</span>
+                <button class="filter-btn {% if selected_category == 'all' %}active{% endif %}" 
+                        onclick="applyFilter('category', 'all')">All Categories</button>
+                {% for cat_value, cat_display in category_choices %}
+                <button class="filter-btn {% if selected_category == cat_value %}active{% endif %}" 
+                        onclick="applyFilter('category', '{{ cat_value }}')">{{ cat_display }}</button>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Instagram Feed Section (if showing Instagram category) -->
+    {% if selected_category == 'instagram' and instagram_posts %}
+        {% include 'components/instagram_feed.html' %}
+    {% elif selected_category == 'instagram' and not instagram_posts %}
+        <div class="empty-state">
+            <div class="empty-icon">📷</div>
+            <h2 class="empty-title">No Instagram posts found</h2>
+            <p class="empty-text">Instagram posts will appear here when available</p>
+        </div>
+    {% else %}
+        <!-- Regular Media Gallery Grid -->
+        {% if media_items %}
+            <div class="gallery-grid" id="galleryGrid">
+                {% include 'components/media_grid.html' %}
+            </div>
+            
+            <!-- Instagram Preview Section (when not filtering to Instagram only) -->
+            {% if instagram_posts and show_instagram and selected_category != 'instagram' %}
+                <div class="instagram-preview-section">
+                    <div class="instagram-preview-header">
+                        <h3>Latest from Instagram</h3>
+                        <a href="?category=instagram" class="view-all-link">View All Instagram Posts</a>
+                    </div>
+                    <div class="instagram-preview-grid">
+                        {% for post in instagram_posts|slice:":4" %}
+                            <div class="instagram-preview-item" onclick="openInstagramPost('{{ post.instagram_permalink }}')">
+                                <img src="{{ post.get_display_url }}" 
+                                     alt="{{ post.title }}"
+                                     class="instagram-preview-image"
+                                     loading="lazy">
+                                <div class="instagram-preview-overlay">
+                                    <svg class="instagram-icon-overlay" viewBox="0 0 24 24" width="20" height="20">
+                                        <path fill="white" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.40z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">📷</div>
+                <h2 class="empty-title">No media found</h2>
+                <p class="empty-text">
+                    {% if selected_type != 'all' or selected_category != 'all' %}
+                        Try adjusting your filters to see more content
+                    {% else %}
+                        Check back soon for photos and videos from our classes and events
+                    {% endif %}
+                </p>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+
+<!-- Lightbox Modal (will be created by gallery.js) -->
+<div id="lightboxOverlay"></div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Filter functionality
+    function applyFilter(filterType, value) {
+        const urlParams = new URLSearchParams(window.location.search);
+        
+        if (value === 'all') {
+            urlParams.delete(filterType);
+        } else {
+            urlParams.set(filterType, value);
+        }
+        
+        const newUrl = window.location.pathname + 
+                       (urlParams.toString() ? '?' + urlParams.toString() : '');
+        
+        window.location.href = newUrl;
+    }
+
+    // Initialize lazy loading for images
+    document.addEventListener('DOMContentLoaded', function() {
+        // Lazy loading will be handled by the gallery.js file
+        if (typeof initializeLazyLoading === 'function') {
+            initializeLazyLoading();
+        }
+    });
+</script>
+
+<!-- Include gallery JavaScript -->
+<script src="{% static 'js/gallery.js' %}" defer></script>
+{% endblock %}

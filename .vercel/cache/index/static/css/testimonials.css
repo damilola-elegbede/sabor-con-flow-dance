@@ -1,0 +1,852 @@
+/* ==========================================================================
+   Sabor Con Flow Dance - Testimonials Stylesheet
+   Task 9 - SPEC_03 Implementation
+   ========================================================================== */
+
+/* ==========================================================================
+   1. Testimonial Card Styles
+   ========================================================================== */
+
+/* Base Testimonial Card */
+.testimonial-card {
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: var(--spacing-xl);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all var(--transition-base);
+    border: 1px solid rgba(199, 179, 117, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Hover Effect - Lift Animation */
+.testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-gold);
+}
+
+/* Add subtle gradient on hover */
+.testimonial-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-gold) 0%, var(--color-gold-secondary) 100%);
+    transform: scaleX(0);
+    transition: transform var(--transition-base);
+}
+
+.testimonial-card:hover::before {
+    transform: scaleX(1);
+}
+
+/* Featured/Highlighted Card */
+.testimonial-card.featured {
+    border: 2px solid var(--color-gold);
+    background: linear-gradient(135deg, var(--color-white) 0%, rgba(199, 179, 117, 0.05) 100%);
+}
+
+.testimonial-card.featured::after {
+    content: 'FEATURED';
+    position: absolute;
+    top: 12px;
+    right: -30px;
+    background: var(--color-gold);
+    color: var(--color-black);
+    padding: 4px 40px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    transform: rotate(45deg);
+}
+
+/* ==========================================================================
+   2. Star Rating Styles
+   ========================================================================== */
+
+/* Star Rating Container */
+.star-rating {
+    display: inline-flex;
+    gap: 4px;
+    align-items: center;
+}
+
+/* Individual Stars */
+.star-rating .star {
+    font-size: 1.125rem;
+    color: var(--color-gray-light);
+    transition: all var(--transition-fast);
+}
+
+/* Filled Stars */
+.star-rating .star.filled {
+    color: #C7B375; /* Gold color for filled stars */
+}
+
+/* Half-filled Stars */
+.star-rating .star.half-filled {
+    position: relative;
+    color: var(--color-gray-light);
+}
+
+.star-rating .star.half-filled::before {
+    content: '★';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 50%;
+    overflow: hidden;
+    color: #C7B375;
+}
+
+/* Interactive Star Rating (for forms) */
+.star-rating-input {
+    display: flex;
+    gap: 8px;
+    font-size: 2rem;
+}
+
+.star-rating-input .star-input {
+    cursor: pointer;
+    color: var(--color-gray-light);
+    transition: all var(--transition-fast);
+    transform: scale(1);
+}
+
+.star-rating-input .star-input:hover {
+    color: #C7B375;
+    transform: scale(1.1);
+}
+
+.star-rating-input .star-input.active {
+    color: #C7B375;
+    animation: starPulse 0.3s ease-out;
+}
+
+/* Star hover animation */
+@keyframes starPulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1.1);
+    }
+}
+
+/* Rating Text */
+.rating-text {
+    margin-left: var(--spacing-sm);
+    font-size: 0.875rem;
+    color: var(--color-gray-medium);
+    font-weight: 500;
+}
+
+/* ==========================================================================
+   3. Masonry Grid Layout
+   ========================================================================== */
+
+/* Grid Container */
+.testimonials-masonry {
+    display: grid;
+    gap: var(--spacing-xl);
+    grid-auto-flow: dense;
+    align-items: start;
+}
+
+/* Responsive Grid Columns */
+/* Mobile - 1 column */
+.testimonials-masonry {
+    grid-template-columns: 1fr;
+}
+
+/* Tablet - 2 columns */
+@media (min-width: 640px) {
+    .testimonials-masonry {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop - 3 columns */
+@media (min-width: 1024px) {
+    .testimonials-masonry {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Large Desktop - 4 columns */
+@media (min-width: 1536px) {
+    .testimonials-masonry {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Masonry item variations for visual interest */
+.testimonials-masonry .testimonial-card:nth-child(3n) {
+    grid-row: span 1.2;
+}
+
+/* CSS Grid Masonry (when supported) */
+@supports (grid-template-rows: masonry) {
+    .testimonials-masonry {
+        grid-template-rows: masonry;
+    }
+}
+
+/* Fallback CSS Columns for older browsers */
+@supports not (display: grid) {
+    .testimonials-masonry {
+        column-count: 1;
+        column-gap: var(--spacing-xl);
+    }
+    
+    @media (min-width: 640px) {
+        .testimonials-masonry {
+            column-count: 2;
+        }
+    }
+    
+    @media (min-width: 1024px) {
+        .testimonials-masonry {
+            column-count: 3;
+        }
+    }
+    
+    @media (min-width: 1536px) {
+        .testimonials-masonry {
+            column-count: 4;
+        }
+    }
+    
+    .testimonials-masonry .testimonial-card {
+        break-inside: avoid;
+        margin-bottom: var(--spacing-xl);
+    }
+}
+
+/* ==========================================================================
+   4. Carousel Styles
+   ========================================================================== */
+
+/* Carousel Container */
+.testimonial-carousel {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--color-white);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Carousel Track */
+.testimonial-carousel-track {
+    display: flex;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+}
+
+/* Carousel Slide */
+.testimonial-carousel-slide {
+    flex: 0 0 100%;
+    padding: var(--spacing-2xl);
+}
+
+/* Navigation Buttons */
+.carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--color-black);
+    color: var(--color-gold);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 2px solid var(--color-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    z-index: 10;
+    opacity: 0.9;
+}
+
+.carousel-nav:hover {
+    background: var(--color-gold);
+    color: var(--color-black);
+    transform: translateY(-50%) scale(1.1);
+    opacity: 1;
+}
+
+.carousel-nav.prev {
+    left: 20px;
+}
+
+.carousel-nav.next {
+    right: 20px;
+}
+
+/* Carousel Indicators/Dots */
+.carousel-indicators {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: var(--spacing-lg);
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.carousel-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-gray-light);
+    border: none;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    position: relative;
+}
+
+.carousel-dot:hover {
+    background: var(--color-gold-light);
+    transform: scale(1.2);
+}
+
+.carousel-dot.active {
+    background: var(--color-gold);
+    width: 24px;
+    border-radius: 12px;
+}
+
+/* Auto-play Controls */
+.carousel-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: var(--spacing-sm);
+    z-index: 10;
+}
+
+.carousel-play-pause {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.7);
+    color: var(--color-gold);
+    border: 1px solid var(--color-gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.carousel-play-pause:hover {
+    background: var(--color-gold);
+    color: var(--color-black);
+}
+
+/* Smooth slide animations */
+.testimonial-carousel-slide.entering {
+    animation: slideIn 0.5s ease-out;
+}
+
+.testimonial-carousel-slide.leaving {
+    animation: slideOut 0.5s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+}
+
+/* ==========================================================================
+   5. Form Styling
+   ========================================================================== */
+
+/* Testimonial Submission Form Container */
+.testimonial-form {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--color-white);
+    border-radius: 12px;
+    padding: var(--spacing-2xl);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Form Header */
+.testimonial-form-header {
+    text-align: center;
+    padding-bottom: var(--spacing-xl);
+    border-bottom: 2px solid var(--color-gold-light);
+    margin-bottom: var(--spacing-2xl);
+}
+
+.testimonial-form-header h2 {
+    color: var(--color-gold);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Form Groups */
+.testimonial-form-group {
+    margin-bottom: var(--spacing-xl);
+}
+
+.testimonial-form-label {
+    display: block;
+    font-weight: 600;
+    color: var(--color-gray-dark);
+    margin-bottom: var(--spacing-sm);
+    font-size: 1rem;
+}
+
+.testimonial-form-label .required {
+    color: var(--color-gold);
+}
+
+/* Form Controls */
+.testimonial-form-control {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-gray-lighter);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    background: var(--color-white);
+}
+
+.testimonial-form-control:focus {
+    outline: none;
+    border-color: var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(199, 179, 117, 0.1);
+}
+
+/* Textarea specific */
+.testimonial-form-control.textarea {
+    min-height: 120px;
+    resize: vertical;
+    font-family: var(--font-body);
+}
+
+/* Character Counter */
+.character-counter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: var(--spacing-xs);
+    font-size: 0.875rem;
+}
+
+.character-count {
+    color: var(--color-gray-medium);
+}
+
+.character-count.warning {
+    color: #f39c12;
+    font-weight: 600;
+}
+
+.character-count.error {
+    color: #dc3545;
+    font-weight: 600;
+}
+
+.character-limit {
+    color: var(--color-gray-light);
+}
+
+/* Progress Bar for Character Count */
+.character-progress {
+    height: 4px;
+    background: var(--color-gray-lighter);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: var(--spacing-xs);
+}
+
+.character-progress-bar {
+    height: 100%;
+    background: var(--color-gold);
+    transition: all var(--transition-base);
+}
+
+.character-progress-bar.warning {
+    background: #f39c12;
+}
+
+.character-progress-bar.error {
+    background: #dc3545;
+}
+
+/* Photo Upload Area */
+.photo-upload-area {
+    border: 2px dashed var(--color-gray-light);
+    border-radius: 8px;
+    padding: var(--spacing-2xl);
+    text-align: center;
+    transition: all var(--transition-base);
+    background: rgba(199, 179, 117, 0.02);
+    cursor: pointer;
+    position: relative;
+}
+
+.photo-upload-area:hover {
+    border-color: var(--color-gold);
+    background: rgba(199, 179, 117, 0.05);
+}
+
+.photo-upload-area.dragover {
+    border-color: var(--color-gold);
+    background: rgba(199, 179, 117, 0.1);
+    transform: scale(1.02);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: var(--color-gold-light);
+    margin-bottom: var(--spacing-md);
+}
+
+.upload-text {
+    color: var(--color-gray-medium);
+}
+
+.upload-text .primary {
+    display: block;
+    font-weight: 600;
+    margin-bottom: var(--spacing-xs);
+}
+
+.upload-text .secondary {
+    font-size: 0.875rem;
+    color: var(--color-gray-light);
+}
+
+/* Photo Preview */
+.photo-preview {
+    margin-top: var(--spacing-lg);
+    position: relative;
+    display: inline-block;
+}
+
+.photo-preview img {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+}
+
+.photo-preview-remove {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 24px;
+    height: 24px;
+    background: #dc3545;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all var(--transition-base);
+}
+
+.photo-preview-remove:hover {
+    background: #c82333;
+    transform: scale(1.1);
+}
+
+/* Submit Button */
+.testimonial-submit-button {
+    background: linear-gradient(135deg, var(--color-gold) 0%, var(--color-gold-secondary) 100%);
+    color: var(--color-black);
+    border: none;
+    padding: var(--spacing-lg) var(--spacing-3xl);
+    font-size: 1.125rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-base);
+    box-shadow: var(--shadow-md);
+    display: block;
+    margin: var(--spacing-2xl) auto 0;
+}
+
+.testimonial-submit-button:hover {
+    background: linear-gradient(135deg, var(--color-gold-dark) 0%, var(--color-gold) 100%);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-xl);
+    color: var(--color-white);
+}
+
+.testimonial-submit-button:disabled {
+    background: var(--color-gray-light);
+    color: var(--color-gray-medium);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* ==========================================================================
+   6. Mobile Responsiveness
+   ========================================================================== */
+
+/* Mobile Styles */
+@media (max-width: 640px) {
+    /* Stack cards on mobile */
+    .testimonials-masonry {
+        grid-template-columns: 1fr;
+        gap: var(--spacing-lg);
+    }
+    
+    /* Reduce card padding on mobile */
+    .testimonial-card {
+        padding: var(--spacing-lg);
+    }
+    
+    /* Full width carousel on mobile */
+    .testimonial-carousel {
+        border-radius: 0;
+    }
+    
+    /* Smaller navigation buttons */
+    .carousel-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+    
+    .carousel-nav.prev {
+        left: 10px;
+    }
+    
+    .carousel-nav.next {
+        right: 10px;
+    }
+    
+    /* Form adjustments */
+    .testimonial-form {
+        padding: var(--spacing-lg);
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    /* Touch-friendly button sizes */
+    .testimonial-submit-button {
+        width: 100%;
+        padding: var(--spacing-lg) var(--spacing-xl);
+    }
+    
+    /* Larger touch targets for star ratings */
+    .star-rating-input {
+        gap: 12px;
+    }
+    
+    .star-rating-input .star-input {
+        font-size: 2.5rem;
+    }
+    
+    /* Readable text sizing */
+    .testimonial-card .testimonial-content {
+        font-size: 1rem;
+        line-height: 1.7;
+    }
+    
+    /* Stack form elements */
+    .testimonial-form-group {
+        margin-bottom: var(--spacing-lg);
+    }
+    
+    /* Photo upload area adjustments */
+    .photo-upload-area {
+        padding: var(--spacing-lg);
+    }
+    
+    .upload-icon {
+        font-size: 2.5rem;
+    }
+}
+
+/* Tablet Styles */
+@media (min-width: 641px) and (max-width: 1023px) {
+    /* 2 column grid on tablets */
+    .testimonials-masonry {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Show 2 testimonials in carousel */
+    .testimonial-carousel-slide {
+        flex: 0 0 50%;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Remove hover effects on touch devices */
+    .testimonial-card:hover {
+        transform: none;
+    }
+    
+    /* Larger touch targets */
+    .carousel-dot {
+        width: 12px;
+        height: 12px;
+    }
+    
+    /* More spacing for touch */
+    .carousel-indicators {
+        gap: 12px;
+        padding: var(--spacing-xl);
+    }
+}
+
+/* ==========================================================================
+   7. Animations and Transitions
+   ========================================================================== */
+
+/* Fade in animation for cards */
+.testimonial-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.testimonial-card:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.testimonial-card:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.testimonial-card:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Loading skeleton animation */
+.testimonial-skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+/* ==========================================================================
+   8. Accessibility Enhancements
+   ========================================================================== */
+
+/* Focus styles */
+.testimonial-card:focus-within {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+}
+
+.star-rating-input .star-input:focus {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+/* Screen reader only text */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .testimonial-card {
+        border-width: 2px;
+    }
+    
+    .star-rating .star.filled {
+        color: var(--color-gold);
+        font-weight: bold;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .testimonial-card,
+    .carousel-nav,
+    .carousel-dot,
+    .testimonial-carousel-track {
+        animation: none;
+        transition: none;
+    }
+}
+
+/* ==========================================================================
+   9. Print Styles
+   ========================================================================== */
+
+@media print {
+    .testimonial-carousel,
+    .carousel-nav,
+    .carousel-indicators,
+    .carousel-controls,
+    .testimonial-form {
+        display: none;
+    }
+    
+    .testimonials-masonry {
+        display: block;
+    }
+    
+    .testimonial-card {
+        page-break-inside: avoid;
+        border: 1px solid #000;
+        box-shadow: none;
+        margin-bottom: 1rem;
+    }
+    
+    .star-rating .star.filled {
+        color: #000;
+    }
+}

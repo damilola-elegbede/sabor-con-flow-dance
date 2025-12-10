@@ -1,0 +1,306 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Social Links Component Demo - Sabor Con Flow Dance{% endblock %}
+
+{% block extra_css %}
+<style>
+    .demo-section {
+        padding: var(--spacing-2xl, 3rem) 0;
+        border-bottom: 1px solid var(--color-gray-lighter, #f5f5f5);
+    }
+    
+    .demo-title {
+        font-size: 1.5rem;
+        margin-bottom: var(--spacing-lg, 1.5rem);
+        color: var(--color-gold, #C7B375);
+    }
+    
+    .demo-description {
+        margin-bottom: var(--spacing-xl, 2rem);
+        color: var(--color-gray-medium, #666);
+    }
+    
+    .demo-container {
+        background: var(--color-gray-lighter, #f5f5f5);
+        padding: var(--spacing-xl, 2rem);
+        border-radius: 8px;
+        margin-bottom: var(--spacing-lg, 1.5rem);
+    }
+    
+    .demo-dark {
+        background: var(--color-black, #000);
+        color: var(--color-white, #fff);
+    }
+    
+    .code-snippet {
+        background: #1e1e1e;
+        color: #f8f8f2;
+        padding: var(--spacing-md, 1rem);
+        border-radius: 4px;
+        font-family: 'Courier New', monospace;
+        font-size: 0.875rem;
+        overflow-x: auto;
+        margin-top: var(--spacing-md, 1rem);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Social Links Component Demo</h1>
+    <p class="demo-description">
+        This page demonstrates the social media links component in various contexts and configurations.
+    </p>
+
+    <!-- Default Usage -->
+    <section class="demo-section">
+        <h2 class="demo-title">1. Default Usage (Footer Context)</h2>
+        <p class="demo-description">The component as it appears in the footer with "Follow us" text.</p>
+        
+        <div class="demo-container demo-dark">
+            {% include 'components/social_links.html' %}
+        </div>
+        
+        <div class="code-snippet">
+            {% verbatim %}{% include 'components/social_links.html' %}{% endverbatim %}
+        </div>
+    </section>
+
+    <!-- Centered Version -->
+    <section class="demo-section">
+        <h2 class="demo-title">2. Centered Version</h2>
+        <p class="demo-description">Social links centered for use in hero sections or call-to-action areas.</p>
+        
+        <div class="demo-container">
+            <div class="social-links social-links--centered">
+                <span class="social-links__text" aria-hidden="true">Connect with us</span>
+                <div class="social-links__container">
+                    <a href="https://www.instagram.com/saborconflow.dance/" 
+                       class="social-links__item social-links__item--instagram"
+                       aria-label="Follow us on Instagram"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61575502290591" 
+                       class="social-links__item social-links__item--facebook"
+                       aria-label="Follow us on Facebook"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Facebook</span>
+                    </a>
+                    <a href="https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x" 
+                       class="social-links__item social-links__item--whatsapp"
+                       aria-label="Join our WhatsApp group"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">WhatsApp</span>
+                    </a>
+                    <a href="mailto:info@saborconflow.com" 
+                       class="social-links__item social-links__item--email"
+                       aria-label="Send us an email">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Email</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="code-snippet">
+&lt;div class="social-links social-links--centered"&gt;
+    &lt;span class="social-links__text"&gt;Connect with us&lt;/span&gt;
+    &lt;!-- social links container --&gt;
+&lt;/div&gt;
+        </div>
+    </section>
+
+    <!-- Large Version -->
+    <section class="demo-section">
+        <h2 class="demo-title">3. Large Version</h2>
+        <p class="demo-description">Larger social links for prominent placement or landing pages.</p>
+        
+        <div class="demo-container">
+            <div class="social-links social-links--large social-links--centered">
+                <span class="social-links__text" aria-hidden="true">Follow our journey</span>
+                <div class="social-links__container">
+                    <a href="https://www.instagram.com/saborconflow.dance/" 
+                       class="social-links__item social-links__item--instagram"
+                       aria-label="Follow us on Instagram"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61575502290591" 
+                       class="social-links__item social-links__item--facebook"
+                       aria-label="Follow us on Facebook"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Facebook</span>
+                    </a>
+                    <a href="https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x" 
+                       class="social-links__item social-links__item--whatsapp"
+                       aria-label="Join our WhatsApp group"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">WhatsApp</span>
+                    </a>
+                    <a href="mailto:info@saborconflow.com" 
+                       class="social-links__item social-links__item--email"
+                       aria-label="Send us an email">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Email</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="code-snippet">
+&lt;div class="social-links social-links--large social-links--centered"&gt;
+    &lt;!-- content --&gt;
+&lt;/div&gt;
+        </div>
+    </section>
+
+    <!-- Small/Compact Version -->
+    <section class="demo-section">
+        <h2 class="demo-title">4. Small/Compact Version</h2>
+        <p class="demo-description">Compact version for use in navigation or sidebar areas.</p>
+        
+        <div class="demo-container">
+            <div class="social-links social-links--small">
+                <div class="social-links__container">
+                    <a href="https://www.instagram.com/saborconflow.dance/" 
+                       class="social-links__item social-links__item--instagram"
+                       aria-label="Follow us on Instagram"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61575502290591" 
+                       class="social-links__item social-links__item--facebook"
+                       aria-label="Follow us on Facebook"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Facebook</span>
+                    </a>
+                    <a href="https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x" 
+                       class="social-links__item social-links__item--whatsapp"
+                       aria-label="Join our WhatsApp group"
+                       target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">WhatsApp</span>
+                    </a>
+                    <a href="mailto:info@saborconflow.com" 
+                       class="social-links__item social-links__item--email"
+                       aria-label="Send us an email">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Email</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="code-snippet">
+&lt;div class="social-links social-links--small"&gt;
+    &lt;!-- no text, just icons --&gt;
+&lt;/div&gt;
+        </div>
+    </section>
+
+    <!-- Mobile Preview -->
+    <section class="demo-section">
+        <h2 class="demo-title">5. Mobile Behavior</h2>
+        <p class="demo-description">
+            On mobile devices (screens < 640px), the "Follow us" text is hidden and icons are slightly smaller.
+            Hover effects are disabled in favor of touch-friendly active states.
+        </p>
+        
+        <div class="demo-container">
+            <p><strong>Resize your browser window to see responsive behavior.</strong></p>
+            {% include 'components/social_links.html' %}
+        </div>
+    </section>
+
+    <!-- Accessibility Features -->
+    <section class="demo-section">
+        <h2 class="demo-title">6. Accessibility Features</h2>
+        <p class="demo-description">The component includes comprehensive accessibility features:</p>
+        
+        <ul style="margin-left: 2rem; margin-bottom: 2rem;">
+            <li><strong>ARIA Labels:</strong> Each link has descriptive aria-label attributes</li>
+            <li><strong>Keyboard Navigation:</strong> Use Tab, Arrow keys, Home, End to navigate</li>
+            <li><strong>Focus Indicators:</strong> Clear focus outlines with proper contrast</li>
+            <li><strong>Screen Reader Support:</strong> Tooltips and status announcements</li>
+            <li><strong>Reduced Motion:</strong> Respects prefers-reduced-motion setting</li>
+            <li><strong>High Contrast:</strong> Enhanced borders and text in high contrast mode</li>
+        </ul>
+        
+        <div class="demo-container">
+            <p><strong>Try navigating with keyboard only:</strong></p>
+            {% include 'components/social_links.html' %}
+        </div>
+    </section>
+
+    <!-- Integration Guide -->
+    <section class="demo-section">
+        <h2 class="demo-title">7. Integration Guide</h2>
+        <p class="demo-description">How to use this component in your templates:</p>
+        
+        <h3>Basic Usage:</h3>
+        <div class="code-snippet">
+{% verbatim %}{% include 'components/social_links.html' %}{% endverbatim %}
+        </div>
+        
+        <h3>With Custom Classes:</h3>
+        <div class="code-snippet">
+&lt;div class="social-links social-links--centered social-links--large"&gt;
+    &lt;!-- Component content will be rendered here --&gt;
+&lt;/div&gt;
+        </div>
+        
+        <h3>Available CSS Classes:</h3>
+        <ul style="margin-left: 2rem;">
+            <li><code>social-links--centered</code> - Centers the component</li>
+            <li><code>social-links--large</code> - Larger icons (52px)</li>
+            <li><code>social-links--small</code> - Smaller icons (36px)</li>
+            <li><code>social-links--standalone</code> - Adds padding and background</li>
+            <li><code>social-links--animated</code> - Adds subtle pulse animation</li>
+        </ul>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Demo-specific enhancements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Highlight code snippets on click
+        document.querySelectorAll('.code-snippet').forEach(snippet => {
+            snippet.addEventListener('click', function() {
+                this.style.backgroundColor = '#2d2d2d';
+                setTimeout(() => {
+                    this.style.backgroundColor = '#1e1e1e';
+                }, 200);
+            });
+        });
+        
+        // Add copy to clipboard functionality
+        document.querySelectorAll('.code-snippet').forEach(snippet => {
+            snippet.title = 'Click to copy code';
+            snippet.style.cursor = 'pointer';
+            
+            snippet.addEventListener('click', function() {
+                navigator.clipboard.writeText(this.textContent).then(() => {
+                    // Show temporary success message
+                    const original = this.style.backgroundColor;
+                    this.style.backgroundColor = '#2d5a2d';
+                    setTimeout(() => {
+                        this.style.backgroundColor = original;
+                    }, 500);
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

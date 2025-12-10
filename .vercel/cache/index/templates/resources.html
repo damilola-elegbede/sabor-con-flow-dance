@@ -1,0 +1,320 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dance Resources & Playlists - Sabor con Flow Dance{% endblock %}
+
+{% block meta_description %}Discover curated Spotify playlists for each Cuban salsa class type at Sabor con Flow Dance. Perfect music for SCF Choreo Team, Pasos Básicos, Casino Royale, and practice sessions.{% endblock %}
+
+{% block meta_keywords %}Cuban salsa music, dance playlists, Spotify playlists, salsa practice music, casino dance music, choreography music, dance resources Boulder{% endblock %}
+
+{% block canonical_url %}{{ request.scheme }}://{{ request.get_host }}{% url 'core:resources' %}{% endblock %}
+
+{% block og_title %}Dance Resources & Playlists - Sabor con Flow Dance{% endblock %}
+{% block og_description %}Discover curated Spotify playlists for each Cuban salsa class type. Perfect music for practice and performance.{% endblock %}
+{% block og_type %}website{% endblock %}
+
+{% block structured_data %}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Dance Resources & Playlists - Sabor con Flow Dance",
+  "description": "Curated Spotify playlists for Cuban salsa classes and practice sessions",
+  "url": "{{ request.scheme }}://{{ request.get_host }}{% url 'core:resources' %}",
+  "mainEntity": {
+    "@type": "MusicPlaylist",
+    "name": "Sabor con Flow Dance Playlists",
+    "description": "Curated music collections for Cuban salsa classes",
+    "genre": "Cuban Salsa",
+    "creator": {
+      "@type": "Organization",
+      "name": "Sabor Con Flow Dance"
+    }
+  }
+}
+</script>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="preload" href="{% static 'css/spotify-playlists.css' %}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="{% static 'css/spotify-playlists.css' %}"></noscript>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="spotify-section">
+    <div class="container">
+        <h1>Dance Resources & Playlists</h1>
+        <p class="section-subtitle">
+            Discover our curated Spotify playlists designed specifically for each class type. 
+            Perfect for practice sessions, warm-ups, and getting into the Cuban salsa rhythm.
+        </p>
+    </div>
+</section>
+
+<!-- Main Class Playlists -->
+{% if main_class_playlists %}
+<section class="spotify-section">
+    <div class="container">
+        <h2><i class="fas fa-graduation-cap"></i> Class Playlists</h2>
+        <p class="section-subtitle">
+            Music specifically curated for our Sunday classes at Avalon Ballroom
+        </p>
+        
+        <div class="playlists-grid">
+            {% for playlist in main_class_playlists %}
+                {% include 'components/spotify_playlist_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Practice & Additional Playlists -->
+{% if practice_playlists %}
+<section class="spotify-section">
+    <div class="container">
+        <h2><i class="fas fa-dumbbell"></i> Practice & Training</h2>
+        <p class="section-subtitle">
+            Perfect for home practice, warm-ups, and skill development
+        </p>
+        
+        <div class="playlists-grid">
+            {% for playlist in practice_playlists %}
+                {% include 'components/spotify_playlist_card.html' %}
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Music Discovery Tips -->
+<section class="spotify-section">
+    <div class="container">
+        <div class="music-tips">
+            <h2><i class="fas fa-lightbulb"></i> Music Discovery Tips</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <h3>Listen Actively</h3>
+                    <p>Pay attention to the rhythm and percussion patterns. Cuban salsa has a distinctive clave rhythm that drives the dance.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3>Feel the Music</h3>
+                    <p>Dance is about expressing the music through movement. Let the rhythm guide your body and connect with the emotion.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Share & Discover</h3>
+                    <p>Share your favorite songs with fellow dancers and ask instructors for recommendations to expand your musical knowledge.</p>
+                </div>
+                
+                <div class="tip-card">
+                    <div class="tip-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>Practice Regularly</h3>
+                    <p>Use these playlists for regular practice at home. Consistent exposure to authentic Cuban music improves your timing and musicality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="spotify-section">
+    <div class="container">
+        <div class="resources-cta">
+            <h2>Ready to Dance?</h2>
+            <p>Join us for our Sunday classes and experience the magic of Cuban salsa!</p>
+            <div class="cta-buttons">
+                <a href="{% url 'core:schedule' %}" class="btn btn-primary">
+                    <i class="fas fa-calendar"></i>
+                    View Schedule
+                </a>
+                <a href="{% url 'core:contact' %}" class="btn btn-secondary">
+                    <i class="fas fa-envelope"></i>
+                    Contact Us
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% if not all_playlists %}
+<!-- No Playlists Available -->
+<section class="spotify-section">
+    <div class="container">
+        <div class="no-playlists">
+            <div class="no-playlists-icon">
+                <i class="fas fa-music"></i>
+            </div>
+            <h2>Playlists Coming Soon!</h2>
+            <p>We're currently curating the perfect playlists for each class type. Check back soon for our specially selected Cuban salsa music collections.</p>
+            <p>In the meantime, feel free to explore our class schedule and join us for live music and dance instruction.</p>
+            <div class="temp-cta">
+                <a href="{% url 'core:schedule' %}" class="btn btn-primary">
+                    <i class="fas fa-calendar"></i>
+                    View Class Schedule
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/spotify-playlists.js' %}" defer></script>
+
+<style>
+/* Additional styles for resources page */
+.tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.tip-card {
+    background: #2a2a2a;
+    padding: 2rem;
+    border-radius: 12px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.tip-card:hover {
+    transform: translateY(-5px);
+}
+
+.tip-icon {
+    font-size: 2.5rem;
+    color: #C7B375;
+    margin-bottom: 1rem;
+}
+
+.tip-card h3 {
+    color: #C7B375;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.tip-card p {
+    color: #cccccc;
+    line-height: 1.6;
+}
+
+.resources-cta {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.resources-cta h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #C7B375;
+}
+
+.resources-cta p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #cccccc;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 1rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-primary {
+    background: #C7B375;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #b8a566;
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    background: transparent;
+    color: #C7B375;
+    border: 2px solid #C7B375;
+}
+
+.btn-secondary:hover {
+    background: #C7B375;
+    color: black;
+    text-decoration: none;
+}
+
+.no-playlists {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.no-playlists-icon {
+    font-size: 4rem;
+    color: #C7B375;
+    margin-bottom: 2rem;
+}
+
+.no-playlists h2 {
+    color: #C7B375;
+    margin-bottom: 1rem;
+}
+
+.no-playlists p {
+    color: #cccccc;
+    margin-bottom: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.temp-cta {
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .tips-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .resources-cta h2 {
+        font-size: 2rem;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,264 @@
+{% comment %}
+JavaScript Bundle Loading Component with Progressive Enhancement
+Loads the appropriate JavaScript bundles based on page and features needed
+{% endcomment %}
+
+{% load static %}
+
+<!-- Progressive Enhancement Detection -->
+<script>
+  // Add no-js class for CSS fallbacks
+  document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+  
+  // Feature detection
+  window.browserFeatures = {
+    modules: 'noModule' in HTMLScriptElement.prototype,
+    intersectionObserver: 'IntersectionObserver' in window,
+    webp: false,
+    serviceWorker: 'serviceWorker' in navigator,
+    localStorage: (function() {
+      try {
+        localStorage.setItem('test', 'test');
+        localStorage.removeItem('test');
+        return true;
+      } catch(e) {
+        return false;
+      }
+    })()
+  };
+
+  // WebP detection
+  (function() {
+    var webP = new Image();
+    webP.onload = webP.onerror = function() {
+      window.browserFeatures.webp = webP.height === 2;
+      document.documentElement.classList.add(webP.height === 2 ? 'webp' : 'no-webp');
+    };
+    webP.src = 'data:image/webp;base64,UklGRjoAAABXRUJQVlA4IC4AAACyAgCdASoCAAIALmk0mk0iIiIiIgBoSygABc6WWgAA/veff/0PP8bA//LwYAAA';
+  })();
+
+  // Network information
+  if ('connection' in navigator) {
+    var conn = navigator.connection;
+    document.documentElement.classList.add('connection-' + conn.effectiveType);
+    if (conn.saveData) {
+      document.documentElement.classList.add('save-data');
+    }
+  }
+</script>
+
+<!-- Bundle Loading Strategy -->
+{% if debug %}
+  <!-- Development Mode: Load individual bundles -->
+  <script>
+    window.BUNDLE_MODE = 'development';
+    window.STATIC_URL = '{% get_static_prefix %}';
+  </script>
+  
+  <!-- Critical bundles first -->
+  <script src="{% static 'js/dist/vendor.bundle.js' %}" defer></script>
+  <script src="{% static 'js/dist/main.bundle.js' %}" defer></script>
+  
+  <!-- Page-specific bundles -->
+  {% block page_bundles %}
+    {% if 'page-home' in request.resolver_match.view_name or request.resolver_match.url_name == 'home' %}
+      <script src="{% static 'js/dist/home.bundle.js' %}" defer></script>
+    {% elif 'page-contact' in request.resolver_match.view_name or request.resolver_match.url_name == 'contact' %}
+      <script src="{% static 'js/dist/contact.bundle.js' %}" defer></script>
+    {% elif 'page-pricing' in request.resolver_match.view_name or request.resolver_match.url_name == 'pricing' %}
+      <script src="{% static 'js/dist/pricing.bundle.js' %}" defer></script>
+    {% endif %}
+  {% endblock %}
+  
+  <!-- Feature bundles (lazy loaded) -->
+  <script>
+    // Load feature bundles on demand in development
+    window.loadFeatureBundle = function(feature) {
+      const featureBundles = {
+        'gallery': '{% static "js/dist/gallery.bundle.js" %}',
+        'analytics': '{% static "js/dist/analytics.bundle.js" %}',
+        'performance': '{% static "js/dist/performance-monitor.bundle.js" %}',
+        'social': '{% static "js/dist/social-features.bundle.js" %}',
+        'whatsapp': '{% static "js/dist/whatsapp-chat.bundle.js" %}'
+      };
+      
+      const bundleUrl = featureBundles[feature];
+      if (bundleUrl && !document.querySelector(`script[src="${bundleUrl}"]`)) {
+        const script = document.createElement('script');
+        script.src = bundleUrl;
+        script.defer = true;
+        document.head.appendChild(script);
+      }
+    };
+  </script>
+
+{% else %}
+  <!-- Production Mode: Load optimized bundles with manifest -->
+  <script>
+    window.BUNDLE_MODE = 'production';
+    window.STATIC_URL = '{% get_static_prefix %}';
+    
+    // Load bundle manifest for cache-busted filenames
+    fetch('{% static "js/dist/manifest.json" %}')
+      .then(response => response.json())
+      .then(manifest => {
+        window.bundleManifest = manifest;
+        loadProductionBundles(manifest);
+      })
+      .catch(error => {
+        console.warn('Could not load bundle manifest, falling back to development bundles');
+        loadFallbackBundles();
+      });
+
+    function loadProductionBundles(manifest) {
+      const staticUrl = '{% get_static_prefix %}js/dist/';
+      
+      // Load critical bundles first
+      loadScript(staticUrl + manifest.vendor);
+      loadScript(staticUrl + manifest.main);
+      
+      // Load page-specific bundle
+      {% if 'home' in request.resolver_match.url_name or request.resolver_match.url_name == 'core:home' %}
+        if (manifest.home) loadScript(staticUrl + manifest.home);
+      {% elif 'contact' in request.resolver_match.url_name %}
+        if (manifest.contact) loadScript(staticUrl + manifest.contact);
+      {% elif 'pricing' in request.resolver_match.url_name %}
+        if (manifest.pricing) loadScript(staticUrl + manifest.pricing);
+      {% endif %}
+      
+      // Setup lazy loading for feature bundles
+      window.loadFeatureBundle = function(feature) {
+        const bundleFile = manifest[feature];
+        if (bundleFile) {
+          loadScript(staticUrl + bundleFile);
+        }
+      };
+    }
+
+    function loadFallbackBundles() {
+      // Fallback to development bundle names
+      loadScript('{% static "js/dist/vendor.bundle.js" %}');
+      loadScript('{% static "js/dist/main.bundle.js" %}');
+      
+      {% block fallback_page_bundles %}
+        {% if 'home' in request.resolver_match.url_name or request.resolver_match.url_name == 'core:home' %}
+          loadScript('{% static "js/dist/home.bundle.js" %}');
+        {% elif 'contact' in request.resolver_match.url_name %}
+          loadScript('{% static "js/dist/contact.bundle.js" %}');
+        {% elif 'pricing' in request.resolver_match.url_name %}
+          loadScript('{% static "js/dist/pricing.bundle.js" %}');
+        {% endif %}
+      {% endblock %}
+    }
+
+    function loadScript(src) {
+      if (!document.querySelector(`script[src="${src}"]`)) {
+        const script = document.createElement('script');
+        script.src = src;
+        script.defer = true;
+        script.onerror = function() {
+          console.warn('Failed to load script:', src);
+        };
+        document.head.appendChild(script);
+      }
+    }
+  </script>
+{% endif %}
+
+<!-- Lazy loading setup for feature bundles -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Load bundles based on data attributes
+    document.querySelectorAll('[data-requires-bundle]').forEach(function(element) {
+      var bundleName = element.getAttribute('data-requires-bundle');
+      
+      var loadBundle = function() {
+        if (window.loadFeatureBundle) {
+          window.loadFeatureBundle(bundleName);
+        }
+      };
+
+      // Load on various interaction types
+      element.addEventListener('mouseenter', loadBundle, { once: true, passive: true });
+      element.addEventListener('touchstart', loadBundle, { once: true, passive: true });
+      element.addEventListener('focus', loadBundle, { once: true, passive: true });
+    });
+
+    // Load bundles based on intersection observer
+    if ('IntersectionObserver' in window) {
+      var bundleObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var bundleName = entry.target.getAttribute('data-lazy-bundle');
+            if (bundleName && window.loadFeatureBundle) {
+              window.loadFeatureBundle(bundleName);
+              bundleObserver.unobserve(entry.target);
+            }
+          }
+        });
+      }, {
+        rootMargin: '50px'
+      });
+
+      document.querySelectorAll('[data-lazy-bundle]').forEach(function(element) {
+        bundleObserver.observe(element);
+      });
+    }
+  });
+</script>
+
+<!-- Service Worker Registration (Production Only) -->
+{% if not debug %}
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('{% static "js/dist/sw.js" %}')
+        .then(function(registration) {
+          console.log('ServiceWorker registration successful');
+        })
+        .catch(function(error) {
+          console.log('ServiceWorker registration failed');
+        });
+    });
+  }
+</script>
+{% endif %}
+
+<!-- Performance monitoring setup -->
+<script>
+  // Set up performance monitoring
+  window.performanceConfig = {
+    enableWebVitals: true,
+    enableCustomMetrics: {{ debug|yesno:"false,true" }},
+    sampleRate: {{ debug|yesno:"1.0,0.1" }}, // 100% in dev, 10% in prod
+    endpoint: '/api/performance/'
+  };
+</script>
+
+<!-- Noscript fallbacks -->
+<noscript>
+  <style>
+    /* Ensure critical functionality works without JavaScript */
+    .js-only { display: none !important; }
+    .no-js-show { display: block !important; }
+    
+    /* Mobile menu fallback */
+    .mobile-menu-toggle:checked + .mobile-menu {
+      display: block !important;
+    }
+    
+    /* Form enhancements that work without JS */
+    .enhanced-form {
+      /* Basic styling that doesn't depend on JS */
+    }
+  </style>
+  
+  <!-- Link to non-JS versions of functionality -->
+  <div class="noscript-notice" style="background: #f0f0f0; padding: 1rem; text-align: center; border-bottom: 1px solid #ddd;">
+    <p>This site works best with JavaScript enabled. <a href="/help/no-javascript/">Learn more about using this site without JavaScript</a>.</p>
+  </div>
+</noscript>
+
+<!-- Block for additional page-specific JavaScript -->
+{% block extra_js %}
+{% endblock %}

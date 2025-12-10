@@ -1,0 +1,153 @@
+/* Facebook Events Admin Styles - SPEC_05 Group B Task 6 */
+
+/* Facebook Event Admin List View */
+.facebook-event-list .event-preview img {
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.facebook-event-list .is-future .checkicon {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.facebook-event-list .is-past .deletelink {
+    color: #dc3545;
+}
+
+/* Facebook Event Admin Detail View */
+.facebook-event-detail .cover-photo img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.facebook-event-detail .event-data {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 6px;
+    margin: 10px 0;
+}
+
+.facebook-event-detail .sync-info {
+    color: #6c757d;
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Admin Action Buttons */
+.facebook-sync-action {
+    background: #1877f2;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.facebook-sync-action:hover {
+    background: #166fe5;
+}
+
+/* Status Badges */
+.status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.status-badge.future {
+    background: #28a745;
+    color: white;
+}
+
+.status-badge.past {
+    background: #dc3545;
+    color: white;
+}
+
+.status-badge.featured {
+    background: #ffc107;
+    color: #212529;
+}
+
+/* Facebook Branding */
+.facebook-brand {
+    color: #1877f2;
+}
+
+.facebook-brand .fab {
+    margin-right: 6px;
+}
+
+/* Responsive Admin Styles */
+@media (max-width: 768px) {
+    .facebook-event-detail .cover-photo img {
+        max-width: 100%;
+    }
+    
+    .facebook-events-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Admin Form Improvements */
+.form-row .facebook-url {
+    font-family: monospace;
+    font-size: 0.9em;
+    color: #1877f2;
+}
+
+.form-row .facebook-id {
+    font-family: monospace;
+    font-size: 0.9em;
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 3px;
+}
+
+/* Help Text Styling */
+.help {
+    color: #6c757d;
+    font-size: 0.85em;
+    line-height: 1.4;
+}
+
+.help .facebook-help {
+    background: #e3f2fd;
+    padding: 10px;
+    border-left: 4px solid #1877f2;
+    border-radius: 0 4px 4px 0;
+    margin: 10px 0;
+}
+
+/* Table Improvements */
+#result_list .facebook-event-row {
+    border-left: 3px solid #1877f2;
+}
+
+#result_list .facebook-event-row.featured {
+    background: #fff3cd;
+}
+
+#result_list .facebook-event-row.inactive {
+    opacity: 0.6;
+}
+
+/* Loading States */
+.facebook-sync-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.facebook-sync-loading::after {
+    content: "Syncing...";
+    margin-left: 8px;
+    color: #6c757d;
+    font-style: italic;
+}

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Links Component Test</title>
+    
+    <!-- CSS Variables (minimal version for testing) -->
+    <style>
+        :root {
+            --color-gold: #C7B375;
+            --color-black: #000000;
+            --color-white: #FFFFFF;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --transition-base: 250ms ease;
+            --transition-fast: 150ms ease;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-body);
+            background: #1a1a1a;
+            color: white;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        
+        .test-section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+        
+        h1, h2 { color: var(--color-gold); margin-bottom: 1rem; }
+        h1 { font-size: 2.5rem; }
+        h2 { font-size: 1.5rem; }
+        
+        .footer-section {
+            background: var(--color-black);
+            padding: 2rem;
+            border-radius: 8px;
+        }
+    </style>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Social Links Component CSS -->
+    <link rel="stylesheet" href="static/css/social_links.css">
+</head>
+<body>
+    <h1>Social Links Component Test</h1>
+    
+    <!-- Test 1: Basic Component -->
+    <div class="test-section">
+        <h2>Test 1: Basic Social Links</h2>
+        
+        <!-- Social Media Links Component -->
+        <div class="social-links" role="complementary" aria-label="Follow us on social media">
+            <!-- Follow Us Text (Desktop Only) -->
+            <span class="social-links__text" aria-hidden="true">Follow us</span>
+            
+            <!-- Social Media Icons -->
+            <div class="social-links__container">
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/saborconflow.dance/" 
+                   class="social-links__item social-links__item--instagram"
+                   aria-label="Follow us on Instagram - Opens in new window"
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   data-platform="instagram">
+                    <i class="fab fa-instagram" aria-hidden="true"></i>
+                    <span class="social-links__tooltip">Instagram</span>
+                </a>
+                
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/profile.php?id=61575502290591" 
+                   class="social-links__item social-links__item--facebook"
+                   aria-label="Follow us on Facebook - Opens in new window"
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   data-platform="facebook">
+                    <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                    <span class="social-links__tooltip">Facebook</span>
+                </a>
+                
+                <!-- WhatsApp -->
+                <a href="https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x" 
+                   class="social-links__item social-links__item--whatsapp"
+                   aria-label="Join our WhatsApp group - Opens in new window"
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   data-platform="whatsapp">
+                    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                    <span class="social-links__tooltip">WhatsApp</span>
+                </a>
+                
+                <!-- Email Contact -->
+                <a href="mailto:info@saborconflow.com?subject=Inquiry%20from%20Website" 
+                   class="social-links__item social-links__item--email"
+                   aria-label="Send us an email"
+                   data-platform="email">
+                    <i class="fas fa-envelope" aria-hidden="true"></i>
+                    <span class="social-links__tooltip">Email</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test 2: Footer Context -->
+    <div class="test-section">
+        <h2>Test 2: Footer Context</h2>
+        
+        <div class="footer-section">
+            <h4 style="color: var(--color-gold); margin-bottom: 1rem;">About Sabor Con Flow</h4>
+            <p>Your premier destination for Latin dance classes and unforgettable dance experiences.</p>
+            
+            <!-- Social Links in Footer Context -->
+            <div class="social-links" role="complementary" aria-label="Follow us on social media">
+                <span class="social-links__text" aria-hidden="true">Follow us</span>
+                <div class="social-links__container">
+                    <a href="https://www.instagram.com/saborconflow.dance/" 
+                       class="social-links__item social-links__item--instagram"
+                       aria-label="Follow us on Instagram"
+                       target="_blank" rel="noopener noreferrer"
+                       data-platform="instagram">
+                        <i class="fab fa-instagram" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Instagram</span>
+                    </a>
+                    <a href="https://www.facebook.com/profile.php?id=61575502290591" 
+                       class="social-links__item social-links__item--facebook"
+                       aria-label="Follow us on Facebook"
+                       target="_blank" rel="noopener noreferrer"
+                       data-platform="facebook">
+                        <i class="fab fa-facebook-f" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Facebook</span>
+                    </a>
+                    <a href="https://chat.whatsapp.com/GaZONDA1HgFG7C8djihJ1x" 
+                       class="social-links__item social-links__item--whatsapp"
+                       aria-label="Join our WhatsApp group"
+                       target="_blank" rel="noopener noreferrer"
+                       data-platform="whatsapp">
+                        <i class="fab fa-whatsapp" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">WhatsApp</span>
+                    </a>
+                    <a href="mailto:info@saborconflow.com" 
+                       class="social-links__item social-links__item--email"
+                       aria-label="Send us an email"
+                       data-platform="email">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>
+                        <span class="social-links__tooltip">Email</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test 3: Different Sizes -->
+    <div class="test-section">
+        <h2>Test 3: Size Variations</h2>
+        
+        <h3 style="margin: 1rem 0;">Large Version:</h3>
+        <div class="social-links social-links--large social-links--centered">
+            <span class="social-links__text">Connect with us</span>
+            <div class="social-links__container">
+                <a href="#" class="social-links__item social-links__item--instagram" data-platform="instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span class="social-links__tooltip">Instagram</span>
+                </a>
+                <a href="#" class="social-links__item social-links__item--facebook" data-platform="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span class="social-links__tooltip">Facebook</span>
+                </a>
+                <a href="#" class="social-links__item social-links__item--whatsapp" data-platform="whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="social-links__tooltip">WhatsApp</span>
+                </a>
+                <a href="#" class="social-links__item social-links__item--email" data-platform="email">
+                    <i class="fas fa-envelope"></i>
+                    <span class="social-links__tooltip">Email</span>
+                </a>
+            </div>
+        </div>
+        
+        <h3 style="margin: 2rem 0 1rem;">Small Version:</h3>
+        <div class="social-links social-links--small">
+            <div class="social-links__container">
+                <a href="#" class="social-links__item social-links__item--instagram" data-platform="instagram">
+                    <i class="fab fa-instagram"></i>
+                    <span class="social-links__tooltip">Instagram</span>
+                </a>
+                <a href="#" class="social-links__item social-links__item--facebook" data-platform="facebook">
+                    <i class="fab fa-facebook-f"></i>
+                    <span class="social-links__tooltip">Facebook</span>
+                </a>
+                <a href="#" class="social-links__item social-links__item--whatsapp" data-platform="whatsapp">
+                    <i class="fab fa-whatsapp"></i>
+                    <span class="social-links__tooltip">WhatsApp</span>
+                </a>
+                <a href="#" class="social-links__item social-links__item--email" data-platform="email">
+                    <i class="fas fa-envelope"></i>
+                    <span class="social-links__tooltip">Email</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Test Instructions -->
+    <div class="test-section">
+        <h2>Test Instructions</h2>
+        <ul style="margin-left: 2rem;">
+            <li><strong>Hover Test:</strong> Hover over each social icon to see platform-specific colors</li>
+            <li><strong>Keyboard Test:</strong> Use Tab key to navigate, arrow keys to move between icons</li>
+            <li><strong>Click Test:</strong> Click icons to test links (real links will open social media)</li>
+            <li><strong>Mobile Test:</strong> Resize browser window to < 640px to see mobile behavior</li>
+            <li><strong>Accessibility:</strong> Test with screen reader for proper announcements</li>
+            <li><strong>Touch Test:</strong> On touch devices, test tap interactions</li>
+        </ul>
+        
+        <h3 style="margin-top: 2rem;">Expected Behaviors:</h3>
+        <ul style="margin-left: 2rem;">
+            <li>Instagram: Pink gradient on hover</li>
+            <li>Facebook: Blue background on hover</li>
+            <li>WhatsApp: Green background on hover</li>
+            <li>Email: Gold background on hover</li>
+            <li>Tooltips appear on hover (desktop only)</li>
+            <li>"Follow us" text hidden on mobile</li>
+            <li>Smooth animations and transitions</li>
+        </ul>
+    </div>
+    
+    <!-- Enhanced JavaScript for Testing -->
+    <script>
+        // Mock analytics for testing
+        window.GA4_DEBUG_MODE = true;
+        window.ENABLE_ANALYTICS = true;
+        window.gtag = function(type, event, params) {
+            console.log('GA4 Event:', type, event, params);
+        };
+        
+        // Basic performance analytics mock
+        window.performanceAnalytics = {
+            addCustomEvent: function(type, data) {
+                console.log('Custom Analytics:', type, data);
+            }
+        };
+    </script>
+    
+    <!-- Social Links Component JavaScript -->
+    <script src="static/js/social-links.js"></script>
+    
+    <!-- Test Results Display -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('✅ Social Links Component Test Page Loaded');
+            console.log('📱 Window width:', window.innerWidth + 'px');
+            console.log('🎯 Social links found:', document.querySelectorAll('.social-links__item').length);
+            
+            // Test keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.target.classList.contains('social-links__item')) {
+                    console.log('⌨️ Keyboard interaction:', e.key, 'on', e.target.dataset.platform);
+                }
+            });
+            
+            // Test hover events
+            document.querySelectorAll('.social-links__item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    console.log('🖱️ Hover on:', this.dataset.platform);
+                });
+            });
+            
+            // Test click events
+            document.querySelectorAll('.social-links__item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    console.log('👆 Click on:', this.dataset.platform);
+                    if (this.dataset.platform === 'email') {
+                        e.preventDefault();
+                        console.log('📧 Email click intercepted for testing');
+                    }
+                });
+            });
+            
+            // Mobile detection
+            if (window.innerWidth <= 640) {
+                console.log('📱 Mobile layout detected');
+            } else {
+                console.log('💻 Desktop layout detected');
+            }
+        });
+        
+        // Window resize test
+        window.addEventListener('resize', function() {
+            console.log('📐 Window resized:', window.innerWidth + 'px');
+            if (window.innerWidth <= 640) {
+                console.log('📱 Switched to mobile layout');
+            } else {
+                console.log('💻 Switched to desktop layout');
+            }
+        });
+    </script>
+</body>
+</html>

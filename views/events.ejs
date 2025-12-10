@@ -1,0 +1,35 @@
+<div class="container main-content-events">
+    <h1 class="page-title">Our Classes</h1>
+    
+    <p style="text-align: center; margin-bottom: 2rem; color: #ffffff;">All classes can also be found on <a href="https://pasito.fun/u/daelegbe" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;">pasito.fun</a>.</p>
+    
+    <div class="event-container">
+        <% events.forEach(event => { %>
+        <div class="event-card">
+            <h2 class="event-title"><%= event.title %></h2>
+            <div class="event-date">
+                <span class="event-icon">📅</span>
+                <span><%= event.date %></span>
+            </div>
+            <div class="event-time">
+                <span class="event-icon">⏰</span>
+                <span><%= event.time %></span>
+            </div>
+            <div class="event-location">
+                <span class="event-icon">📍</span>
+                <span><a href="https://boulderdance.org/" target="_blank" rel="noopener noreferrer" style="color: #C7B375; text-decoration: none;"><%= event.location %></a></span>
+            </div>
+            <div class="event-description">
+                <p><%= event.description %></p>
+            </div>
+            <div class="event-pricing">
+                <h3>Pricing</h3>
+                <ul>
+                    <li>Drop-in: $<%= event.price %></li>
+                    <li>Monthly: $<%= event.monthly_price %></li>
+                </ul>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+</div>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Navigation Test - Sabor Con Flow Dance</title>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- CSS Variables -->
+    <style>
+        :root {
+            --color-gold: #C7B375;
+            --color-gold-secondary: #BFAA65;
+            --color-gold-light: #E5D4A1;
+            --color-gold-dark: #9C8E5A;
+            --color-black: #000000;
+            --color-white: #FFFFFF;
+            --color-gray-light: #999999;
+            --color-gray-lighter: #F5F5F5;
+            
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            
+            --transition-base: 250ms ease;
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--color-black);
+            background-color: var(--color-white);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: var(--color-black);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--shadow-md);
+        }
+
+        .navbar-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-md) 0;
+        }
+
+        .navbar-brand {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--color-gold);
+            text-decoration: none;
+        }
+
+        .navbar-menu {
+            display: none;
+            list-style: none;
+            gap: var(--spacing-xl);
+        }
+
+        .navbar-item {
+            color: var(--color-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color var(--transition-base);
+        }
+
+        .navbar-item:hover {
+            color: var(--color-gold);
+        }
+
+        /* Screen reader only text */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        /* Desktop styles */
+        @media (min-width: 768px) {
+            .navbar-menu {
+                display: flex;
+            }
+        }
+
+        /* Main content for testing */
+        main {
+            padding: var(--spacing-2xl) 0;
+            min-height: 100vh;
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-lg);
+            color: var(--color-black);
+        }
+
+        p {
+            margin-bottom: var(--spacing-md);
+            max-width: 60ch;
+        }
+
+        .test-info {
+            background-color: var(--color-gold-light);
+            padding: var(--spacing-lg);
+            border-radius: 8px;
+            margin: var(--spacing-xl) 0;
+        }
+
+        .test-info h2 {
+            font-family: var(--font-heading);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .test-info ul {
+            margin-left: var(--spacing-lg);
+        }
+
+        .test-info li {
+            margin-bottom: var(--spacing-sm);
+        }
+    </style>
+    
+    <!-- Load navigation CSS -->
+    <link rel="stylesheet" href="static/css/navigation.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="container navbar-container">
+            <a href="#" class="navbar-brand" aria-label="Sabor Con Flow Dance Home">
+                <i class="fas fa-music"></i> Sabor Con Flow
+            </a>
+            
+            <!-- Desktop Menu -->
+            <ul class="navbar-menu" role="menubar">
+                <li role="none"><a href="#home" class="navbar-item" role="menuitem">Home</a></li>
+                <li role="none"><a href="#about" class="navbar-item" role="menuitem">About</a></li>
+                <li role="none"><a href="#classes" class="navbar-item" role="menuitem">Classes</a></li>
+                <li role="none"><a href="#schedule" class="navbar-item" role="menuitem">Schedule</a></li>
+                <li role="none"><a href="#events" class="navbar-item" role="menuitem">Events</a></li>
+                <li role="none"><a href="#gallery" class="navbar-item" role="menuitem">Gallery</a></li>
+                <li role="none"><a href="#pricing" class="navbar-item" role="menuitem">Pricing</a></li>
+                <li role="none"><a href="#contact" class="navbar-item" role="menuitem">Contact</a></li>
+            </ul>
+            
+            <!-- Mobile Menu Toggle -->
+            <button class="navbar-toggle" id="navbar-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="navbar-mobile">
+                <span class="hamburger-line hamburger-line-1"></span>
+                <span class="hamburger-line hamburger-line-2"></span>
+                <span class="hamburger-line hamburger-line-3"></span>
+            </button>
+        </div>
+    </nav>
+    
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu-overlay" id="mobile-menu-overlay" aria-hidden="true"></div>
+    
+    <!-- Mobile Menu Container -->
+    <div class="mobile-menu-container" id="navbar-mobile" aria-label="Mobile navigation menu" role="dialog" aria-modal="true" aria-hidden="true">
+        <!-- Close button for accessibility -->
+        <button class="mobile-menu-close" id="mobile-menu-close" aria-label="Close navigation menu">
+            <span class="sr-only">Close menu</span>
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <ul class="navbar-mobile-menu" role="menubar">
+            <li role="none"><a href="#home" class="navbar-item" role="menuitem">Home</a></li>
+            <li role="none"><a href="#about" class="navbar-item" role="menuitem">About</a></li>
+            <li role="none"><a href="#classes" class="navbar-item" role="menuitem">Classes</a></li>
+            <li role="none"><a href="#schedule" class="navbar-item" role="menuitem">Schedule</a></li>
+            <li role="none"><a href="#events" class="navbar-item" role="menuitem">Events</a></li>
+            <li role="none"><a href="#gallery" class="navbar-item" role="menuitem">Gallery</a></li>
+            <li role="none"><a href="#pricing" class="navbar-item" role="menuitem">Pricing</a></li>
+            <li role="none"><a href="#private" class="navbar-item" role="menuitem">Private Lessons</a></li>
+            <li role="none"><a href="#contact" class="navbar-item" role="menuitem">Contact</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <main id="main-content" role="main">
+        <div class="container">
+            <h1>Mobile Navigation Test Page</h1>
+            <p>This page demonstrates the mobile navigation implementation for Sabor Con Flow Dance website.</p>
+            
+            <div class="test-info">
+                <h2>Mobile Navigation Features:</h2>
+                <ul>
+                    <li><strong>Hamburger Menu:</strong> Three animated lines that transform into an X when active</li>
+                    <li><strong>Slide-in Menu:</strong> Smooth slide-in animation from the right side</li>
+                    <li><strong>Overlay:</strong> Semi-transparent background overlay when menu is open</li>
+                    <li><strong>Touch Targets:</strong> All interactive elements have minimum 44px touch targets</li>
+                    <li><strong>Accessibility:</strong> Full ARIA support and keyboard navigation</li>
+                    <li><strong>Close Methods:</strong> Click X button, overlay, or menu links to close</li>
+                    <li><strong>Body Scroll Lock:</strong> Prevents body scrolling when menu is open</li>
+                    <li><strong>Responsive:</strong> Hamburger menu visible on mobile, hidden on desktop (768px+)</li>
+                </ul>
+            </div>
+            
+            <div class="test-info">
+                <h2>How to Test:</h2>
+                <ul>
+                    <li>Resize your browser window below 768px width to see the hamburger menu</li>
+                    <li>Click the hamburger icon to open the mobile menu</li>
+                    <li>Notice the smooth animations and overlay effect</li>
+                    <li>Try closing the menu using different methods</li>
+                    <li>Test keyboard navigation with Tab and Escape keys</li>
+                    <li>Check that body scroll is prevented when menu is open</li>
+                </ul>
+            </div>
+            
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            
+            <p>Scroll down to test that body scroll is locked when menu is open...</p>
+            
+            <p style="margin-top: 100vh;">This content is below the fold to test scroll locking.</p>
+        </div>
+    </main>
+    
+    <!-- Load mobile navigation JavaScript -->
+    <script src="static/js/mobile-nav.js"></script>
+</body>
+</html>
