@@ -62,12 +62,30 @@ sabor-con-flow-dance/
 The project uses CSS custom properties (design tokens) for consistent styling:
 
 - **Colors**: Brand palette (gold, black, white) with semantic aliases
-- **Typography**: Font families, sizes, weights, and line heights
+- **Typography**: Font families (Inter for body, Playfair Display for headings), sizes, weights, and line heights
 - **Spacing**: 4px base unit scale (0-24 increments)
 - **Shadows**: Elevation and hover state shadows
 - **Transitions**: Standardized durations and easing functions
 
 Design tokens are defined in `public/css/base/variables.css`.
+
+## Accessibility Features
+
+The site includes built-in accessibility support:
+
+- **Skip-to-content link**: Keyboard users can skip navigation and jump directly to main content
+- **Focus-visible states**: Gold outline indicators for keyboard navigation (3px solid with 2-4px offset)
+- **ARIA attributes**: Proper labeling for navigation, social links, and interactive elements
+- **Screen reader utilities**: `.sr-only` class for visually hidden but accessible content
+- **Escape key support**: Mobile menu closes on Escape key press
+- **Semantic HTML**: Proper heading hierarchy, landmarks, and button/link roles
+
+### Keyboard Navigation
+
+- Press `Tab` to reveal skip-link at top of page
+- Press `Enter` on skip-link to jump to main content
+- Press `Escape` to close mobile navigation menu
+- All interactive elements have visible focus indicators
 
 ## Prerequisites
 
