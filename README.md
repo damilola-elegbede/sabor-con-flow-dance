@@ -46,12 +46,28 @@ sabor-con-flow-dance/
 │   ├── urls.py            # URL routing
 │   └── models.py          # Placeholder file (no models used)
 │   └── forms.py           # Placeholder file (no forms used)
+├── public/                 # Public static assets
+│   └── css/
+│       └── base/
+│           └── variables.css  # CSS design tokens
 ├── static/                 # Static assets (CSS, JS, images)
 ├── staticfiles/            # Collected static files
 ├── templates/              # Base templates
 ├── vercel.json            # Vercel deployment configuration
 └── requirements.txt       # Python dependencies
 ```
+
+## CSS Design System
+
+The project uses CSS custom properties (design tokens) for consistent styling:
+
+- **Colors**: Brand palette (gold, black, white) with semantic aliases
+- **Typography**: Font families, sizes, weights, and line heights
+- **Spacing**: 4px base unit scale (0-24 increments)
+- **Shadows**: Elevation and hover state shadows
+- **Transitions**: Standardized durations and easing functions
+
+Design tokens are defined in `public/css/base/variables.css`.
 
 ## Prerequisites
 
