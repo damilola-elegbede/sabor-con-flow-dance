@@ -1,0 +1,255 @@
+/**
+ * Sabor Con Flow - CSS Design Tokens
+ *
+ * This file defines all design tokens as CSS custom properties.
+ * Import this file before all other stylesheets.
+ *
+ * @version 1.0.0
+ * @author Sabor Con Flow
+ */
+
+:root {
+  /* ==========================================================================
+     COLOR TOKENS
+     ========================================================================== */
+
+  /* Brand Colors - Primary Palette */
+  --color-gold: rgb(191, 170, 101);
+  --color-gold-hex: #bfaa65;
+  --color-gold-light: #c7b375;
+  --color-black: #000000;
+  --color-white: #ffffff;
+
+  /* Brand Colors - Opacity Variants */
+  --color-gold-10: rgba(191, 170, 101, 0.1);
+  --color-gold-20: rgba(191, 170, 101, 0.2);
+  --color-gold-50: rgba(191, 170, 101, 0.5);
+  --color-gold-80: rgba(191, 170, 101, 0.8);
+  --color-black-80: rgba(0, 0, 0, 0.8);
+  --color-black-95: rgba(0, 0, 0, 0.95);
+  --color-white-90: rgba(255, 255, 255, 0.9);
+
+  /* Semantic Colors */
+  --color-background: var(--color-black);
+  --color-surface: var(--color-black);
+  --color-text-primary: var(--color-white);
+  --color-text-secondary: var(--color-gold);
+  --color-text-muted: var(--color-white-90);
+  --color-accent: var(--color-gold);
+  --color-accent-hover: var(--color-gold-80);
+  --color-accent-muted: var(--color-gold-80);
+  --color-accent-bg: var(--color-gold-10);
+  --color-accent-transparent: var(--color-gold-20);
+  --color-nav-bg: var(--color-black-95);
+  --color-border: var(--color-gold);
+  --color-border-subtle: var(--color-gold-20);
+
+  /* Gradients (for Phase 2+ components) */
+  --gradient-overlay: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  --gradient-card: linear-gradient(135deg, rgba(191, 170, 101, 0.1), rgba(191, 170, 101, 0.05));
+
+  /* Social Media Colors (for reference/icons) */
+  --color-whatsapp: #25d366;
+  --color-facebook: #1877f2;
+  --color-instagram-yellow: #feda75;
+  --color-instagram-orange: #f58529;
+  --color-instagram-pink: #dd2a7b;
+  --color-instagram-purple: #833ab4;
+  --color-instagram-blue: #405de6;
+
+  /* ==========================================================================
+     TYPOGRAPHY TOKENS
+     ========================================================================== */
+
+  /* Font Families */
+  --font-family-heading: 'Playfair Display', serif;
+  --font-family-body: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, monospace;
+
+  /* Font Sizes - Fluid Scale */
+  --font-size-xs: 0.75rem;   /* 12px */
+  --font-size-sm: 0.875rem;  /* 14px */
+  --font-size-base: 1rem;    /* 16px */
+  --font-size-md: 1.125rem;  /* 18px */
+  --font-size-lg: 1.25rem;   /* 20px */
+  --font-size-xl: 1.5rem;    /* 24px */
+  --font-size-2xl: 2rem;     /* 32px */
+  --font-size-3xl: 2.5rem;   /* 40px */
+  --font-size-4xl: 3rem;     /* 48px */
+
+  /* Font Weights */
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-snug: 1.375;
+  --line-height-normal: 1.5;
+  --line-height-base: var(--line-height-normal);  /* Alias for Phase 2+ compatibility */
+  --line-height-relaxed: 1.625;
+  --line-height-loose: 1.75;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.025em;
+  --letter-spacing-normal: 0;
+  --letter-spacing-wide: 0.025em;
+  --letter-spacing-wider: 0.05em;
+
+  /* ==========================================================================
+     SPACING TOKENS
+     ========================================================================== */
+
+  /* Base spacing unit: 4px */
+  --space-0: 0;
+  --space-1: 0.25rem;   /* 4px */
+  --space-2: 0.5rem;    /* 8px */
+  --space-3: 0.75rem;   /* 12px */
+  --space-4: 1rem;      /* 16px */
+  --space-5: 1.25rem;   /* 20px */
+  --space-6: 1.5rem;    /* 24px */
+  --space-8: 2rem;      /* 32px */
+  --space-10: 2.5rem;   /* 40px */
+  --space-12: 3rem;     /* 48px */
+  --space-16: 4rem;     /* 64px */
+  --space-20: 5rem;     /* 80px */
+  --space-24: 6rem;     /* 96px */
+
+  /* Semantic Spacing */
+  --space-section: var(--space-16);
+  --space-component: var(--space-8);
+  --space-element: var(--space-4);
+  --space-inline: var(--space-2);
+
+  /* ==========================================================================
+     LAYOUT TOKENS
+     ========================================================================== */
+
+  /* Container Widths */
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1200px;
+  --container-2xl: 1400px;
+
+  /* Content Widths */
+  --content-narrow: 600px;
+  --content-default: 800px;
+  --content-wide: 1000px;
+
+  /* Z-Index Scale */
+  --z-base: 0;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+  --z-nav: 998;
+  --z-nav-toggle: 999;
+  --z-header-logo: 1000;
+  --z-menu-toggle: 1001;
+
+  /* ==========================================================================
+     BORDER TOKENS
+     ========================================================================== */
+
+  /* Border Widths */
+  --border-width-thin: 1px;
+  --border-width-default: 2px;
+  --border-width-thick: 4px;
+
+  /* Border Radii */
+  --radius-none: 0;
+  --radius-sm: 4px;
+  --radius-default: 8px;
+  --radius-md: 12px;
+  --radius-lg: 15px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+
+  /* ==========================================================================
+     SHADOW TOKENS
+     ========================================================================== */
+
+  /* Elevation Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-default: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 25px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 15px 30px rgba(0, 0, 0, 0.3);
+  --shadow-xl: 0 15px 35px rgba(0, 0, 0, 0.3);
+
+  /* Hover State Shadows */
+  --shadow-hover-sm: 0 4px 12px rgba(191, 170, 101, 0.15);
+  --shadow-hover-md: 0 12px 35px rgba(191, 170, 101, 0.2);
+  --shadow-glow: 0 20px 40px rgba(191, 170, 101, 0.2);
+  --shadow-hover-lg: 0 20px 40px rgba(191, 170, 101, 0.2);
+
+  /* Component-Specific Shadows */
+  --shadow-card: var(--shadow-md);
+  --shadow-card-hover: var(--shadow-hover-md);
+  --shadow-video: var(--shadow-lg);
+  --shadow-video-hover: var(--shadow-hover-lg);
+  --shadow-nav: 2px 0 5px rgba(0, 0, 0, 0.2);
+  --shadow-image: var(--shadow-xl);
+
+  /* ==========================================================================
+     TRANSITION TOKENS
+     ========================================================================== */
+
+  /* Durations */
+  --duration-instant: 0ms;
+  --duration-fast: 150ms;
+  --duration-default: 300ms;
+  --duration-slow: 400ms;
+  --duration-slower: 500ms;
+
+  /* Easing Functions */
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* Common Transitions */
+  --transition-fast: all var(--duration-fast) var(--ease-out);
+  --transition-default: all var(--duration-default) ease;
+  --transition-slow: all var(--duration-slow) ease;
+  --transition-transform: transform var(--duration-default) ease;
+  --transition-opacity: opacity var(--duration-default) ease;
+  --transition-colors: background-color var(--duration-default) ease,
+    color var(--duration-default) ease, border-color var(--duration-default) ease;
+
+  /* ==========================================================================
+     BREAKPOINT TOKENS (for reference in media queries)
+     ========================================================================== */
+
+  /* Note: CSS custom properties cannot be used in media queries directly.
+     These values are documented here for reference.
+     Use these values when writing @media queries:
+
+     --breakpoint-sm: 640px;
+     --breakpoint-md: 768px;
+     --breakpoint-lg: 1024px;
+     --breakpoint-xl: 1200px;
+     --breakpoint-2xl: 1400px;
+  */
+}
+
+/* ==========================================================================
+   DARK MODE SUPPORT (Future Enhancement)
+   ========================================================================== */
+
+/*
+@media (prefers-color-scheme: light) {
+  :root {
+    --color-background: var(--color-white);
+    --color-surface: #f5f5f5;
+    --color-text-primary: var(--color-black);
+    --color-text-secondary: #333333;
+  }
+}
+*/
