@@ -1,0 +1,83 @@
+/**
+ * Button Styles
+ * Sabor Con Flow Dance Studio
+ *
+ * Provides consistent button styling throughout the application.
+ * Dependencies: variables.css
+ */
+
+/* ==========================================================================
+   BASE BUTTON
+   ========================================================================== */
+
+.btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  font-size: 1rem;
+  transition: all var(--transition-base);
+  border: 2px solid transparent;
+  cursor: pointer;
+  text-align: center;
+  min-height: 44px; /* Touch target minimum */
+  min-width: 44px;
+}
+
+.btn:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px var(--color-accent-focus);
+}
+
+/* ==========================================================================
+   PRIMARY BUTTON
+   ========================================================================== */
+
+.btn-primary {
+  background-color: var(--color-accent);
+  color: var(--color-background);
+  border-color: var(--color-accent);
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+/* ==========================================================================
+   SECONDARY BUTTON
+   ========================================================================== */
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.btn-secondary:hover {
+  background-color: var(--color-accent);
+  color: var(--color-background);
+}
+
+/* ==========================================================================
+   SPECIAL BUTTONS
+   ========================================================================== */
+
+.whatsapp-button {
+  display: inline-block;
+  background-color: var(--color-accent);
+  color: var(--color-background);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  margin-top: 1rem;
+  min-height: 44px;
+  line-height: calc(44px - 1rem);
+}
+
+.whatsapp-button:hover {
+  background-color: var(--color-accent-muted);
+}

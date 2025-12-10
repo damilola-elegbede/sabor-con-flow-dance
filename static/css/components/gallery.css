@@ -1,0 +1,169 @@
+/**
+ * Gallery and Media Styles
+ * Sabor Con Flow Dance Studio
+ *
+ * Provides video showcases, image galleries, and hero sections.
+ * Dependencies: variables.css
+ */
+
+/* ==========================================================================
+   VIDEO SHOWCASE
+   ========================================================================== */
+
+.video-showcase {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  height: calc(100vh - 85px); /* Full height minus header */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.video-container {
+  flex: 0 1 50%;
+  max-width: 500px;
+  max-height: 75vh;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.showcase-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* ==========================================================================
+   DANCE PHOTOS
+   ========================================================================== */
+
+.dance-photos {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 20px;
+  padding: 10px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+
+.photo-container {
+  flex: 0 1 40%;
+  max-width: 440px;
+  height: auto;
+  max-height: 700px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  display: flex;
+}
+
+.dance-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* ==========================================================================
+   LOGO CONTAINER (HOMEPAGE)
+   ========================================================================== */
+
+.logo-container {
+  margin-top: 15vh;
+  text-align: center;
+  margin-bottom: 5rem;
+}
+
+.main-logo {
+  max-width: 80%;
+  height: auto;
+}
+
+/* ==========================================================================
+   HERO SECTION (NON-HOME PAGES)
+   ========================================================================== */
+
+.hero-section {
+  position: relative;
+  width: 100%;
+  height: 315px;
+  margin-top: 85px;
+  overflow: hidden;
+  background-color: var(--color-background);
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--gradient-overlay);
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   GALLERY RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .video-showcase {
+    flex-direction: column;
+    height: calc(100vh - 85px);
+    padding: 15px;
+    gap: 15px;
+  }
+
+  .video-container {
+    flex: 0 1 45%;
+    max-width: 100%;
+    max-height: 50vh;
+  }
+
+  .dance-photos {
+    flex-direction: column;
+    margin-top: 6px;
+    align-items: center;
+  }
+
+  .photo-container {
+    flex: 0 1 100%;
+    max-width: 90%;
+  }
+
+  .logo-container {
+    margin-top: 10vh;
+  }
+
+  .hero-section {
+    height: auto;
+    margin-top: 70px;
+  }
+
+  .hero-image {
+    max-height: 250px;
+  }
+}
+
+@media (max-width: 600px) {
+  .logo-container {
+    margin-top: 8vh;
+  }
+}
