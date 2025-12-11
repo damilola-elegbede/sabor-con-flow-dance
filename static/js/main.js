@@ -112,7 +112,7 @@ window.ButtonLoader = ButtonLoader;
         return;
     }
 
-    var imageObserver = new IntersectionObserver(function(entries, observer) {
+    const imageObserver = new IntersectionObserver(function(entries, observer) {
         entries.forEach(function(entry) {
             if (entry.isIntersecting) {
                 var img = entry.target;

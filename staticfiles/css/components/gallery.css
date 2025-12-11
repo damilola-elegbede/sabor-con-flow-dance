@@ -269,13 +269,6 @@ img[loading="lazy"]:not([data-src]) {
   opacity: 1;
 }
 
-/* Native lazy loading - images load with opacity 1 */
-@supports (content-visibility: auto) {
-  img[loading="lazy"] {
-    opacity: 1;
-  }
-}
-
 /* ==========================================================================
    VIDEO SHOWCASE (ALTERNATE LAYOUT)
    ========================================================================== */
