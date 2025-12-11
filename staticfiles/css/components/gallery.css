@@ -126,7 +126,7 @@
 @media (max-width: 768px) {
   .video-showcase {
     flex-direction: column;
-    height: calc(100vh - var(--header-height));
+    height: calc(100vh - var(--header-height-mobile));
     padding: 15px;
     gap: 15px;
   }
