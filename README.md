@@ -47,20 +47,23 @@ sabor-con-flow-dance/
 │   └── models.py          # Placeholder file (no models used)
 │   └── forms.py           # Placeholder file (no forms used)
 ├── static/                 # Static assets
-│   └── css/               # Modular CSS architecture
-│       ├── base/          # Foundation styles
-│       │   ├── variables.css   # CSS design tokens
-│       │   ├── reset.css       # Box model reset, accessibility
-│       │   └── typography.css  # Text styles, utilities
-│       ├── components/    # UI components
-│       │   ├── buttons.css     # Button styles
-│       │   ├── cards.css       # Card-based UI
-│       │   ├── gallery.css     # Media components
-│       │   └── navigation.css  # Nav, header, footer
-│       ├── layouts/       # Page structures
-│       │   ├── grid.css        # Grid systems
-│       │   └── sections.css    # Page sections
-│       └── main.css       # Import orchestrator
+│   ├── css/               # Modular CSS architecture
+│   │   ├── base/          # Foundation styles
+│   │   │   ├── variables.css   # CSS design tokens + animation tokens
+│   │   │   ├── reset.css       # Box model reset, accessibility, reduced motion
+│   │   │   └── typography.css  # Text styles, utilities
+│   │   ├── components/    # UI components
+│   │   │   ├── buttons.css     # Button styles + ripple effect
+│   │   │   ├── cards.css       # Card-based UI + hover effects
+│   │   │   ├── forms.css       # Input focus animations
+│   │   │   ├── gallery.css     # Media components
+│   │   │   └── navigation.css  # Nav, header, footer, social icons
+│   │   ├── layouts/       # Page structures
+│   │   │   ├── grid.css        # Grid systems
+│   │   │   └── sections.css    # Page sections
+│   │   └── main.css       # Import orchestrator
+│   └── js/
+│       └── main.js        # RippleEffect, ButtonLoader, lazy loading
 ├── staticfiles/            # Collected static files
 ├── templates/              # Base templates
 ├── vercel.json            # Vercel deployment configuration
@@ -131,16 +134,81 @@ The button components in `static/css/components/buttons.css` include:
 - **Base Button** (`.btn`): Consistent styling with gap support for icons
 - **Primary** (`.btn-primary`): Gold fill, inverts on hover with lift effect
 - **Secondary** (`.btn-secondary`): Outline style, fills on hover
+- **Ripple Effect**: Material Design-inspired click ripple originating from click position
 - **Loading State** (`.btn--loading`): CSS spinner animation with screen reader support
 - **Icon Buttons** (`.btn-icon`): Circular icon-only buttons (44px touch target)
 - **Icon with Text** (`.btn-with-icon`): Buttons combining icons and text
 - **Size Variants**: `.btn-icon-sm` (36px) and `.btn-icon-lg` (56px)
 
-JavaScript utility `ButtonLoader` provides programmatic loading state control:
+JavaScript utilities in `static/js/main.js`:
+
 ```javascript
+// Button loading state control
 ButtonLoader.start(button, 'Submitting...');  // Show loading spinner
 ButtonLoader.stop(button);                     // Remove loading state
+
+// Ripple effect (auto-initialized on all .btn elements)
+RippleEffect.init();                          // Initialize on page load
+RippleEffect.attachRipple(button);            // Manually attach to new buttons
 ```
+
+### Micro-Interactions
+
+The site includes polished micro-interactions for a premium user experience:
+
+#### Button Ripple Effect
+- Click ripple animation originates from exact click position
+- Different ripple colors for primary (dark) and secondary (gold) buttons
+- Press feedback with scale transform on active state
+- Implemented via CSS `::before` pseudo-element and `@keyframes ripple-expand`
+
+#### Card Hover Effects
+- Progressive shadow system with multi-layered shadows
+- Cards lift on hover with smooth `ease-out-cubic` easing
+- Gold glow effect using `::after` pseudo-element
+- `will-change` optimization for 60fps animations
+
+#### Menu Animations
+- Enhanced slide-in with spring easing and scale transform
+- Staggered entrance delays (50ms increments)
+- Faster exit animation (no stagger, 200ms duration)
+- Hover state shifts items 8px right
+
+#### Link Underline Reveals
+- Navigation links: gradient underline expands on hover
+- Content links: underline scales from right-to-left origin, reverses on hover
+- Smooth `ease-out-expo` easing for premium feel
+
+#### Social Icon Interactions
+- Background glow effect on hover (scales from 0.8 to 1)
+- Lift effect (translateY -3px)
+- Icon scales to 1.15 with 5deg rotation
+- Press feedback scales icon to 0.95
+
+#### Input Focus Animations
+- Focus glow with 3px gold ring and subtle shadow
+- Hover state transitions background opacity
+- Floating label animation support
+- 16px font-size on mobile prevents iOS zoom
+
+### Animation Design Tokens
+
+Animation timing and easing values in `static/css/base/variables.css`:
+
+| Token | Value | Use Case |
+|-------|-------|----------|
+| `--duration-instant` | 100ms | Micro-feedback |
+| `--duration-fast` | 200ms | Quick state changes |
+| `--duration-normal` | 300ms | Standard transitions |
+| `--duration-slow` | 400ms | Complex transforms |
+| `--duration-slower` | 600ms | Scroll reveals |
+| `--duration-slowest` | 800ms | Page load animations |
+
+Easing functions:
+- `--ease-out-cubic`: Smooth deceleration (default)
+- `--ease-out-expo`: Dramatic deceleration
+- `--ease-spring`: Overshoot bounce effect
+- `--ease-in-out-cubic`: Symmetric acceleration
 
 ### Import Order
 
@@ -148,7 +216,7 @@ The `main.css` file imports modules in dependency order:
 
 1. Base layer (variables → reset → typography)
 2. Layout layer (grid → sections)
-3. Component layer (buttons → navigation → cards → gallery)
+3. Component layer (buttons → navigation → cards → gallery → forms)
 
 ### Responsive Breakpoints
 

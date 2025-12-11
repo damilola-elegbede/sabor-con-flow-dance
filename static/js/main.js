@@ -3,8 +3,89 @@
  * Sabor Con Flow Dance Studio
  *
  * Contains utility functions and interactive behaviors for the site.
- * Includes: ButtonLoader, lazy loading fallback, mobile menu toggle.
+ * Includes: ButtonLoader, RippleEffect, lazy loading fallback, mobile menu toggle.
  */
+
+/* ==========================================================================
+   RIPPLE EFFECT MODULE
+   ========================================================================== */
+
+/**
+ * RippleEffect - Creates Material Design-inspired ripple on button click
+ *
+ * Usage:
+ *   Automatically initialized on all .btn elements
+ *   Or manually: RippleEffect.attachRipple(buttonElement);
+ */
+const RippleEffect = {
+    /**
+     * Check if user prefers reduced motion
+     * @returns {boolean}
+     */
+    prefersReducedMotion() {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    },
+
+    /**
+     * Initialize ripple effect on all buttons
+     */
+    init() {
+        // Respect reduced motion preference
+        if (this.prefersReducedMotion()) {
+            return;
+        }
+
+        const buttons = document.querySelectorAll('.btn');
+        buttons.forEach(button => this.attachRipple(button));
+    },
+
+    /**
+     * Attach ripple event listener to a button
+     * @param {HTMLElement} button - Button element
+     */
+    attachRipple(button) {
+        button.addEventListener('mousedown', (e) => this.setRipplePosition(e, button));
+        button.addEventListener('click', (e) => this.createRipple(e, button));
+    },
+
+    /**
+     * Set CSS custom properties for ripple position
+     * @param {MouseEvent} e - Mouse event
+     * @param {HTMLElement} button - Button element
+     */
+    setRipplePosition(e, button) {
+        const rect = button.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+
+        button.style.setProperty('--ripple-x', `${x}px`);
+        button.style.setProperty('--ripple-y', `${y}px`);
+    },
+
+    /**
+     * Create and animate ripple effect
+     * @param {MouseEvent} e - Click event
+     * @param {HTMLElement} button - Button element
+     */
+    createRipple(e, button) {
+        // Remove existing ripple class
+        button.classList.remove('ripple-active');
+
+        // Force reflow to restart animation
+        void button.offsetWidth;
+
+        // Add ripple class
+        button.classList.add('ripple-active');
+
+        // Remove class after animation completes
+        setTimeout(() => {
+            button.classList.remove('ripple-active');
+        }, 600);
+    }
+};
+
+// Make RippleEffect available globally
+window.RippleEffect = RippleEffect;
 
 /* ==========================================================================
    BUTTON LOADING STATE MANAGER
@@ -142,6 +223,9 @@ window.ButtonLoader = ButtonLoader;
    ========================================================================== */
 
 document.addEventListener('DOMContentLoaded', function() {
+    // Initialize ripple effect on all buttons
+    RippleEffect.init();
+
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const nav = document.querySelector('.nav');
