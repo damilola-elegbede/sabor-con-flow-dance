@@ -1,0 +1,33 @@
+/**
+ * Main Stylesheet - Import Orchestrator
+ * Sabor Con Flow Dance Studio
+ *
+ * This file imports all CSS modules in the correct dependency order.
+ * IMPORTANT: Do not change the import order - it affects CSS cascade.
+ *
+ * Architecture:
+ * 1. Base - Variables, reset, typography (lowest specificity)
+ * 2. Layouts - Grid systems and section structures
+ * 3. Components - UI components (highest specificity)
+ */
+
+/* ==========================================================================
+   BASE LAYER
+   ========================================================================== */
+@import 'base/variables.css';
+@import 'base/reset.css';
+@import 'base/typography.css';
+
+/* ==========================================================================
+   LAYOUT LAYER
+   ========================================================================== */
+@import 'layouts/grid.css';
+@import 'layouts/sections.css';
+
+/* ==========================================================================
+   COMPONENT LAYER
+   ========================================================================== */
+@import 'components/buttons.css';
+@import 'components/navigation.css';
+@import 'components/cards.css';
+@import 'components/gallery.css';

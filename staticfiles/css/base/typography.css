@@ -1,0 +1,104 @@
+/**
+ * Typography Styles
+ * Sabor Con Flow Dance Studio
+ *
+ * Establishes typographic scale and text styling utilities.
+ * Dependencies: variables.css, reset.css
+ */
+
+/* ==========================================================================
+   PAGE TITLES
+   ========================================================================== */
+
+.page-title {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  text-align: center;
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+}
+
+/* ==========================================================================
+   SECTION HEADINGS
+   ========================================================================== */
+
+.pricing-heading {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  margin: 1.25rem 0 0.5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.pricing-description {
+  margin-bottom: 0.5rem;
+  color: var(--color-text-primary);
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+.pricing-note {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--color-text-primary);
+  opacity: 0.9;
+  text-align: center;
+}
+
+/* ==========================================================================
+   CONTACT TYPOGRAPHY
+   ========================================================================== */
+
+.contact-title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--color-accent);
+}
+
+/* ==========================================================================
+   LINK STYLES
+   ========================================================================== */
+
+.contact-link {
+  color: var(--color-accent);
+  text-decoration: none;
+}
+
+.contact-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   UTILITY CLASSES (Bootstrap Replacements)
+   ========================================================================== */
+
+/**
+ * Text alignment utilities
+ */
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+/**
+ * Spacing utilities
+ */
+.py-4 {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+.mb-3 {
+  margin-bottom: 1rem;
+}
