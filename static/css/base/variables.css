@@ -137,6 +137,34 @@
   --transition-slow: 0.4s ease;
 
   /* ==========================================================================
+     ANIMATION DESIGN TOKENS
+     ========================================================================== */
+
+  /* Animation Durations */
+  --duration-instant: 100ms;
+  --duration-fast: 200ms;
+  --duration-normal: 300ms;
+  --duration-slow: 400ms;
+  --duration-slower: 600ms;
+  --duration-slowest: 800ms;
+
+  /* Easing Functions */
+  --ease-out-quad: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-quart: cubic-bezier(0.165, 0.84, 0.44, 1);
+  --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+  --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Ripple Effect */
+  --ripple-duration: 600ms;
+  --ripple-color: rgba(var(--color-accent-rgb), 0.3);
+
+  /* Hover Shadows - Progressive depth */
+  --shadow-hover: 0 12px 35px rgba(var(--color-accent-rgb), 0.2);
+  --shadow-active: 0 6px 20px rgba(var(--color-accent-rgb), 0.15);
+
+  /* ==========================================================================
      BREAKPOINTS (for reference - CSS can't use custom props in media queries)
      ========================================================================== */
 

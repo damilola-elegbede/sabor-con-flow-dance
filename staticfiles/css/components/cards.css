@@ -14,6 +14,23 @@
  */
 
 /* ==========================================================================
+   CARD HOVER LIFT BASE - Progressive Shadow System
+   ========================================================================== */
+
+/* Base card hover styles with enhanced transitions */
+.card-glass,
+.event-card,
+.mission-item,
+.class-preview {
+  will-change: transform, box-shadow;
+  transition:
+    transform var(--duration-normal) var(--ease-out-cubic),
+    box-shadow var(--duration-normal) var(--ease-out-cubic),
+    border-color var(--duration-normal) var(--ease-out-cubic),
+    background var(--duration-normal) var(--ease-out-cubic);
+}
+
+/* ==========================================================================
    GLASSMORPHISM BASE CARD
    ========================================================================== */
 
@@ -25,17 +42,16 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   padding: 1.5rem;
-  transition: transform var(--transition-base),
-              box-shadow var(--transition-base),
-              border-color var(--transition-base),
-              background var(--transition-base);
 }
 
 .card-glass:hover {
-  transform: translateY(-4px);
+  transform: translateY(-8px);
   background: var(--glass-bg-hover);
   border-color: var(--glass-border-hover);
-  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 16px 32px rgba(var(--color-accent-rgb), 0.15);
 }
 
 /* Fallback for browsers without backdrop-filter */
@@ -183,9 +199,6 @@
   display: flex;
   flex-direction: column;
   color: var(--color-accent);
-  transition: transform var(--transition-base),
-              box-shadow var(--transition-base),
-              border-color var(--transition-base);
 }
 
 /* Gradient top accent */
@@ -206,10 +219,30 @@
   border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
+/* Card hover glow effect for premium feel */
+.event-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity var(--duration-normal) var(--ease-out-cubic);
+  pointer-events: none;
+  box-shadow:
+    inset 0 0 0 1px rgba(var(--color-accent-rgb), 0.3),
+    0 0 20px rgba(var(--color-accent-rgb), 0.1);
+}
+
+.event-card:hover::after {
+  opacity: 1;
+}
+
 .event-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  transform: translateY(-6px);
   border-color: var(--glass-border-hover);
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.15),
+    0 8px 24px rgba(var(--color-accent-rgb), 0.1);
 }
 
 /* Fallback for browsers without backdrop-filter */
@@ -420,15 +453,14 @@
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
   text-align: center;
-  transition: transform var(--transition-base),
-              box-shadow var(--transition-base),
-              border-color var(--transition-base);
 }
 
 .mission-item:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  transform: translateY(-6px);
   border-color: var(--glass-border-hover);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 8px 15px rgba(var(--color-accent-rgb), 0.12);
 }
 
 /* Fallback for browsers without backdrop-filter */
@@ -450,9 +482,6 @@
   padding: 2rem;
   border-radius: var(--radius-md);
   border: 1px solid var(--glass-border);
-  transition: transform var(--transition-base),
-              box-shadow var(--transition-base),
-              border-color var(--transition-base);
   overflow: hidden;
 }
 
@@ -472,9 +501,11 @@
 }
 
 .class-preview:hover {
-  transform: translateY(-4px) translateX(2px);
-  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  transform: translateY(-6px) translateX(2px);
   border-color: var(--glass-border-hover);
+  box-shadow:
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    0 8px 15px rgba(var(--color-accent-rgb), 0.12);
 }
 
 /* Fallback for browsers without backdrop-filter */

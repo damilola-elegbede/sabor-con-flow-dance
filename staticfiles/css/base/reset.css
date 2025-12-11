@@ -161,7 +161,7 @@ select:focus-visible {
 }
 
 /* ==========================================================================
-   REDUCED MOTION
+   REDUCED MOTION - COMPREHENSIVE SUPPORT
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -172,5 +172,56 @@ select:focus-visible {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* Disable button ripple effect */
+  .btn::before {
+    display: none !important;
+  }
+
+  /* Disable card hover transforms */
+  .card-glass:hover,
+  .event-card:hover,
+  .mission-item:hover,
+  .class-preview:hover {
+    transform: none !important;
+  }
+
+  /* Disable social icon hover transforms */
+  .social-link:hover,
+  .social-link:hover svg {
+    transform: none !important;
+  }
+
+  .social-link::before {
+    display: none !important;
+  }
+
+  /* Disable menu slide animations */
+  .nav a {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .nav.active a {
+    transform: none !important;
+  }
+
+  /* Disable link underline animations */
+  .nav a span::after,
+  .content-link::after,
+  .contact-link::after,
+  .instagram-link::after {
+    transform: scaleX(1) !important;
+    width: 100% !important;
+  }
+
+  /* Remove will-change for performance */
+  .card-glass,
+  .event-card,
+  .mission-item,
+  .class-preview,
+  .btn {
+    will-change: auto !important;
   }
 }

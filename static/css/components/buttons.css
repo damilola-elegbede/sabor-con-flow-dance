@@ -37,7 +37,52 @@
   min-width: 44px;
   position: relative;
   overflow: hidden;
-  transition: all var(--transition-base);
+  isolation: isolate;
+  transition:
+    background-color var(--duration-normal) var(--ease-out-cubic),
+    color var(--duration-normal) var(--ease-out-cubic),
+    border-color var(--duration-normal) var(--ease-out-cubic),
+    transform var(--duration-normal) var(--ease-out-cubic),
+    box-shadow var(--duration-normal) var(--ease-out-cubic);
+}
+
+/* ==========================================================================
+   BUTTON RIPPLE EFFECT
+   ========================================================================== */
+
+.btn::before {
+  content: '';
+  position: absolute;
+  top: var(--ripple-y, 50%);
+  left: var(--ripple-x, 50%);
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--ripple-color);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.btn.ripple-active::before {
+  animation: ripple-expand var(--ripple-duration) var(--ease-out-expo) forwards;
+}
+
+@keyframes ripple-expand {
+  0% {
+    width: 0;
+    height: 0;
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.3;
+  }
+  100% {
+    width: 400%;
+    height: 400%;
+    opacity: 0;
+  }
 }
 
 /* Focus state - appears for keyboard navigation */
@@ -73,6 +118,11 @@
   border-color: var(--color-accent);
 }
 
+/* Primary button ripple - darker for contrast on gold background */
+.btn-primary::before {
+  background: rgba(0, 0, 0, 0.2);
+}
+
 .btn-primary:hover {
   background-color: transparent;
   color: var(--color-accent);
@@ -81,9 +131,10 @@
   box-shadow: var(--shadow-gold-sm);
 }
 
+/* Button press feedback */
 .btn-primary:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(191, 170, 101, 0.2);
+  transform: scale(0.98);
+  box-shadow: var(--shadow-active);
 }
 
 /* ==========================================================================
@@ -96,6 +147,11 @@
   border-color: var(--color-accent);
 }
 
+/* Secondary button ripple - gold glow */
+.btn-secondary::before {
+  background: rgba(var(--color-accent-rgb), 0.3);
+}
+
 .btn-secondary:hover {
   background-color: var(--color-accent);
   color: var(--color-background);
@@ -103,9 +159,10 @@
   box-shadow: var(--shadow-gold-sm);
 }
 
+/* Button press feedback */
 .btn-secondary:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 8px rgba(191, 170, 101, 0.2);
+  transform: scale(0.98);
+  box-shadow: var(--shadow-active);
 }
 
 /* ==========================================================================
