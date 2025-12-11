@@ -4,6 +4,13 @@
  *
  * Provides consistent button styling throughout the application.
  * Dependencies: variables.css
+ *
+ * BREAKPOINTS USED:
+ * - 768px:  Tablet/Mobile button adjustments
+ * - 480px:  Small mobile button refinements
+ *
+ * TOUCH TARGETS:
+ * All buttons maintain 44px minimum height/width for accessibility.
  */
 
 /* ==========================================================================
@@ -80,4 +87,63 @@
 
 .whatsapp-button:hover {
   background-color: var(--color-accent-muted);
+}
+
+.whatsapp-button:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ==========================================================================
+   BUTTON CONTAINER
+   ========================================================================== */
+
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   BUTTON RESPONSIVE ADJUSTMENTS
+   ========================================================================== */
+
+/* Tablet → Mobile (768px) */
+@media (max-width: 768px) {
+  .btn {
+    padding: 0.875rem 1.75rem;
+    font-size: 0.95rem;
+  }
+
+  .cta-buttons {
+    gap: 0.875rem;
+  }
+}
+
+/* Small Mobile Refinements (480px) */
+@media (max-width: 480px) {
+  .btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    /* Maintain 44px minimum height even with smaller padding */
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .cta-buttons .btn {
+    width: 100%;
+  }
+
+  .whatsapp-button {
+    padding: 0.625rem 1rem;
+  }
 }

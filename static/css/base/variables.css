@@ -120,4 +120,50 @@
   /* --breakpoint-md: 768px;   Tablet */
   /* --breakpoint-lg: 1000px;  Desktop */
   /* --breakpoint-xl: 1200px;  Large desktop */
+
+  /* ==========================================================================
+     TOUCH TARGET MINIMUMS
+     ========================================================================== */
+
+  /* WCAG 2.1 Level AAA recommends 44x44px minimum for touch targets.
+     All interactive elements (buttons, links, nav items) should have:
+     - min-height: 44px
+     - min-width: 44px (or sufficient padding to reach 44px)
+  */
 }
+
+/*
+ * ==========================================================================
+ * BREAKPOINT USAGE GUIDE
+ * ==========================================================================
+ *
+ * This project uses a desktop-first approach with max-width media queries.
+ * Breakpoints should be applied consistently across all component files.
+ *
+ * BREAKPOINT VALUES:
+ * ------------------
+ * @media (max-width: 1200px) - Large desktop → Standard desktop
+ * @media (max-width: 1000px) - Desktop → Tablet landscape
+ * @media (max-width: 768px)  - Tablet → Mobile
+ * @media (max-width: 600px)  - Mobile → Small mobile
+ * @media (max-width: 480px)  - Small mobile refinements
+ *
+ * GRID BREAKPOINT PATTERN:
+ * ------------------------
+ * 1200px+: Full grid layouts (3+ columns)
+ * 1000px:  Reduce columns (3 → 2)
+ * 768px:   Stack layouts, reduce columns (2 → 1 or 2)
+ * 600px:   Single column layouts
+ * 480px:   Compact spacing, smaller fonts
+ *
+ * TOUCH TARGET REQUIREMENTS:
+ * --------------------------
+ * All interactive elements MUST have minimum 44x44px touch targets.
+ * Use: min-height: 44px; min-width: 44px; or equivalent padding.
+ *
+ * TESTING VIEWPORTS:
+ * ------------------
+ * Test at: 320px, 480px, 600px, 768px, 1000px, 1200px, 1920px
+ *
+ * ==========================================================================
+ */

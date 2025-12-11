@@ -4,6 +4,12 @@
  *
  * Provides grid layouts for content organization.
  * Dependencies: variables.css
+ *
+ * BREAKPOINTS USED:
+ * - 1000px: 3 cols → 2 cols
+ * - 768px:  Tablet adjustments
+ * - 600px:  2 cols → 1 col
+ * - 480px:  Small mobile refinements
  */
 
 /* ==========================================================================
@@ -15,20 +21,39 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1.5rem;
   margin-bottom: 2rem;
+  padding: 0 1rem;
 }
 
 /* ==========================================================================
    GRID RESPONSIVE ADJUSTMENTS
    ========================================================================== */
 
+/* Desktop → Tablet Landscape (1000px) */
 @media (max-width: 1000px) {
   .event-container {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
+/* Tablet → Mobile (768px) */
+@media (max-width: 768px) {
+  .event-container {
+    gap: 1.25rem;
+  }
+}
+
+/* Mobile → Small Mobile (600px) */
 @media (max-width: 600px) {
   .event-container {
     grid-template-columns: 1fr;
+    gap: 1rem;
+    padding: 0 0.75rem;
+  }
+}
+
+/* Small Mobile Refinements (480px) */
+@media (max-width: 480px) {
+  .event-container {
+    padding: 0 0.5rem;
   }
 }
