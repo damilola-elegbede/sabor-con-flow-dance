@@ -3,6 +3,7 @@
  * Sabor Con Flow Dance Studio
  *
  * Contains utility functions and interactive behaviors for the site.
+ * Includes: ButtonLoader, lazy loading fallback, mobile menu toggle.
  */
 
 /* ==========================================================================
@@ -71,6 +72,70 @@ const ButtonLoader = {
 
 // Make ButtonLoader available globally
 window.ButtonLoader = ButtonLoader;
+
+/* ==========================================================================
+   LAZY LOADING FALLBACK
+   ========================================================================== */
+
+/**
+ * Lazy Loading Fallback for browsers without native support
+ * Uses Intersection Observer API as fallback
+ */
+(function initLazyLoading() {
+    // Check for native lazy loading support
+    if ('loading' in HTMLImageElement.prototype) {
+        // Native support - add loaded class for CSS transitions
+        const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+        lazyImages.forEach(function(img) {
+            if (img.complete) {
+                img.classList.add('lazy-loaded');
+            } else {
+                img.addEventListener('load', function() {
+                    img.classList.add('lazy-loaded');
+                });
+            }
+        });
+        return;
+    }
+
+    // Fallback using Intersection Observer
+    const lazyImages = document.querySelectorAll('img[loading="lazy"]');
+
+    if (!lazyImages.length) return;
+
+    // Check for Intersection Observer support
+    if (!('IntersectionObserver' in window)) {
+        // Ultimate fallback - load all images immediately
+        lazyImages.forEach(function(img) {
+            img.classList.add('lazy-loaded');
+        });
+        return;
+    }
+
+    var imageObserver = new IntersectionObserver(function(entries, observer) {
+        entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+                var img = entry.target;
+                img.classList.add('lazy-loaded');
+                observer.unobserve(img);
+            }
+        });
+    }, {
+        rootMargin: '50px 0px',
+        threshold: 0.01
+    });
+
+    lazyImages.forEach(function(img) {
+        imageObserver.observe(img);
+    });
+
+    // Cleanup observer on page unload to prevent memory leaks
+    window.addEventListener('beforeunload', function() {
+        if (imageObserver) {
+            imageObserver.disconnect();
+        }
+    });
+})();
 
 /* ==========================================================================
    DOM READY INITIALIZATION
