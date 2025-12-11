@@ -239,15 +239,15 @@
   transform: translateX(3px);
 }
 
-/* Small Icon Button */
+/* Small Icon Button - maintains 44px touch target for WCAG compliance */
 .btn-icon-sm {
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
 }
 
 .btn-icon-sm svg {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
 }
 
 /* Large Icon Button */

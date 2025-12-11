@@ -26,10 +26,7 @@ const ButtonLoader = {
     start(button, loadingText = 'Loading...') {
         if (!button || button.classList.contains('btn--loading')) return;
 
-        // Store original text
-        button.dataset.originalText = button.textContent;
-
-        // Add loading class
+        // Add loading class (child elements preserved - CSS handles visual hiding)
         button.classList.add('btn--loading');
         button.setAttribute('aria-busy', 'true');
 
@@ -50,16 +47,10 @@ const ButtonLoader = {
         button.classList.remove('btn--loading');
         button.setAttribute('aria-busy', 'false');
 
-        // Remove screen reader text
+        // Remove screen reader text (child elements preserved automatically)
         const srText = button.querySelector('.btn-loading-text');
         if (srText) {
             srText.remove();
-        }
-
-        // Restore original text if needed
-        if (button.dataset.originalText) {
-            button.textContent = button.dataset.originalText;
-            delete button.dataset.originalText;
         }
     },
 
@@ -115,6 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Form validation with loading state
+    // Note: For traditional form submissions, the page navigates away.
+    // For AJAX forms, call ButtonLoader.stop() in your success/error handlers.
     const forms = document.querySelectorAll('form');
     forms.forEach(function(form) {
         form.addEventListener('submit', function(event) {
@@ -129,6 +122,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 const submitBtn = form.querySelector('[type="submit"]');
                 if (submitBtn && submitBtn.classList.contains('btn')) {
                     ButtonLoader.start(submitBtn, 'Submitting...');
+
+                    // Clear loading state on page navigation (back/forward)
+                    window.addEventListener('pageshow', function clearOnPageShow() {
+                        ButtonLoader.stop(submitBtn);
+                        window.removeEventListener('pageshow', clearOnPageShow);
+                    });
                 }
             }
         });
