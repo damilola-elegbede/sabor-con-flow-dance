@@ -6,12 +6,13 @@
  * Dependencies: variables.css
  *
  * BREAKPOINTS USED:
- * - 1024px: Tablet landscape tagline adjustment
- * - 768px:  Tablet/Mobile header & nav changes
+ * - 1000px: Desktop → Tablet landscape (tagline adjustment)
+ * - 768px:  Tablet → Mobile header & nav changes
+ * - 600px:  Mobile → Small mobile (intermediate adjustments)
  * - 480px:  Small mobile refinements
  *
  * TOUCH TARGETS:
- * All interactive elements maintain 44px minimum for accessibility.
+ * All interactive elements maintain 44px minimum for accessibility (WCAG 2.1 AAA).
  */
 
 /* ==========================================================================
@@ -266,8 +267,8 @@
    RESPONSIVE - HEADER & NAVIGATION
    ========================================================================== */
 
-/* Tablet Landscape (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
+/* Desktop → Tablet Landscape (1000px) */
+@media (max-width: 1000px) {
   .header-tagline {
     font-size: 14px;
   }
@@ -308,6 +309,27 @@
 
   .social-links {
     gap: 2rem;
+  }
+}
+
+/* Mobile → Small Mobile (600px) */
+@media (max-width: 600px) {
+  .header-logo img {
+    height: 28px;
+  }
+
+  .nav a {
+    font-size: 1.15rem;
+    margin: 13px 0;
+  }
+
+  .social-links {
+    gap: 1.75rem;
+  }
+
+  .social-link svg {
+    width: 34px;
+    height: 34px;
   }
 }
 
