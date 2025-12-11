@@ -3,6 +3,7 @@
  * Sabor Con Flow Dance Studio
  *
  * Provides card-based UI components for events, pricing, and content sections.
+ * Includes glassmorphism effects, elevation system, and gradient borders.
  * Dependencies: variables.css
  *
  * BREAKPOINTS USED:
@@ -13,17 +14,214 @@
  */
 
 /* ==========================================================================
-   EVENT CARDS
+   GLASSMORPHISM BASE CARD
+   ========================================================================== */
+
+.card-glass {
+  position: relative;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  padding: 1.5rem;
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base),
+              border-color var(--transition-base),
+              background var(--transition-base);
+}
+
+.card-glass:hover {
+  transform: translateY(-4px);
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(16px)) {
+  .card-glass {
+    background: var(--glass-bg-solid);
+  }
+
+  .card-glass:hover {
+    background: rgba(0, 0, 0, 0.9);
+  }
+}
+
+/* ==========================================================================
+   ELEVATION UTILITY CLASSES
+   ========================================================================== */
+
+.elevation-0 {
+  box-shadow: none;
+}
+
+.elevation-1 {
+  box-shadow: var(--shadow-elevation-1);
+}
+
+.elevation-2 {
+  box-shadow: var(--shadow-elevation-2);
+}
+
+.elevation-3 {
+  box-shadow: var(--shadow-elevation-3);
+}
+
+.elevation-4 {
+  box-shadow: var(--shadow-elevation-4);
+}
+
+.elevation-5 {
+  box-shadow: var(--shadow-elevation-5);
+}
+
+/* Interactive Elevation - rises on hover */
+.elevation-interactive {
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-base),
+              transform var(--transition-base);
+}
+
+.elevation-interactive:hover {
+  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  transform: translateY(-4px);
+}
+
+/* Gold Glow Elevation */
+.elevation-gold {
+  box-shadow: var(--shadow-md);
+  transition: box-shadow var(--transition-base);
+}
+
+.elevation-gold:hover {
+  box-shadow: var(--shadow-md), var(--shadow-gold-glow);
+}
+
+/* ==========================================================================
+   GRADIENT BORDER CARDS
+   ========================================================================== */
+
+.card-gradient-border {
+  position: relative;
+  background: var(--color-background);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.card-gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-md);
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(191, 170, 101, 0.6) 0%,
+    rgba(191, 170, 101, 0.1) 50%,
+    rgba(191, 170, 101, 0.6) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: background var(--transition-base);
+}
+
+.card-gradient-border:hover::before {
+  background: linear-gradient(
+    135deg,
+    rgba(191, 170, 101, 1) 0%,
+    rgba(191, 170, 101, 0.3) 50%,
+    rgba(191, 170, 101, 1) 100%
+  );
+}
+
+/* Top Border Accent Variant */
+.card-top-accent {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-top-accent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-accent) 50%,
+    transparent 100%
+  );
+  transform: scaleX(0.3);
+  transition: transform var(--transition-base);
+}
+
+.card-top-accent:hover::before {
+  transform: scaleX(1);
+}
+
+/* ==========================================================================
+   EVENT CARDS (Enhanced with Glassmorphism)
    ========================================================================== */
 
 .event-card {
-  background-color: var(--color-background);
+  position: relative;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
   border-radius: var(--radius-md);
   padding: 1.5rem;
-  border-top: 4px solid var(--color-accent);
+  border: 1px solid var(--glass-border);
   display: flex;
   flex-direction: column;
   color: var(--color-accent);
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base),
+              border-color var(--transition-base);
+}
+
+/* Gradient top accent */
+.event-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-accent) 20%,
+    var(--color-accent) 80%,
+    transparent 100%
+  );
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.event-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  border-color: var(--glass-border-hover);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(16px)) {
+  .event-card {
+    background: rgba(0, 0, 0, 0.9);
+    border-top: 4px solid var(--color-accent);
+  }
+
+  .event-card::before {
+    display: none;
+  }
 }
 
 .event-title {
@@ -207,6 +405,88 @@
   color: var(--color-accent);
   font-weight: bold;
   font-size: 1.2rem;
+}
+
+/* ==========================================================================
+   MISSION ITEM (Enhanced with Glassmorphism)
+   ========================================================================== */
+
+.mission-item {
+  position: relative;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  backdrop-filter: blur(var(--glass-blur));
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  text-align: center;
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base),
+              border-color var(--transition-base);
+}
+
+.mission-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  border-color: var(--glass-border-hover);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(16px)) {
+  .mission-item {
+    background: var(--color-accent-bg);
+  }
+}
+
+/* ==========================================================================
+   CLASS PREVIEW (Enhanced with Glassmorphism)
+   ========================================================================== */
+
+.class-preview {
+  position: relative;
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  padding: 2rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+  transition: transform var(--transition-base),
+              box-shadow var(--transition-base),
+              border-color var(--transition-base);
+  overflow: hidden;
+}
+
+/* Left border accent */
+.class-preview::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    var(--color-accent) 0%,
+    rgba(191, 170, 101, 0.3) 100%
+  );
+}
+
+.class-preview:hover {
+  transform: translateY(-4px) translateX(2px);
+  box-shadow: var(--shadow-lg), var(--shadow-gold-md);
+  border-color: var(--glass-border-hover);
+}
+
+/* Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(12px)) {
+  .class-preview {
+    background: rgba(0, 0, 0, 0.7);
+    border-left: 4px solid var(--color-accent);
+  }
+
+  .class-preview::before {
+    display: none;
+  }
 }
 
 /* ==========================================================================

@@ -85,9 +85,44 @@ Design tokens in `static/css/base/variables.css` include:
 - **Colors**: Brand palette (gold, black, white) with semantic aliases
 - **Typography**: Font families (Inter for body, Playfair Display for headings), sizes, weights, and line heights
 - **Spacing**: 4px base unit scale (xs through 3xl)
-- **Shadows**: Elevation and hover state shadows
+- **Shadows**: Layered elevation system (5 levels) and gold glow effects
+- **Glassmorphism**: Semi-transparent backgrounds, backdrop blur, and glass borders
 - **Transitions**: Standardized durations and easing functions
 - **Z-Index**: Layering scale for dropdowns, modals, etc.
+
+### Card System
+
+The card components in `static/css/components/cards.css` provide modern UI patterns:
+
+- **Glassmorphism Base** (`.card-glass`): Semi-transparent cards with backdrop blur effect
+- **Elevation Utilities** (`.elevation-1` to `.elevation-5`): Layered shadow depth system
+- **Interactive Elevation** (`.elevation-interactive`): Cards that rise on hover with gold glow
+- **Gradient Borders** (`.card-gradient-border`): Animated diagonal gradient border effect
+- **Top Accent** (`.card-top-accent`): Expanding gold top border on hover
+
+Existing cards (`.event-card`, `.mission-item`, `.class-preview`) use glassmorphism with:
+- Backdrop blur for depth
+- Gold accent borders/gradients
+- Hover lift animations
+- Proper fallbacks for older browsers
+
+### Button System
+
+The button components in `static/css/components/buttons.css` include:
+
+- **Base Button** (`.btn`): Consistent styling with gap support for icons
+- **Primary** (`.btn-primary`): Gold fill, inverts on hover with lift effect
+- **Secondary** (`.btn-secondary`): Outline style, fills on hover
+- **Loading State** (`.btn--loading`): CSS spinner animation with screen reader support
+- **Icon Buttons** (`.btn-icon`): Circular icon-only buttons (44px touch target)
+- **Icon with Text** (`.btn-with-icon`): Buttons combining icons and text
+- **Size Variants**: `.btn-icon-sm` (36px) and `.btn-icon-lg` (56px)
+
+JavaScript utility `ButtonLoader` provides programmatic loading state control:
+```javascript
+ButtonLoader.start(button, 'Submitting...');  // Show loading spinner
+ButtonLoader.stop(button);                     // Remove loading state
+```
 
 ### Import Order
 
