@@ -1,3 +1,90 @@
+/**
+ * Main JavaScript
+ * Sabor Con Flow Dance Studio
+ *
+ * Contains utility functions and interactive behaviors for the site.
+ */
+
+/* ==========================================================================
+   BUTTON LOADING STATE MANAGER
+   ========================================================================== */
+
+/**
+ * ButtonLoader - Manages button loading states with accessibility support
+ *
+ * Usage:
+ *   ButtonLoader.start(buttonElement, 'Submitting...');
+ *   // ... async operation
+ *   ButtonLoader.stop(buttonElement);
+ */
+const ButtonLoader = {
+    /**
+     * Set button to loading state
+     * @param {HTMLElement} button - The button element
+     * @param {string} loadingText - Text for screen readers (default: 'Loading...')
+     */
+    start(button, loadingText = 'Loading...') {
+        if (!button || button.classList.contains('btn--loading')) return;
+
+        // Store original text
+        button.dataset.originalText = button.textContent;
+
+        // Add loading class
+        button.classList.add('btn--loading');
+        button.setAttribute('aria-busy', 'true');
+
+        // Add screen reader text
+        const srText = document.createElement('span');
+        srText.className = 'btn-loading-text';
+        srText.textContent = loadingText;
+        button.appendChild(srText);
+    },
+
+    /**
+     * Remove loading state from button
+     * @param {HTMLElement} button - The button element
+     */
+    stop(button) {
+        if (!button || !button.classList.contains('btn--loading')) return;
+
+        button.classList.remove('btn--loading');
+        button.setAttribute('aria-busy', 'false');
+
+        // Remove screen reader text
+        const srText = button.querySelector('.btn-loading-text');
+        if (srText) {
+            srText.remove();
+        }
+
+        // Restore original text if needed
+        if (button.dataset.originalText) {
+            button.textContent = button.dataset.originalText;
+            delete button.dataset.originalText;
+        }
+    },
+
+    /**
+     * Toggle loading state
+     * @param {HTMLElement} button - The button element
+     * @param {boolean} isLoading - Whether to show loading state
+     * @param {string} loadingText - Text for screen readers
+     */
+    toggle(button, isLoading, loadingText = 'Loading...') {
+        if (isLoading) {
+            this.start(button, loadingText);
+        } else {
+            this.stop(button);
+        }
+    }
+};
+
+// Make ButtonLoader available globally
+window.ButtonLoader = ButtonLoader;
+
+/* ==========================================================================
+   DOM READY INITIALIZATION
+   ========================================================================== */
+
 document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
@@ -27,7 +114,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 5000);
     });
 
-    // Form validation
+    // Form validation with loading state
     const forms = document.querySelectorAll('form');
     forms.forEach(function(form) {
         form.addEventListener('submit', function(event) {
@@ -36,6 +123,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 event.stopPropagation();
             }
             form.classList.add('was-validated');
+
+            // Add loading state to submit button if form is valid
+            if (form.checkValidity()) {
+                const submitBtn = form.querySelector('[type="submit"]');
+                if (submitBtn && submitBtn.classList.contains('btn')) {
+                    ButtonLoader.start(submitBtn, 'Submitting...');
+                }
+            }
         });
     });
-}); 
+});
