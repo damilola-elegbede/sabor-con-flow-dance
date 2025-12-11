@@ -97,6 +97,29 @@ The `main.css` file imports modules in dependency order:
 2. Layout layer (grid → sections)
 3. Component layer (buttons → navigation → cards → gallery)
 
+### Responsive Breakpoints
+
+The project uses a consistent breakpoint system across all CSS modules:
+
+| Breakpoint | Description | Typical Usage |
+|------------|-------------|---------------|
+| `1200px` | Large desktop → Standard desktop | Reserved for future use |
+| `1000px` | Desktop → Tablet landscape | Grid columns (3→2) |
+| `768px` | Tablet → Mobile | Layout stacking, spacing adjustments |
+| `600px` | Mobile → Small mobile | Single column layouts |
+| `480px` | Small mobile refinements | Compact spacing, smaller fonts |
+
+**Testing Viewports:** 320px, 480px, 600px, 768px, 1000px, 1200px, 1920px
+
+### Touch Target Compliance
+
+All interactive elements follow WCAG 2.1 Level AAA guidelines with minimum 44x44px touch targets:
+
+- Navigation links (`.nav a`)
+- Buttons (`.btn`, `.whatsapp-button`)
+- Menu toggle (`.menu-toggle`)
+- Social links (`.social-link`)
+
 ## Accessibility Features
 
 The site includes built-in accessibility support:

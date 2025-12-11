@@ -4,6 +4,12 @@
  *
  * Provides page sections and content containers.
  * Dependencies: variables.css
+ *
+ * BREAKPOINTS USED:
+ * - 1000px: Layout width adjustments
+ * - 768px:  Tablet/Mobile spacing
+ * - 600px:  Compact mobile layouts
+ * - 480px:  Small mobile refinements
  */
 
 /* ==========================================================================
@@ -21,6 +27,8 @@
   margin-left: auto;
   margin-right: auto;
   padding-top: 4rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .main-content-pricing {
@@ -49,9 +57,70 @@
    SECTION RESPONSIVE ADJUSTMENTS
    ========================================================================== */
 
+/* Desktop → Tablet Landscape (1000px) */
+@media (max-width: 1000px) {
+  .main-content-events {
+    padding-top: 3rem;
+  }
+
+  .main-content-pricing {
+    width: 92%;
+    padding: 3.5rem 1rem;
+  }
+}
+
+/* Tablet → Mobile (768px) */
 @media (max-width: 768px) {
+  .main-content {
+    padding-top: 20px;
+  }
+
+  .main-content-events {
+    padding-top: 2.5rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
   .main-content-pricing {
     width: 95%;
     padding: 3rem 0.5rem;
+  }
+
+  .container {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
+/* Mobile → Small Mobile (600px) */
+@media (max-width: 600px) {
+  .main-content-events {
+    padding-top: 2rem;
+  }
+
+  .main-content-pricing {
+    padding: 2.5rem 0.5rem;
+  }
+}
+
+/* Small Mobile Refinements (480px) */
+@media (max-width: 480px) {
+  .main-content {
+    padding-top: 15px;
+  }
+
+  .main-content-events {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .main-content-pricing {
+    width: 98%;
+    padding: 2rem 0.25rem;
+  }
+
+  .container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
   }
 }
