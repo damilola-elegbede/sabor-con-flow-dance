@@ -2,7 +2,7 @@
  * Gallery and Media Styles
  * Sabor Con Flow Dance Studio
  *
- * Provides video showcases, image galleries, and hero sections.
+ * Provides video showcases, image galleries, hero sections, and media overlays.
  * Dependencies: variables.css
  *
  * BREAKPOINTS USED:
@@ -13,17 +13,274 @@
  */
 
 /* ==========================================================================
-   VIDEO SHOWCASE
+   DUAL VIDEO CONTAINER (HOMEPAGE)
+   ========================================================================== */
+
+.dual-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
+  position: relative;
+}
+
+.video-item {
+  flex: 1;
+  max-width: 500px;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.side-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  background-color: var(--color-background);
+}
+
+/* Ensure poster displays correctly */
+.side-video[poster] {
+  object-fit: cover;
+}
+
+/* ==========================================================================
+   VIDEO OVERLAY
+   ========================================================================== */
+
+.video-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.5) 50%,
+    transparent 100%
+  );
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  color: var(--color-text-primary);
+  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-lg);
+  text-align: center;
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+.video-item:hover .video-overlay,
+.video-item:focus-within .video-overlay {
+  opacity: 1;
+}
+
+.video-overlay h3 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 1.4rem;
+  margin: 0 0 var(--spacing-sm) 0;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.video-overlay p {
+  margin: 0;
+  font-size: 1rem;
+  opacity: 0.95;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Fallback for no backdrop-filter */
+@supports not (backdrop-filter: blur(4px)) {
+  .video-overlay {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.95) 0%,
+      rgba(0, 0, 0, 0.7) 50%,
+      transparent 100%
+    );
+  }
+}
+
+/* ==========================================================================
+   DANCE GALLERY
+   ========================================================================== */
+
+.dance-gallery {
+  padding: 0 var(--spacing-lg);
+  margin-bottom: var(--spacing-2xl);
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  aspect-ratio: 3 / 2;
+  background-color: var(--color-background);
+}
+
+.gallery-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--transition-slow);
+}
+
+.gallery-item:hover .gallery-image,
+.gallery-item:focus-within .gallery-image {
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   GALLERY OVERLAY
+   ========================================================================== */
+
+.gallery-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.7) 40%,
+    transparent 100%
+  );
+  color: var(--color-text-primary);
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
+  transform: translateY(100%);
+  transition: transform var(--transition-base);
+}
+
+.gallery-item:hover .gallery-overlay,
+.gallery-item:focus-within .gallery-overlay {
+  transform: translateY(0);
+}
+
+/* Overlay content animation */
+.gallery-overlay h3 {
+  color: var(--color-accent);
+  font-family: var(--font-family-heading);
+  font-size: 1.3rem;
+  margin: 0 0 var(--spacing-sm) 0;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform var(--transition-base) 0.1s,
+              opacity var(--transition-base) 0.1s;
+}
+
+.gallery-overlay p {
+  margin: 0;
+  font-size: 0.9rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: transform var(--transition-base) 0.2s,
+              opacity var(--transition-base) 0.2s;
+}
+
+.gallery-item:hover .gallery-overlay h3,
+.gallery-item:hover .gallery-overlay p,
+.gallery-item:focus-within .gallery-overlay h3,
+.gallery-item:focus-within .gallery-overlay p {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+/* Overlay icon indicator */
+.gallery-overlay::before {
+  content: '';
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  width: 32px;
+  height: 32px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23bfaa65' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity var(--transition-base),
+              transform var(--transition-base);
+}
+
+.gallery-item:hover .gallery-overlay::before,
+.gallery-item:focus-within .gallery-overlay::before {
+  opacity: 0.8;
+  transform: scale(1);
+}
+
+/* ==========================================================================
+   GRAIN TEXTURE OVERLAY
+   ========================================================================== */
+
+.hero-grain,
+.grain-overlay {
+  position: relative;
+}
+
+.hero-grain::after,
+.grain-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+  mix-blend-mode: overlay;
+  border-radius: inherit;
+}
+
+/* Subtle grain for dark backgrounds */
+.grain-subtle::after {
+  opacity: 0.02;
+}
+
+/* Heavier grain for artistic effect */
+.grain-heavy::after {
+  opacity: 0.06;
+}
+
+/* ==========================================================================
+   LAZY LOADING STYLES
+   ========================================================================== */
+
+/* Fade-in effect for lazy-loaded images */
+img[loading="lazy"] {
+  opacity: 0;
+  transition: opacity var(--transition-base);
+}
+
+img[loading="lazy"].lazy-loaded,
+img[loading="lazy"]:not([data-src]) {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   VIDEO SHOWCASE (ALTERNATE LAYOUT)
    ========================================================================== */
 
 .video-showcase {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px;
+  gap: var(--spacing-lg);
   width: 100%;
-  height: calc(100vh - var(--header-height)); /* Full height minus header */
-  padding: 20px;
+  height: calc(100vh - var(--header-height));
+  padding: var(--spacing-lg);
   box-sizing: border-box;
 }
 
@@ -55,9 +312,9 @@
   display: flex;
   justify-content: center;
   align-items: stretch;
-  gap: 20px;
-  padding: 10px;
-  margin-top: 8px;
+  gap: var(--spacing-lg);
+  padding: var(--spacing-sm);
+  margin-top: var(--spacing-sm);
   flex-wrap: wrap;
 }
 
@@ -126,13 +383,125 @@
 }
 
 /* ==========================================================================
+   TAGLINE CONTAINER
+   ========================================================================== */
+
+.tagline-container {
+  text-align: center;
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  margin-top: var(--header-height);
+}
+
+.tagline {
+  font-family: var(--font-family-heading);
+  font-size: 2rem;
+  color: var(--color-accent);
+  margin: 0;
+  line-height: var(--line-height-tight);
+}
+
+/* ==========================================================================
+   CTA SECTION
+   ========================================================================== */
+
+.cta-section {
+  text-align: center;
+  padding: var(--spacing-3xl) var(--spacing-lg);
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    rgba(191, 170, 101, 0.05)
+  );
+}
+
+.cta-section h2 {
+  font-family: var(--font-family-heading);
+  font-size: 2.5rem;
+  color: var(--color-accent);
+  margin: 0 0 var(--spacing-md) 0;
+}
+
+.cta-section p {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--spacing-xl) 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-buttons {
+  display: flex;
+  justify-content: center;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   REDUCED MOTION
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .gallery-image {
+    transition: none;
+  }
+
+  .gallery-overlay {
+    transform: none;
+    opacity: 1;
+  }
+
+  .gallery-overlay h3,
+  .gallery-overlay p {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+
+  .gallery-overlay::before {
+    opacity: 0.8;
+    transform: none;
+    transition: none;
+  }
+
+  .video-overlay {
+    opacity: 1;
+    transition: none;
+  }
+
+  img[loading="lazy"] {
+    opacity: 1;
+    transition: none;
+  }
+
+  .hero-grain::after,
+  .grain-overlay::after {
+    animation: none;
+  }
+}
+
+/* ==========================================================================
    GALLERY RESPONSIVE
    ========================================================================== */
 
 /* Desktop → Tablet Landscape (1000px) */
 @media (max-width: 1000px) {
+  .dual-video-container {
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .video-item {
+    max-width: 450px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-md);
+  }
+
   .video-showcase {
-    gap: 15px;
+    gap: var(--spacing-md);
   }
 
   .video-container {
@@ -142,15 +511,74 @@
   .photo-container {
     max-width: 400px;
   }
+
+  .tagline {
+    font-size: 1.75rem;
+  }
+
+  .cta-section h2 {
+    font-size: 2rem;
+  }
 }
 
 /* Tablet → Mobile (768px) */
 @media (max-width: 768px) {
+  .dual-video-container {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-md);
+    padding: var(--spacing-md);
+  }
+
+  .video-item {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .gallery-item {
+    aspect-ratio: 16 / 10;
+  }
+
+  .dance-gallery {
+    padding: 0 var(--spacing-md);
+  }
+
+  /* Show overlays by default on touch devices */
+  .video-overlay {
+    opacity: 1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.85) 0%,
+      rgba(0, 0, 0, 0.4) 60%,
+      transparent 100%
+    );
+  }
+
+  .gallery-overlay {
+    transform: translateY(0);
+    padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+  }
+
+  .gallery-overlay h3,
+  .gallery-overlay p {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  .gallery-overlay::before {
+    display: none;
+  }
+
   .video-showcase {
     flex-direction: column;
     height: calc(100vh - var(--header-height-mobile));
-    padding: 15px;
-    gap: 15px;
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
   }
 
   .video-container {
@@ -187,13 +615,57 @@
   .hero-image {
     max-height: 250px;
   }
+
+  .tagline-container {
+    padding: var(--spacing-xl) var(--spacing-md);
+    margin-top: var(--header-height-mobile);
+  }
+
+  .tagline {
+    font-size: 1.5rem;
+  }
+
+  .cta-section {
+    padding: var(--spacing-2xl) var(--spacing-md);
+  }
+
+  .cta-section h2 {
+    font-size: 1.75rem;
+  }
+
+  .cta-section p {
+    font-size: 1rem;
+  }
 }
 
 /* Mobile → Small Mobile (600px) */
 @media (max-width: 600px) {
+  .dual-video-container {
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
+  }
+
+  .dance-gallery {
+    padding: 0 var(--spacing-sm);
+  }
+
+  .gallery-grid {
+    gap: var(--spacing-sm);
+  }
+
+  .video-overlay h3,
+  .gallery-overlay h3 {
+    font-size: 1.1rem;
+  }
+
+  .video-overlay p,
+  .gallery-overlay p {
+    font-size: 0.85rem;
+  }
+
   .video-showcase {
-    padding: 10px;
-    gap: 12px;
+    padding: var(--spacing-sm);
+    gap: var(--spacing-sm);
   }
 
   .video-container {
@@ -212,13 +684,45 @@
   .hero-image {
     max-height: 200px;
   }
+
+  .tagline {
+    font-size: 1.25rem;
+  }
+
+  .cta-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 /* Small Mobile Refinements (480px) */
 @media (max-width: 480px) {
+  .dual-video-container {
+    padding: var(--spacing-xs);
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .video-item {
+    border-radius: var(--radius-sm);
+  }
+
+  .gallery-item {
+    border-radius: var(--radius-sm);
+  }
+
+  .video-overlay,
+  .gallery-overlay {
+    padding: var(--spacing-md) var(--spacing-sm) var(--spacing-sm);
+  }
+
   .video-showcase {
-    padding: 8px;
-    gap: 10px;
+    padding: var(--spacing-xs);
+    gap: var(--spacing-sm);
   }
 
   .video-container {
@@ -246,5 +750,9 @@
 
   .hero-image {
     max-height: 180px;
+  }
+
+  .cta-section {
+    padding: var(--spacing-xl) var(--spacing-sm);
   }
 }

@@ -1,14 +1,17 @@
 <div class="container">
     <!-- Tagline Section -->
     <div class="tagline-container">
-        <h2 class="tagline">Sabor in every step, flow in every move 💫</h2>
+        <h2 class="tagline">Sabor in every step, flow in every move <span aria-hidden="true">💫</span></h2>
     </div>
 
     <!-- Side-by-Side Videos Section -->
-    <div class="dual-video-container">
+    <div class="dual-video-container hero-grain">
         <div class="video-item">
-            <video class="side-video" autoplay muted loop playsinline>
-                <source src="/images/hero-dance-video.mov" type="video/mp4">
+            <video class="side-video"
+                   autoplay muted loop playsinline
+                   poster="/images/dance-1.jpeg"
+                   aria-label="Cuban dance demonstration video">
+                <source src="/images/hero-dance-video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="video-overlay">
@@ -17,8 +20,11 @@
             </div>
         </div>
         <div class="video-item">
-            <video class="side-video" autoplay muted loop playsinline>
-                <source src="/images/second-dance-video.mov" type="video/mp4">
+            <video class="side-video"
+                   autoplay muted loop playsinline
+                   poster="/images/dance-3.jpeg"
+                   aria-label="Cuban footwork demonstration video">
+                <source src="/images/second-dance-video.mp4" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <div class="video-overlay">
@@ -32,21 +38,39 @@
     <div class="dance-gallery">
         <div class="gallery-grid">
             <div class="gallery-item">
-                <img src="/images/dance-1.jpeg" alt="Technical Precision Cuban Dance" class="gallery-image">
+                <img src="/images/dance-1.jpeg"
+                     alt="Technical Precision Cuban Dance"
+                     class="gallery-image"
+                     loading="lazy"
+                     decoding="async"
+                     width="600"
+                     height="400">
                 <div class="gallery-overlay">
                     <h3>Technical Precision Focus</h3>
                     <p>Systematic approach to Casino & Afro-Cuban movement</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="/images/dance-3.jpeg" alt="Music Integration Cuban Dance" class="gallery-image">
+                <img src="/images/dance-3.jpeg"
+                     alt="Music Integration Cuban Dance"
+                     class="gallery-image"
+                     loading="lazy"
+                     decoding="async"
+                     width="600"
+                     height="400">
                 <div class="gallery-overlay">
                     <h3>Music & Movement Integration</h3>
                     <p>Master salsa-rumba transitions, clave timing & musical connection</p>
                 </div>
             </div>
             <div class="gallery-item">
-                <img src="/images/dance-4.jpeg" alt="Cuban Dance Training Boulder" class="gallery-image">
+                <img src="/images/dance-4.jpeg"
+                     alt="Cuban Dance Training Boulder"
+                     class="gallery-image"
+                     loading="lazy"
+                     decoding="async"
+                     width="600"
+                     height="400">
                 <div class="gallery-overlay">
                     <h3>Cuban Dance Training</h3>
                     <p>Fundamentals to advanced flow in every Boulder class</p>

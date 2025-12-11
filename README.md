@@ -106,6 +106,24 @@ Existing cards (`.event-card`, `.mission-item`, `.class-preview`) use glassmorph
 - Hover lift animations
 - Proper fallbacks for older browsers
 
+### Gallery and Media System
+
+The gallery components in `static/css/components/gallery.css` provide rich media presentation:
+
+- **Video Container** (`.dual-video-container`): Side-by-side video layout with responsive stacking
+- **Video Overlay** (`.video-overlay`): Fade-in caption overlay with backdrop blur on hover
+- **Gallery Grid** (`.gallery-grid`): Responsive 3→2→1 column grid for images
+- **Gallery Overlay** (`.gallery-overlay`): Slide-up overlay with staggered content animation
+- **Grain Texture** (`.hero-grain`): SVG-based film grain overlay for premium aesthetic
+- **Lazy Loading**: Native `loading="lazy"` with CSS fade-in transitions
+
+Media features include:
+- Video poster frames for immediate visual feedback
+- Lazy loading with Intersection Observer fallback for older browsers
+- Touch-friendly overlays (always visible on mobile)
+- Expand icon indicator on gallery hover
+- Aspect ratio preservation (3:2 for gallery, 16:10 on mobile)
+
 ### Button System
 
 The button components in `static/css/components/buttons.css` include:
