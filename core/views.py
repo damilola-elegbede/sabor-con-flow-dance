@@ -29,8 +29,9 @@ def home(request):
             'price': 20
         }
     ]
-    
+
     return render(request, 'home.html', {
+        'current_page': 'home',
         'upcoming_events': upcoming_events,
         'hero_video_path': settings.HERO_VIDEO_PATH,
         'second_video_path': settings.SECOND_VIDEO_PATH,
@@ -67,13 +68,22 @@ def events(request):
             'monthly_price': 60
         }
     ]
-    return render(request, 'events.html', {'events': events})
+    return render(request, 'events.html', {
+        'current_page': 'events',
+        'events': events
+    })
 
 def pricing(request):
-    return render(request, 'pricing.html')
+    return render(request, 'pricing.html', {
+        'current_page': 'pricing'
+    })
 
 def private_lessons(request):
-    return render(request, 'private_lessons.html')
+    return render(request, 'private_lessons.html', {
+        'current_page': 'private_lessons'
+    })
 
 def contact(request):
-    return render(request, 'contact.html')
+    return render(request, 'contact.html', {
+        'current_page': 'contact'
+    })
