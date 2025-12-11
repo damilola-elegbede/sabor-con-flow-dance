@@ -128,7 +128,10 @@ The site includes built-in accessibility support:
 - **Focus-visible states**: Gold outline indicators for keyboard navigation (3px solid with 2-4px offset)
 - **ARIA attributes**: Proper labeling for navigation, social links, and interactive elements
 - **Screen reader utilities**: `.sr-only` class for visually hidden but accessible content
+- **Focus trap**: Mobile menu traps focus within when open, preventing background interaction
+- **Screen reader announcements**: Live region announces menu state changes
 - **Escape key support**: Mobile menu closes on Escape key press
+- **Reduced motion support**: Animations disabled when user prefers reduced motion
 - **Semantic HTML**: Proper heading hierarchy, landmarks, and button/link roles
 
 ### Keyboard Navigation
@@ -136,7 +139,16 @@ The site includes built-in accessibility support:
 - Press `Tab` to reveal skip-link at top of page
 - Press `Enter` on skip-link to jump to main content
 - Press `Escape` to close mobile navigation menu
+- `Tab` cycles through menu items when open (focus trap)
+- `Shift+Tab` cycles backwards through menu items
 - All interactive elements have visible focus indicators
+
+### Navigation Enhancements
+
+- **Close button (X)**: Visible close button in mobile menu with 44px touch target
+- **Active page indicator**: Current page highlighted with underline and glowing dot
+- **Header scroll blur**: Glassmorphism effect on header when scrolling (backdrop-filter)
+- **ARIA current page**: `aria-current="page"` attribute on active navigation link
 
 ## Prerequisites
 

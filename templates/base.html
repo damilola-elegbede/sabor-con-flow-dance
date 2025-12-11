@@ -43,11 +43,18 @@
             </button>
         </div>
         <nav id="site-nav" class="nav" aria-label="Main navigation" aria-hidden="true">
-            <a href="{% url 'core:home' %}"><span>Home</span></a>
-            <a href="{% url 'core:events' %}"><span>Events</span></a>
-            <a href="{% url 'core:pricing' %}"><span>Pricing</span></a>
-            <a href="{% url 'core:private_lessons' %}"><span>Private Lessons</span></a>
-            <a href="{% url 'core:contact' %}"><span>Contact</span></a>
+            <!-- Close button - visible only when menu is open -->
+            <button class="nav-close" aria-label="Close navigation menu" type="button">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+
+            <a href="{% url 'core:home' %}" {% if current_page == 'home' %}class="nav-link--active" aria-current="page"{% endif %}><span>Home</span></a>
+            <a href="{% url 'core:events' %}" {% if current_page == 'events' %}class="nav-link--active" aria-current="page"{% endif %}><span>Events</span></a>
+            <a href="{% url 'core:pricing' %}" {% if current_page == 'pricing' %}class="nav-link--active" aria-current="page"{% endif %}><span>Pricing</span></a>
+            <a href="{% url 'core:private_lessons' %}" {% if current_page == 'private_lessons' %}class="nav-link--active" aria-current="page"{% endif %}><span>Private Lessons</span></a>
+            <a href="{% url 'core:contact' %}" {% if current_page == 'contact' %}class="nav-link--active" aria-current="page"{% endif %}><span>Contact</span></a>
         </nav>
     </header>
 
@@ -95,39 +102,167 @@
         </div>
     </footer>
 
+    <!-- Live region for screen reader announcements -->
+    <div id="nav-announcer" role="status" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        /**
+         * Mobile Navigation Module
+         * Handles menu toggle, close button, keyboard navigation, focus trap, and scroll effects
+         */
+        (function() {
+            'use strict';
+
+            // DOM Elements
             const menuToggle = document.querySelector('.menu-toggle');
             const nav = document.getElementById('site-nav');
-            
-            menuToggle.addEventListener('click', function() {
-                const isOpen = nav.classList.toggle('active');
-                menuToggle.classList.toggle('active', isOpen);
-                menuToggle.setAttribute('aria-expanded', String(isOpen));
-                nav.setAttribute('aria-hidden', String(!isOpen));
-            });
+            const navClose = document.querySelector('.nav-close');
+            const header = document.querySelector('.header');
+            const announcer = document.getElementById('nav-announcer');
 
-            // Close menu when clicking outside
-            document.addEventListener('click', function(event) {
-                if (!nav.contains(event.target) && !menuToggle.contains(event.target)) {
-                    nav.classList.remove('active');
-                    nav.setAttribute('aria-hidden', 'true');
-                    menuToggle.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
+            if (!menuToggle || !nav) return;
+
+            // State
+            let isOpen = false;
+            let focusableElements = [];
+            let firstFocusable = null;
+            let lastFocusable = null;
+
+            // Update focusable elements list
+            function updateFocusableElements() {
+                focusableElements = nav.querySelectorAll(
+                    'button:not([disabled]), a[href], [tabindex]:not([tabindex="-1"])'
+                );
+                if (focusableElements.length > 0) {
+                    firstFocusable = focusableElements[0];
+                    lastFocusable = focusableElements[focusableElements.length - 1];
                 }
-            });
+            }
 
-            // Close on Escape
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape' && nav.classList.contains('active')) {
-                    nav.classList.remove('active');
-                    nav.setAttribute('aria-hidden', 'true');
-                    menuToggle.classList.remove('active');
-                    menuToggle.setAttribute('aria-expanded', 'false');
+            // Announce to screen readers
+            function announce(message) {
+                if (announcer) {
+                    announcer.textContent = '';
+                    setTimeout(() => { announcer.textContent = message; }, 100);
+                }
+            }
+
+            // Open menu
+            function openMenu() {
+                isOpen = true;
+                nav.classList.add('active');
+                menuToggle.classList.add('active');
+                menuToggle.setAttribute('aria-expanded', 'true');
+                nav.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+
+                announce('Navigation menu opened');
+                updateFocusableElements();
+
+                // Focus close button after animation
+                setTimeout(() => {
+                    if (navClose) navClose.focus();
+                }, 350);
+            }
+
+            // Close menu
+            function closeMenu(returnFocus = true) {
+                isOpen = false;
+                nav.classList.remove('active');
+                menuToggle.classList.remove('active');
+                menuToggle.setAttribute('aria-expanded', 'false');
+                nav.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+
+                announce('Navigation menu closed');
+
+                if (returnFocus) {
                     menuToggle.focus();
                 }
+            }
+
+            // Toggle menu
+            function toggleMenu() {
+                if (isOpen) {
+                    closeMenu();
+                } else {
+                    openMenu();
+                }
+            }
+
+            // Handle Tab key for focus trap
+            function handleTabKey(e) {
+                if (!isOpen || !firstFocusable || !lastFocusable) return;
+
+                if (e.shiftKey) {
+                    if (document.activeElement === firstFocusable) {
+                        e.preventDefault();
+                        lastFocusable.focus();
+                    }
+                } else {
+                    if (document.activeElement === lastFocusable) {
+                        e.preventDefault();
+                        firstFocusable.focus();
+                    }
+                }
+            }
+
+            // Event Listeners
+            menuToggle.addEventListener('click', toggleMenu);
+
+            if (navClose) {
+                navClose.addEventListener('click', () => closeMenu(true));
+            }
+
+            // Close on outside click
+            document.addEventListener('click', (e) => {
+                if (isOpen && !nav.contains(e.target) && !menuToggle.contains(e.target)) {
+                    closeMenu(false);
+                }
             });
-        });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && isOpen) {
+                    e.preventDefault();
+                    closeMenu(true);
+                }
+                if (e.key === 'Tab' && isOpen) {
+                    handleTabKey(e);
+                }
+            });
+
+            // ==========================================================================
+            // Header Scroll Blur Effect
+            // ==========================================================================
+            const SCROLL_THRESHOLD = 50;
+            let ticking = false;
+            let lastScrollY = 0;
+
+            function updateHeaderScroll() {
+                if (lastScrollY > SCROLL_THRESHOLD) {
+                    header.classList.add('header--scrolled');
+                } else {
+                    header.classList.remove('header--scrolled');
+                }
+                ticking = false;
+            }
+
+            function onScroll() {
+                lastScrollY = window.scrollY;
+                if (!ticking) {
+                    window.requestAnimationFrame(updateHeaderScroll);
+                    ticking = true;
+                }
+            }
+
+            if (header) {
+                window.addEventListener('scroll', onScroll, { passive: true });
+                // Check initial scroll position
+                lastScrollY = window.scrollY;
+                updateHeaderScroll();
+            }
+        })();
     </script>
     {% block extra_js %}{% endblock %}
 </body>
