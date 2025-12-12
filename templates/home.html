@@ -6,7 +6,7 @@
 {% block content %}
 <div class="video-showcase">
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/optimized/dance-1-640w.webp' %}">
+        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/optimized/dance-1-640w.jpg' %}">
             {% if hero_video_path %}
                 {% if 'http' in hero_video_path %}
                     <source src="{{ hero_video_path }}" type="video/mp4">
@@ -18,7 +18,7 @@
         </video>
     </div>
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/optimized/dance-3-640w.webp' %}">
+        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/optimized/dance-3-640w.jpg' %}">
             {% if second_video_path %}
                 {% if 'http' in second_video_path %}
                     <source src="{{ second_video_path }}" type="video/mp4">
