@@ -6,7 +6,7 @@
 {% block content %}
 <div class="video-showcase">
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/dance-1.jpeg' %}">
+        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/optimized/dance-1-640w.webp' %}">
             {% if hero_video_path %}
                 {% if 'http' in hero_video_path %}
                     <source src="{{ hero_video_path }}" type="video/mp4">
@@ -18,7 +18,7 @@
         </video>
     </div>
     <div class="video-container">
-        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/dance-3.jpeg' %}">
+        <video class="showcase-video" autoplay muted loop playsinline preload="metadata" poster="{% static 'images/optimized/dance-3-640w.webp' %}">
             {% if second_video_path %}
                 {% if 'http' in second_video_path %}
                     <source src="{{ second_video_path }}" type="video/mp4">
@@ -33,13 +33,69 @@
 
 <div class="dance-photos">
     <div class="photo-container" style="aspect-ratio: 0.61;">
-        <img src="{% static 'images/dance-1.jpeg' %}" alt="Technical Precision Cuban Dance" class="dance-photo">
+        <picture>
+            <source type="image/webp"
+                    srcset="{% static 'images/optimized/dance-1-320w.webp' %} 320w,
+                            {% static 'images/optimized/dance-1-640w.webp' %} 640w,
+                            {% static 'images/optimized/dance-1-960w.webp' %} 960w,
+                            {% static 'images/optimized/dance-1.webp' %} 1280w"
+                    sizes="(max-width: 600px) 90vw, (max-width: 768px) 45vw, 440px">
+            <source type="image/jpeg"
+                    srcset="{% static 'images/optimized/dance-1-320w.jpg' %} 320w,
+                            {% static 'images/optimized/dance-1-640w.jpg' %} 640w,
+                            {% static 'images/optimized/dance-1-960w.jpg' %} 960w,
+                            {% static 'images/optimized/dance-1.jpg' %} 1280w"
+                    sizes="(max-width: 600px) 90vw, (max-width: 768px) 45vw, 440px">
+            <img src="{% static 'images/optimized/dance-1-640w.jpg' %}"
+                 alt="Technical Precision Cuban Dance"
+                 class="dance-photo"
+                 width="440"
+                 height="722"
+                 loading="lazy"
+                 decoding="async">
+        </picture>
     </div>
     <div class="photo-container" style="aspect-ratio: 0.61;">
-        <img src="{% static 'images/dance-3.jpeg' %}" alt="Music Integration Cuban Dance" class="dance-photo">
+        <picture>
+            <source type="image/webp"
+                    srcset="{% static 'images/optimized/dance-3-320w.webp' %} 320w,
+                            {% static 'images/optimized/dance-3-640w.webp' %} 640w,
+                            {% static 'images/optimized/dance-3-960w.webp' %} 960w,
+                            {% static 'images/optimized/dance-3.webp' %} 1280w"
+                    sizes="(max-width: 600px) 90vw, (max-width: 768px) 45vw, 440px">
+            <source type="image/jpeg"
+                    srcset="{% static 'images/optimized/dance-3-320w.jpg' %} 320w,
+                            {% static 'images/optimized/dance-3-640w.jpg' %} 640w,
+                            {% static 'images/optimized/dance-3-960w.jpg' %} 960w,
+                            {% static 'images/optimized/dance-3.jpg' %} 1280w"
+                    sizes="(max-width: 600px) 90vw, (max-width: 768px) 45vw, 440px">
+            <img src="{% static 'images/optimized/dance-3-640w.jpg' %}"
+                 alt="Music Integration Cuban Dance"
+                 class="dance-photo"
+                 width="440"
+                 height="722"
+                 loading="lazy"
+                 decoding="async">
+        </picture>
     </div>
     <div class="photo-container" style="aspect-ratio: 0.61;">
-        <img src="{% static 'images/dance-4.jpeg' %}" alt="Cuban Dance Training Boulder" class="dance-photo">
+        <picture>
+            <source type="image/webp"
+                    srcset="{% static 'images/optimized/dance-4-320w.webp' %} 320w,
+                            {% static 'images/optimized/dance-4.webp' %} 360w"
+                    sizes="(max-width: 600px) 90vw, (max-width: 768px) 45vw, 440px">
+            <source type="image/jpeg"
+                    srcset="{% static 'images/optimized/dance-4-320w.jpg' %} 320w,
+                            {% static 'images/optimized/dance-4.jpg' %} 360w"
+                    sizes="(max-width: 600px) 90vw, (max-width: 768px) 45vw, 440px">
+            <img src="{% static 'images/optimized/dance-4-320w.jpg' %}"
+                 alt="Cuban Dance Training Boulder"
+                 class="dance-photo"
+                 width="360"
+                 height="592"
+                 loading="lazy"
+                 decoding="async">
+        </picture>
     </div>
 </div>
 {% endblock %} 
