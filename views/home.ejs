@@ -1,12 +1,12 @@
 <div class="container">
     <!-- Tagline Section -->
-    <div class="tagline-container">
-        <h2 class="tagline">Sabor in every step, flow in every move <span aria-hidden="true">💫</span></h2>
+    <div class="tagline-container" data-animate="fade-up">
+        <h2 class="tagline" data-text-reveal="words">Sabor in every step, flow in every move <span aria-hidden="true">💫</span></h2>
     </div>
 
     <!-- Side-by-Side Videos Section -->
-    <div class="dual-video-container hero-grain">
-        <div class="video-item">
+    <div class="dual-video-container hero-grain hero-parallax">
+        <div class="video-item" data-animate="scale-fade" data-parallax data-parallax-factor="0.1">
             <video class="side-video"
                    autoplay muted loop playsinline
                    poster="/images/dance-1.jpeg"
@@ -19,7 +19,7 @@
                 <p>Boulder's Premier Studio</p>
             </div>
         </div>
-        <div class="video-item">
+        <div class="video-item" data-animate="scale-fade" data-delay="150" data-parallax data-parallax-factor="0.1">
             <video class="side-video"
                    autoplay muted loop playsinline
                    poster="/images/dance-3.jpeg"
@@ -35,9 +35,9 @@
     </div>
 
     <!-- Dance Gallery Section -->
-    <div class="dance-gallery">
+    <div class="dance-gallery" data-animate="fade-up">
         <div class="gallery-grid">
-            <div class="gallery-item">
+            <div class="gallery-item" data-animate="fade-up">
                 <img src="/images/dance-1.jpeg"
                      alt="Technical Precision Cuban Dance"
                      class="gallery-image"
@@ -50,7 +50,7 @@
                     <p>Systematic approach to Casino & Afro-Cuban movement</p>
                 </div>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-animate="fade-up" data-delay="100">
                 <img src="/images/dance-3.jpeg"
                      alt="Music Integration Cuban Dance"
                      class="gallery-image"
@@ -63,7 +63,7 @@
                     <p>Master salsa-rumba transitions, clave timing & musical connection</p>
                 </div>
             </div>
-            <div class="gallery-item">
+            <div class="gallery-item" data-animate="fade-up" data-delay="200">
                 <img src="/images/dance-4.jpeg"
                      alt="Cuban Dance Training Boulder"
                      class="gallery-image"
@@ -80,8 +80,8 @@
     </div>
 
     <!-- Call to Action -->
-    <div class="cta-section">
-        <h2>Ready to Dance?</h2>
+    <div class="cta-section" data-animate="fade-up" data-duration="800">
+        <h2 data-text-reveal="words">Ready to Dance?</h2>
         <p>Join our classes and discover the joy of Cuban salsa and casino dancing</p>
         <div class="cta-buttons">
             <a href="/events" class="btn btn-primary">View Classes</a>
