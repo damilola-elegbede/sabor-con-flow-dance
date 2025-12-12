@@ -13,11 +13,28 @@
     <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
     <meta name="theme-color" content="#000000">
     <!-- End favicon configuration -->
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Icons -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <!-- Preload critical fonts for faster rendering -->
+    <link rel="preload"
+          href="{% static 'fonts/playfair-display/PlayfairDisplay-Regular.woff2' %}"
+          as="font"
+          type="font/woff2"
+          crossorigin>
+    <link rel="preload"
+          href="{% static 'fonts/playfair-display/PlayfairDisplay-Bold.woff2' %}"
+          as="font"
+          type="font/woff2"
+          crossorigin>
+    <link rel="preload"
+          href="{% static 'fonts/inter/Inter-Regular.woff2' %}"
+          as="font"
+          type="font/woff2"
+          crossorigin>
+
+    <!-- Self-hosted fonts (loaded via main.css -> fonts.css) -->
+    <!-- REMOVED: Google Fonts CDN - now self-hosted for better privacy and performance -->
+    <!-- REMOVED: Font Awesome CDN - not used (all icons are inline SVGs) -->
+
     <link href="{% static 'css/main.css' %}" rel="stylesheet" type="text/css">
     <!-- Calendly badge widget begin -->
     <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">

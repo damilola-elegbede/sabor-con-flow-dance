@@ -6,10 +6,16 @@
  * IMPORTANT: Do not change the import order - it affects CSS cascade.
  *
  * Architecture:
+ * 0. Fonts - Self-hosted @font-face declarations (must be first)
  * 1. Base - Variables, reset, typography (lowest specificity)
  * 2. Layouts - Grid systems and section structures
  * 3. Components - UI components (highest specificity)
  */
+
+/* ==========================================================================
+   FONTS - Self-hosted fonts (must load first)
+   ========================================================================== */
+@import 'fonts.css';
 
 /* ==========================================================================
    BASE LAYER
