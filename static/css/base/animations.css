@@ -12,15 +12,23 @@
    SCROLL ANIMATION BASE CLASSES
    ========================================================================== */
 
-/* Base state for all animated elements - hidden before animation */
+/*
+ * Progressive enhancement: Content visible by default.
+ * Only hide when JS is active (html.js class added by animations.js).
+ * This prevents blank pages if JavaScript fails to load.
+ */
 [data-animate] {
+  opacity: 1;
+}
+
+html.js [data-animate] {
   opacity: 0;
 }
 
-/* Animation complete state */
+/* Animation complete state - restore visibility without clobbering transforms */
 .animate-complete {
   opacity: 1 !important;
-  transform: none !important;
+  /* Note: transform intentionally not reset to preserve parallax/GPU layers */
 }
 
 /* Animation in progress marker */
@@ -123,16 +131,18 @@
   }
 }
 
+/*
+ * Slide/Text reveal animations with clip-path fallback.
+ * Browsers without clip-path support will still see opacity/transform animation.
+ */
 @keyframes slideReveal {
   from {
     opacity: 0;
     transform: translateY(50px);
-    clip-path: inset(100% 0 0 0);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-    clip-path: inset(0 0 0 0);
   }
 }
 
@@ -140,12 +150,39 @@
   from {
     opacity: 0;
     transform: translateY(100%);
-    clip-path: inset(0 0 100% 0);
   }
   to {
     opacity: 1;
     transform: translateY(0);
-    clip-path: inset(0 0 0 0);
+  }
+}
+
+/* Enhanced clip-path animations for supporting browsers */
+@supports (clip-path: inset(0)) {
+  @keyframes slideReveal {
+    from {
+      opacity: 0;
+      transform: translateY(50px);
+      clip-path: inset(100% 0 0 0);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes textReveal {
+    from {
+      opacity: 0;
+      transform: translateY(100%);
+      clip-path: inset(0 0 100% 0);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+      clip-path: inset(0 0 0 0);
+    }
   }
 }
 

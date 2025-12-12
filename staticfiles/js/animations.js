@@ -1,6 +1,6 @@
 /**
  * Sabor Con Flow - Scroll Animation System
- * Version: 1.0.0
+ * Version: 1.1.0
  *
  * This module provides:
  * - Scroll-triggered animations via Intersection Observer
@@ -9,6 +9,7 @@
  * - Text reveal animations
  *
  * All animations respect prefers-reduced-motion preference.
+ * Progressive enhancement: content visible if JS fails.
  */
 
 (function() {
@@ -45,7 +46,8 @@
     parallax: {
       factor: 0.15,
       smoothing: 0.1,
-      maxOffset: 100
+      maxOffset: 100,
+      settleThreshold: 0.5
     }
   };
 
@@ -59,6 +61,25 @@
    */
   function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  /**
+   * Check if IntersectionObserver is supported
+   * @returns {boolean}
+   */
+  function supportsIntersectionObserver() {
+    return 'IntersectionObserver' in window;
+  }
+
+  /**
+   * Parse numeric value with fallback
+   * @param {string|undefined} value
+   * @param {number} fallback
+   * @returns {number}
+   */
+  function parseNumeric(value, fallback) {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? Math.max(0, parsed) : fallback;
   }
 
   /**
@@ -114,7 +135,8 @@
     },
 
     init() {
-      if (prefersReducedMotion()) {
+      // Fallback for reduced motion or no IntersectionObserver support
+      if (prefersReducedMotion() || !supportsIntersectionObserver()) {
         this.showAllElements();
         return;
       }
@@ -132,7 +154,7 @@
       const elements = document.querySelectorAll('[data-animate]');
       elements.forEach(el => {
         el.style.opacity = '1';
-        el.style.transform = 'none';
+        el.style.transform = '';
         el.classList.add('animate-complete');
       });
     },
@@ -148,8 +170,8 @@
 
         Object.assign(el.style, animation.initial);
 
-        const duration = el.dataset.duration || CONFIG.timing.defaultDuration;
-        const delay = el.dataset.delay || CONFIG.timing.defaultDelay;
+        const duration = parseNumeric(el.dataset.duration, CONFIG.timing.defaultDuration);
+        const delay = parseNumeric(el.dataset.delay, CONFIG.timing.defaultDelay);
         const easing = el.dataset.easing || CONFIG.easing.default;
 
         el.style.transition = `
@@ -162,6 +184,7 @@
     },
 
     observeElements() {
+      if (!this.observer) return;
       const elements = document.querySelectorAll('[data-animate]');
       elements.forEach(el => this.observer.observe(el));
     },
@@ -170,7 +193,9 @@
       entries.forEach(entry => {
         if (entry.isIntersecting && entry.intersectionRatio >= 0.1) {
           this.animateElement(entry.target);
-          this.observer.unobserve(entry.target);
+          if (this.observer) {
+            this.observer.unobserve(entry.target);
+          }
         }
       });
     },
@@ -185,8 +210,8 @@
         Object.assign(el.style, animation.animate);
         el.classList.add('animate-in');
 
-        const duration = parseInt(el.dataset.duration || CONFIG.timing.defaultDuration);
-        const delay = parseInt(el.dataset.delay || CONFIG.timing.defaultDelay);
+        const duration = parseNumeric(el.dataset.duration, CONFIG.timing.defaultDuration);
+        const delay = parseNumeric(el.dataset.delay, CONFIG.timing.defaultDelay);
 
         setTimeout(() => {
           el.style.willChange = 'auto';
@@ -219,6 +244,7 @@
     destroy() {
       if (this.observer) {
         this.observer.disconnect();
+        this.observer = null;
       }
     }
   };
@@ -246,11 +272,15 @@
       this.animate = this.animate.bind(this);
 
       window.addEventListener('scroll', this.handleScroll, { passive: true });
+      // Initial position sync
+      this.state.targetY = window.scrollY;
+      this.state.scrollY = window.scrollY;
       this.startLoop();
     },
 
     handleScroll() {
       this.state.targetY = window.scrollY;
+      this.startLoop();
     },
 
     startLoop() {
@@ -276,6 +306,13 @@
         el.style.transform = transform;
       });
 
+      // Stop loop when settled (within threshold)
+      if (Math.abs(this.state.targetY - this.state.scrollY) < CONFIG.parallax.settleThreshold) {
+        this.state.isRunning = false;
+        this.state.rafId = null;
+        return;
+      }
+
       this.state.rafId = requestAnimationFrame(this.animate);
     },
 
@@ -284,6 +321,9 @@
         cancelAnimationFrame(this.state.rafId);
       }
       window.removeEventListener('scroll', this.handleScroll);
+      this.state.rafId = null;
+      this.state.isRunning = false;
+      this.elements = [];
     }
   };
 
@@ -292,8 +332,11 @@
      ========================================================================== */
 
   const TextReveal = {
+    observer: null,
+
     init() {
-      if (prefersReducedMotion()) {
+      // Fallback for reduced motion or no IntersectionObserver support
+      if (prefersReducedMotion() || !supportsIntersectionObserver()) {
         this.showAllText();
         return;
       }
@@ -372,12 +415,17 @@
     },
 
     observeElements() {
-      const observer = new IntersectionObserver(
+      // Clean up any existing observer
+      this.destroy();
+
+      this.observer = new IntersectionObserver(
         (entries) => {
           entries.forEach(entry => {
             if (entry.isIntersecting) {
               entry.target.classList.add('text-revealed');
-              observer.unobserve(entry.target);
+              if (this.observer) {
+                this.observer.unobserve(entry.target);
+              }
             }
           });
         },
@@ -385,7 +433,14 @@
       );
 
       const elements = document.querySelectorAll('[data-text-reveal]');
-      elements.forEach(el => observer.observe(el));
+      elements.forEach(el => this.observer.observe(el));
+    },
+
+    destroy() {
+      if (this.observer) {
+        this.observer.disconnect();
+        this.observer = null;
+      }
     }
   };
 
@@ -397,6 +452,15 @@
    * Initialize all animation modules
    */
   function initAnimations() {
+    // Add JS-enabled class to enable CSS animations
+    // This ensures content is visible if JS fails to load
+    document.documentElement.classList.add('js');
+
+    // Teardown existing modules for safe reinit
+    ScrollAnimations.destroy();
+    ParallaxEffect.destroy();
+    TextReveal.destroy();
+
     // Setup staggered groups before initializing scroll animations
     ScrollAnimations.initStaggeredGroup('.gallery-grid', '.gallery-item', 'fade-up');
     ScrollAnimations.initStaggeredGroup('.mission-grid', '.mission-item', 'fade-up');
