@@ -22,6 +22,8 @@
   },
   "homepage": "https://github.com/damilola-elegbede/sabor-con-flow-dance#readme",
   "devDependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "@fontsource/playfair-display": "^5.2.8",
     "jest": "^30.0.5",
     "sharp": "^0.34.5",
     "stylelint": "^16.12.0",
