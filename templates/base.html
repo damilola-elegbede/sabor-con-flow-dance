@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Sabor Con Flow{% endblock %}</title>
-    <!-- Favicon configuration -->
-    <link rel="icon" type="image/png" href="{% static 'images/sabor-con-flow-logo-2.png' %}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/sabor-con-flow-logo-2.png' %}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/sabor-con-flow-logo-2.png' %}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/sabor-con-flow-logo-2.png' %}">
+    <!-- Favicon configuration - using optimized images -->
+    <link rel="icon" type="image/webp" href="{% static 'images/optimized/logo-2.webp' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/optimized/logo-2-320w.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/optimized/logo-2-320w.png' %}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/optimized/logo-2-320w.png' %}">
     <link rel="manifest" href="{% static 'images/site.webmanifest' %}">
     <meta name="theme-color" content="#000000">
     <!-- End favicon configuration -->
@@ -31,7 +31,14 @@
     <header class="header">
         <div class="header-container">
             <a href="{% url 'core:home' %}" class="header-logo">
-                <img src="{% static 'images/sabor-con-flow-logo-2.png' %}" alt="Sabor Con Flow - Home" />
+                <picture>
+                    <source type="image/webp" srcset="{% static 'images/optimized/logo-2.webp' %}">
+                    <img src="{% static 'images/optimized/logo-2-320w.png' %}"
+                         alt="Sabor Con Flow - Home"
+                         width="35"
+                         height="35"
+                         loading="eager">
+                </picture>
             </a>
             <div class="header-tagline">
                 Sabor in every step, flow in every move 💫
@@ -60,7 +67,16 @@
 
     {% if request.resolver_match.url_name != 'home' %}
     <div class="hero-section">
-        <img src="{% static 'images/pasos-basicos-animated.gif' %}" alt="Pasos Básicos Animation" class="hero-image">
+        <picture>
+            <source type="image/webp" srcset="{% static 'images/optimized/pasos-basicos-poster.webp' %}">
+            <img src="{% static 'images/optimized/pasos-basicos-poster.jpg' %}"
+                 alt="Pasos Básicos - Cuban Dance Steps"
+                 class="hero-image"
+                 width="851"
+                 height="315"
+                 loading="eager"
+                 decoding="async">
+        </picture>
         <div class="hero-overlay"></div>
     </div>
     {% endif %}
