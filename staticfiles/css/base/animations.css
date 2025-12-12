@@ -1,0 +1,351 @@
+/**
+ * Scroll Animation Styles
+ * Sabor Con Flow Dance Studio
+ *
+ * CSS classes for Intersection Observer-based scroll animations.
+ * Works with animations.js for performant scroll-triggered reveals.
+ *
+ * All animations respect prefers-reduced-motion preference.
+ */
+
+/* ==========================================================================
+   SCROLL ANIMATION BASE CLASSES
+   ========================================================================== */
+
+/* Base state for all animated elements - hidden before animation */
+[data-animate] {
+  opacity: 0;
+}
+
+/* Animation complete state */
+.animate-complete {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* Animation in progress marker */
+.animate-in {
+  /* Marker class for when animation has started */
+}
+
+/* ==========================================================================
+   STAGGER ANIMATION CLASSES (CSS-only fallback)
+   ========================================================================== */
+
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity var(--duration-slower) var(--ease-out-cubic),
+    transform var(--duration-slower) var(--ease-out-cubic);
+}
+
+.stagger-children.in-view > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Stagger delays */
+.stagger-children > *:nth-child(1) { transition-delay: 0ms; }
+.stagger-children > *:nth-child(2) { transition-delay: 100ms; }
+.stagger-children > *:nth-child(3) { transition-delay: 200ms; }
+.stagger-children > *:nth-child(4) { transition-delay: 300ms; }
+.stagger-children > *:nth-child(5) { transition-delay: 400ms; }
+.stagger-children > *:nth-child(6) { transition-delay: 500ms; }
+
+/* ==========================================================================
+   KEYFRAME ANIMATIONS
+   ========================================================================== */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleFade {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes slideReveal {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes textReveal {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(var(--color-accent-rgb), 0.2);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(var(--color-accent-rgb), 0.4);
+  }
+}
+
+/* ==========================================================================
+   ANIMATION UTILITY CLASSES
+   ========================================================================== */
+
+.animate-fade-up {
+  animation: fadeInUp var(--duration-slower) var(--ease-out-cubic) forwards;
+}
+
+.animate-fade-down {
+  animation: fadeInDown var(--duration-slower) var(--ease-out-cubic) forwards;
+}
+
+.animate-fade-left {
+  animation: fadeInLeft var(--duration-slower) var(--ease-out-cubic) forwards;
+}
+
+.animate-fade-right {
+  animation: fadeInRight var(--duration-slower) var(--ease-out-cubic) forwards;
+}
+
+.animate-scale-in {
+  animation: scaleIn var(--duration-slower) var(--ease-out-cubic) forwards;
+}
+
+.animate-scale-fade {
+  animation: scaleFade var(--duration-slower) var(--ease-out-cubic) forwards;
+}
+
+.animate-slide-reveal {
+  animation: slideReveal var(--duration-slowest) var(--ease-out-expo) forwards;
+}
+
+.animate-text-reveal {
+  animation: textReveal var(--duration-slowest) var(--ease-out-expo) forwards;
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+/* ==========================================================================
+   ANIMATION DELAY UTILITIES
+   ========================================================================== */
+
+.delay-100 { animation-delay: 100ms; }
+.delay-200 { animation-delay: 200ms; }
+.delay-300 { animation-delay: 300ms; }
+.delay-400 { animation-delay: 400ms; }
+.delay-500 { animation-delay: 500ms; }
+.delay-600 { animation-delay: 600ms; }
+.delay-700 { animation-delay: 700ms; }
+.delay-800 { animation-delay: 800ms; }
+
+/* ==========================================================================
+   ANIMATION DURATION UTILITIES
+   ========================================================================== */
+
+.duration-fast { animation-duration: var(--duration-fast); }
+.duration-normal { animation-duration: var(--duration-normal); }
+.duration-slow { animation-duration: var(--duration-slow); }
+.duration-slower { animation-duration: var(--duration-slower); }
+.duration-slowest { animation-duration: var(--duration-slowest); }
+
+/* ==========================================================================
+   PARALLAX EFFECT STYLES
+   ========================================================================== */
+
+[data-parallax] {
+  will-change: transform;
+}
+
+/* Hero section parallax container */
+.hero-parallax {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-parallax .video-item {
+  transform: translateZ(0); /* Force GPU layer */
+}
+
+/* Parallax background layer */
+.parallax-bg {
+  position: absolute;
+  top: -20%;
+  left: 0;
+  width: 100%;
+  height: 140%;
+  object-fit: cover;
+  will-change: transform;
+}
+
+/* ==========================================================================
+   TEXT REVEAL ANIMATION STYLES
+   ========================================================================== */
+
+[data-text-reveal] {
+  overflow: hidden;
+}
+
+/* Character reveal */
+.reveal-char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(100%);
+  transition:
+    opacity var(--duration-slow) var(--ease-out-cubic),
+    transform var(--duration-slow) var(--ease-out-cubic);
+}
+
+.text-revealed .reveal-char {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Word reveal */
+.reveal-word {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--duration-slow) var(--ease-out-cubic),
+    transform var(--duration-slow) var(--ease-out-cubic);
+}
+
+.text-revealed .reveal-word {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Line reveal */
+.reveal-line {
+  display: block;
+  overflow: hidden;
+}
+
+.reveal-line-inner {
+  display: block;
+  transform: translateY(100%);
+  transition: transform var(--duration-slower) var(--ease-out-expo);
+}
+
+.text-revealed .reveal-line-inner {
+  transform: translateY(0);
+}
+
+/* Title reveal animation for page headers */
+.page-title[data-text-reveal="lines"] .reveal-line-inner {
+  transition-duration: var(--duration-slowest);
+}
+
+/* ==========================================================================
+   REDUCED MOTION SUPPORT
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  [data-parallax] {
+    transform: none !important;
+  }
+
+  [data-text-reveal] {
+    opacity: 1 !important;
+  }
+
+  .reveal-char,
+  .reveal-word,
+  .reveal-line-inner {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .stagger-children > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition-delay: 0ms !important;
+  }
+}

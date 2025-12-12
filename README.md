@@ -51,7 +51,8 @@ sabor-con-flow-dance/
 │   │   ├── base/          # Foundation styles
 │   │   │   ├── variables.css   # CSS design tokens + animation tokens
 │   │   │   ├── reset.css       # Box model reset, accessibility, reduced motion
-│   │   │   └── typography.css  # Text styles, utilities
+│   │   │   ├── typography.css  # Text styles, utilities
+│   │   │   └── animations.css  # Scroll animation styles, keyframes, utilities
 │   │   ├── components/    # UI components
 │   │   │   ├── buttons.css     # Button styles + ripple effect
 │   │   │   ├── cards.css       # Card-based UI + hover effects
@@ -63,7 +64,8 @@ sabor-con-flow-dance/
 │   │   │   └── sections.css    # Page sections
 │   │   └── main.css       # Import orchestrator
 │   └── js/
-│       └── main.js        # RippleEffect, ButtonLoader, lazy loading
+│       ├── main.js        # RippleEffect, ButtonLoader, lazy loading
+│       └── animations.js  # Scroll animations, parallax, text reveal
 ├── staticfiles/            # Collected static files
 ├── templates/              # Base templates
 ├── vercel.json            # Vercel deployment configuration
@@ -191,6 +193,67 @@ The site includes polished micro-interactions for a premium user experience:
 - Floating label animation support
 - 16px font-size on mobile prevents iOS zoom
 
+### Scroll Animations
+
+The site includes performant scroll-triggered animations using Intersection Observer:
+
+#### Animation System (`static/js/animations.js`)
+- **ScrollAnimations**: Intersection Observer-based reveal animations
+- **ParallaxEffect**: Smooth parallax scrolling for hero elements
+- **TextReveal**: Word-by-word and line-by-line text animations
+
+#### Animation Presets
+Elements use `data-animate` attributes to specify animation type:
+
+| Preset | Effect | Use Case |
+|--------|--------|----------|
+| `fade-up` | Fade in from below | Default for most content |
+| `fade-down` | Fade in from above | Page headers |
+| `fade-left` | Fade in from right | Side content |
+| `fade-right` | Fade in from left | Side content |
+| `scale-up` | Scale from 90% | Cards, images |
+| `scale-fade` | Scale + fade up | Hero videos |
+
+#### Data Attributes
+```html
+<!-- Basic scroll animation -->
+<div data-animate="fade-up">Content</div>
+
+<!-- With custom duration and delay -->
+<div data-animate="fade-up" data-duration="800" data-delay="200">Content</div>
+
+<!-- Parallax effect -->
+<div data-parallax data-parallax-factor="0.15">Parallax content</div>
+
+<!-- Text reveal (word-by-word) -->
+<h2 data-text-reveal="words">Animated heading</h2>
+```
+
+#### Staggered Animations
+Grid items automatically receive staggered delays (100ms increments, max 500ms):
+- Gallery items in `.gallery-grid`
+- Mission items in `.mission-grid`
+- Class previews in `.classes-grid`
+- Event cards in `.event-container`
+- Video items in `.dual-video-container`
+
+#### Reduced Motion Support
+All scroll animations respect `prefers-reduced-motion`:
+- Animations disabled instantly when preference detected
+- Elements shown immediately without motion
+- No performance impact when reduced motion enabled
+
+#### JavaScript API
+```javascript
+// Access animation modules
+window.SaborAnimations.ScrollAnimations;
+window.SaborAnimations.ParallaxEffect;
+window.SaborAnimations.TextReveal;
+
+// Reinitialize after dynamic content load
+window.SaborAnimations.reinit();
+```
+
 ### Animation Design Tokens
 
 Animation timing and easing values in `static/css/base/variables.css`:
@@ -214,7 +277,7 @@ Easing functions:
 
 The `main.css` file imports modules in dependency order:
 
-1. Base layer (variables → reset → typography)
+1. Base layer (variables → reset → typography → animations)
 2. Layout layer (grid → sections)
 3. Component layer (buttons → navigation → cards → gallery → forms)
 
