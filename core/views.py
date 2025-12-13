@@ -1,5 +1,16 @@
+import json
+import logging
+
 from django.shortcuts import render
 from django.conf import settings
+from django.http import JsonResponse
+from django.views.decorators.http import require_http_methods
+from django.views.decorators.csrf import csrf_protect
+from django.core.mail import EmailMessage
+
+from .forms import ContactForm
+
+logger = logging.getLogger(__name__)
 
 def home(request):
     # Static upcoming events data
@@ -87,3 +98,103 @@ def contact(request):
     return render(request, 'contact.html', {
         'current_page': 'contact'
     })
+
+
+@require_http_methods(["POST"])
+@csrf_protect
+def contact_submit(request):
+    """Handle contact form submission via AJAX."""
+    try:
+        # Parse JSON body
+        try:
+            data = json.loads(request.body)
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'success': False,
+                'message': 'Invalid request format'
+            }, status=400)
+
+        # Validate form
+        form = ContactForm(data)
+
+        if not form.is_valid():
+            # Collect all errors into a single message
+            errors = []
+            for field, field_errors in form.errors.items():
+                for error in field_errors:
+                    errors.append(error)
+            return JsonResponse({
+                'success': False,
+                'message': '. '.join(errors)
+            }, status=400)
+
+        # Check for spam (honeypot)
+        if form.cleaned_data.get('is_spam'):
+            # Pretend success but don't send email
+            logger.info('Spam submission detected and blocked')
+            return JsonResponse({
+                'success': True,
+                'message': 'Thank you for your message!'
+            })
+
+        # Get cleaned data
+        name = form.cleaned_data['name']
+        email = form.cleaned_data['email']
+        subject_key = form.cleaned_data['subject']
+        message = form.cleaned_data['message']
+
+        # Map subject key to display name
+        subject_map = dict(ContactForm.SUBJECT_CHOICES)
+        subject_display = subject_map.get(subject_key, 'General Inquiry')
+
+        # Log submission
+        logger.info(f'Contact form submission from {name} <{email}> - {subject_display}')
+
+        # Send email notification if configured
+        if hasattr(settings, 'EMAIL_HOST') and settings.EMAIL_HOST:
+            try:
+                send_contact_email(name, email, subject_display, message)
+            except Exception as e:
+                logger.error(f'Failed to send contact email: {e}')
+                # Don't fail the request if email fails
+
+        return JsonResponse({
+            'success': True,
+            'message': 'Thank you for your message. We will get back to you soon!'
+        })
+
+    except Exception:
+        logger.exception('Contact form error')
+        return JsonResponse({
+            'success': False,
+            'message': 'An unexpected error occurred. Please try again later.'
+        }, status=500)
+
+
+def send_contact_email(name, email, subject, message):
+    """Send contact form notification email."""
+    # Plain text version
+    text_content = f"""
+New Contact Form Submission
+===========================
+
+From: {name} <{email}>
+Subject: {subject}
+
+Message:
+--------
+{message}
+
+---
+This message was sent from the Sabor Con Flow website contact form.
+Reply directly to this email to respond to {name}.
+    """
+
+    email_message = EmailMessage(
+        subject=f'[Website Contact] {subject} - from {name}',
+        body=text_content,
+        from_email=settings.DEFAULT_FROM_EMAIL,
+        to=[settings.CONTACT_EMAIL],
+        reply_to=[f'{name} <{email}>'],
+    )
+    email_message.send(fail_silently=False)
