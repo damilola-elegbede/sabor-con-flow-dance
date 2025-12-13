@@ -86,9 +86,18 @@ WSGI_APPLICATION = 'sabor_con_flow.wsgi.application'
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Include both source static files and Vite build output
+# The dist directory contains hashed assets for cache-busting
 STATICFILES_DIRS = [
     BASE_DIR / "static",
 ]
+
+# Add Vite dist directory if it exists (production builds)
+_vite_dist = BASE_DIR / "static" / "dist"
+if _vite_dist.exists():
+    # Insert at beginning so dist files take precedence
+    STATICFILES_DIRS.insert(0, _vite_dist)
 
 # Static file configuration for Vercel
 if not DEBUG:

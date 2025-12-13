@@ -9,6 +9,7 @@ npm-debug.log*
 # Build directories
 dist/
 build/
+static/dist/
 
 # Django
 # staticfiles/ - Commented out to allow Vercel to access static files
