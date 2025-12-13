@@ -4,8 +4,11 @@
   "description": "A Django-based website for Sabor con Flow Dance, featuring class information, registration, and private lesson booking.",
   "main": "index.js",
   "scripts": {
+    "dev": "vite",
+    "build": "npm run optimize:images && vite build",
+    "build:vite": "vite build",
+    "preview": "vite preview",
     "optimize:images": "node scripts/optimize-images.js",
-    "prebuild": "npm run optimize:images",
     "lint:css": "stylelint 'static/css/**/*.css'",
     "lint:css:fix": "stylelint 'static/css/**/*.css' --fix"
   },
@@ -27,6 +30,9 @@
     "jest": "^30.0.5",
     "sharp": "^0.34.5",
     "stylelint": "^16.12.0",
-    "stylelint-config-standard": "^36.0.1"
+    "stylelint-config-standard": "^36.0.1",
+    "terser": "^5.44.1",
+    "vite": "^7.2.7",
+    "vite-plugin-compression": "^0.5.1"
   }
 }
