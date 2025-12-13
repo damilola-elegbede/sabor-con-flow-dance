@@ -22,10 +22,16 @@ def get_manifest():
     if _manifest_cache is not None and not settings.DEBUG:
         return _manifest_cache
 
-    # Check multiple locations for the manifest
-    # 1. Source location (during development/build)
-    # 2. Non-hidden copy (collectstatic ignores hidden dirs like .vite/)
-    # 3. Collected static files location (production on Vercel)
+    # In production on Vercel, use the generated Python module
+    # This is created by vercel-build and bundled with the serverless function
+    try:
+        from core.vite_manifest_data import MANIFEST
+        _manifest_cache = MANIFEST
+        return _manifest_cache
+    except ImportError:
+        pass  # Fall through to file-based lookup
+
+    # Check multiple locations for the manifest (local development)
     possible_paths = [
         Path(settings.BASE_DIR) / 'static' / 'dist' / '.vite' / 'manifest.json',
         Path(settings.BASE_DIR) / 'static' / 'dist' / 'vite-manifest' / 'manifest.json',
