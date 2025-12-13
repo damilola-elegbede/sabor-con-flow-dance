@@ -165,6 +165,22 @@ class ContactSubmitViewTest(SimpleTestCase):
         self.client = Client()
         self.submit_url = reverse('core:contact_submit')
 
+    def test_csrf_required(self):
+        """Test that CSRF protection is enforced."""
+        csrf_client = Client(enforce_csrf_checks=True)
+        data = {
+            'name': 'Test User',
+            'email': 'test@example.com',
+            'subject': 'general',
+            'message': 'This is a test message for the contact form.',
+        }
+        response = csrf_client.post(
+            self.submit_url,
+            data=json.dumps(data),
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 403)
+
     def test_valid_submission(self):
         """Test successful form submission."""
         data = {
@@ -271,7 +287,7 @@ class ContactSubmitViewTest(SimpleTestCase):
 
     def test_all_subject_choices_valid(self):
         """Test that all defined subject choices are accepted."""
-        subject_choices = ['general', 'classes', 'private', 'events', 'other']
+        subject_choices = [key for key, _ in ContactForm.SUBJECT_CHOICES]
         for subject in subject_choices:
             data = {
                 'name': 'Test User',

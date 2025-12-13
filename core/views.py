@@ -1,5 +1,6 @@
 import json
 import logging
+from email.utils import formataddr
 
 from django.shortcuts import render
 from django.conf import settings
@@ -195,6 +196,6 @@ Reply directly to this email to respond to {name}.
         body=text_content,
         from_email=settings.DEFAULT_FROM_EMAIL,
         to=[settings.CONTACT_EMAIL],
-        reply_to=[f'{name} <{email}>'],
+        reply_to=[formataddr((name, email))],
     )
     email_message.send(fail_silently=False)

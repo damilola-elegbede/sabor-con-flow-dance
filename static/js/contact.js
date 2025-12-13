@@ -178,6 +178,11 @@
 
         hideMessages();
 
+        if (!csrfToken) {
+            showMessage('error', 'Security token missing. Please refresh the page and try again.');
+            return;
+        }
+
         if (!validateForm()) {
             // Focus first invalid field
             const firstInvalid = form.querySelector('.invalid');
