@@ -18,6 +18,9 @@ __pycache__/
 .env
 .env.local
 
+# Auto-generated Vite manifest module (created by vercel-build)
+core/vite_manifest_data.py
+
 # IDE files
 .idea/
 .vscode/

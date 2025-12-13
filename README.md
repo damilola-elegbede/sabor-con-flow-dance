@@ -16,7 +16,7 @@ A Django-based website for Sabor con Flow Dance, featuring class information, re
 - **Events** - Shows all dance classes with pricing and schedules
 - **Pricing** - Standard class pricing information
 - **Private Lessons** - Dedicated page for private lesson information and booking
-- **Contact** - Contact information and social media links
+- **Contact** - Contact form with email notification, plus social media links
 
 ## Private Lessons
 
@@ -35,6 +35,42 @@ Private lessons can be booked directly through the Calendly widget on the Privat
 - Customized with website theme colors
 - Available on the dedicated Private Lessons page
 
+## Contact Form
+
+The contact page includes a fully functional contact form with:
+
+### Features
+- **Client-side validation**: Real-time field validation with error messages
+- **Server-side validation**: Django form validation matching client rules
+- **AJAX submission**: Form submits without page reload via JSON API
+- **CSRF protection**: Django CSRF token integration
+- **Honeypot spam protection**: Hidden field traps bots (silently succeeds without sending email)
+- **Email notification**: Sends email to configured address when form is submitted
+- **Character counter**: Live count for message field (max 2000 characters)
+- **Loading state**: Spinner animation during form submission
+- **Success/error messages**: Clear feedback after submission
+
+### Form Fields
+- **Name** (required): 2-100 characters
+- **Email** (required): Valid email format
+- **Subject** (dropdown): General Inquiry, Class Information, Private Lessons, Events & Workshops, Other
+- **Message** (required): 10-2000 characters
+
+### Email Configuration
+
+For production, set the following environment variables:
+```bash
+EMAIL_HOST=smtp.gmail.com          # SMTP server
+EMAIL_PORT=587                      # SMTP port
+EMAIL_USE_TLS=True                  # Use TLS encryption
+EMAIL_HOST_USER=your-email          # SMTP username
+EMAIL_HOST_PASSWORD=your-password   # SMTP password (use app password for Gmail)
+DEFAULT_FROM_EMAIL=noreply@domain   # From address for emails
+CONTACT_EMAIL=contact@domain        # Where to receive contact form submissions
+```
+
+In development (when EMAIL_HOST is not set), emails are printed to the console.
+
 ## Project Structure
 
 ```
@@ -45,7 +81,7 @@ sabor-con-flow-dance/
 │   ├── views.py           # View logic (static content)
 │   ├── urls.py            # URL routing
 │   └── models.py          # Placeholder file (no models used)
-│   └── forms.py           # Placeholder file (no forms used)
+│   └── forms.py           # Contact form with validation
 ├── static/                 # Static assets
 │   ├── css/               # Modular CSS architecture
 │   │   ├── base/          # Foundation styles
@@ -56,7 +92,7 @@ sabor-con-flow-dance/
 │   │   ├── components/    # UI components
 │   │   │   ├── buttons.css     # Button styles + ripple effect
 │   │   │   ├── cards.css       # Card-based UI + hover effects
-│   │   │   ├── forms.css       # Input focus animations
+│   │   │   ├── forms.css       # Input focus animations + contact form styles
 │   │   │   ├── gallery.css     # Media components
 │   │   │   └── navigation.css  # Nav, header, footer, social icons
 │   │   ├── layouts/       # Page structures
@@ -65,7 +101,8 @@ sabor-con-flow-dance/
 │   │   └── main.css       # Import orchestrator
 │   └── js/
 │       ├── main.js        # RippleEffect, ButtonLoader, lazy loading
-│       └── animations.js  # Scroll animations, parallax, text reveal
+│       ├── animations.js  # Scroll animations, parallax, text reveal
+│       └── contact.js     # Contact form validation and AJAX submission
 ├── staticfiles/            # Collected static files
 ├── templates/              # Base templates
 ├── vercel.json            # Vercel deployment configuration
