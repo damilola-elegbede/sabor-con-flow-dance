@@ -33,7 +33,7 @@ if os.path.exists(env_local_path):
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY')
-if not SECRET_KEY and not os.environ.get('DJANGO_DEBUG', 'False').lower() in ('true', '1', 't'):
+if not SECRET_KEY and os.environ.get('DJANGO_DEBUG', 'False').lower() not in ('true', '1', 't'):
     raise ValueError("SECRET_KEY environment variable not set in production.")
 elif not SECRET_KEY:
     print("Warning: SECRET_KEY environment variable not set. Using a default for local DEBUG mode.")
