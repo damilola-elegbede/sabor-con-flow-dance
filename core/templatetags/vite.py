@@ -22,12 +22,29 @@ def get_manifest():
     if _manifest_cache is not None and not settings.DEBUG:
         return _manifest_cache
 
-    manifest_path = Path(settings.BASE_DIR) / 'static' / 'dist' / '.vite' / 'manifest.json'
+    # Check multiple locations for the manifest
+    # 1. Source location (during development/build)
+    # 2. Non-hidden copy (collectstatic ignores hidden dirs like .vite/)
+    # 3. Collected static files location (production on Vercel)
+    possible_paths = [
+        Path(settings.BASE_DIR) / 'static' / 'dist' / '.vite' / 'manifest.json',
+        Path(settings.BASE_DIR) / 'static' / 'dist' / 'vite-manifest' / 'manifest.json',
+        Path(settings.BASE_DIR) / 'staticfiles' / 'dist' / 'vite-manifest' / 'manifest.json',
+        Path(settings.BASE_DIR) / 'staticfiles' / 'dist' / '.vite' / 'manifest.json',
+    ]
 
-    if not manifest_path.exists():
+    manifest_path = None
+    for path in possible_paths:
+        if path.exists():
+            manifest_path = path
+            break
+
+    if manifest_path is None:
         if settings.DEBUG:
             return {}
-        raise FileNotFoundError(f"Vite manifest not found at {manifest_path}")
+        raise FileNotFoundError(
+            f"Vite manifest not found. Searched: {[str(p) for p in possible_paths]}"
+        )
 
     with open(manifest_path, 'r') as f:
         _manifest_cache = json.load(f)

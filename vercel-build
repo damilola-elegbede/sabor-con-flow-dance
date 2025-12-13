@@ -7,6 +7,12 @@ npm ci
 echo "Building assets with Vite..."
 npm run build
 
+# Copy Vite manifest to non-hidden directory so collectstatic includes it
+# Django's collectstatic ignores hidden directories like .vite/
+echo "Copying Vite manifest..."
+mkdir -p static/dist/vite-manifest
+cp static/dist/.vite/manifest.json static/dist/vite-manifest/manifest.json
+
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
 
